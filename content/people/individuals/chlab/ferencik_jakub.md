@@ -1,6 +1,6 @@
 ---
 name: "Jakub Ferenčík" # only mandatory property
-image: "/imgs/cat1.jpg" # /imgs/people/xxx.jpg
+image: "/imgs/people/individuals/chlab/ferencik_jakub.jpg" # /imgs/people/xxx.jpg
 nickname: ""
 description: ""
 

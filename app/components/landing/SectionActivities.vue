@@ -6,7 +6,7 @@ const placeholder = img(src, {}, { preset: "thumbnailXXSm" });
 const description = ref(
 	"Běstvina není jako škola – nebudeš sedět v lavici a biflovat se zbytečnosti. "
 	+ "Tady získáš znalosti, se kterými ohromíš rodiče, spolužáky, ale i sám sebe. "
-	+ "Mimo to si vyzkoušíš práci v laboratořích se spičkovým vybavením a naučíš se poznávat přírodu kolem sebe. "
+	+ "Mimo to si vyzkoušíš práci v laboratořích se špičkovým vybavením a naučíš se poznávat přírodu kolem sebe. "
 	+ "Těš se také na táboráky, sportovní vyžití a další neodborný program.");
 </script>
 
