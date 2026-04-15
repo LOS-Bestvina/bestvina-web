@@ -34,7 +34,7 @@ const { data: years } = await useAsyncData("years-list", () => {
 					}"
 					:title="`Ročník ${yearObj.year}`"
 					:to="`/rocniky/${yearObj.year}`"
-					variant="soft"
+					variant="subtle"
 				/>
 			</UBlogPosts>
 		</UPageBody>

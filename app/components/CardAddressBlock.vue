@@ -30,11 +30,11 @@ const textSizeClass = computed(() => {
 
 		<div
 			:class="[textSizeClass]"
-			class="leading-relaxed text-gray-600 dark:text-gray-300"
+			class="leading-relaxed"
 		>
 			<p
 				v-if="name"
-				class="font-bold text-gray-900 dark:text-white"
+				class="font-bold"
 			>
 				{{ name }}
 			</p>

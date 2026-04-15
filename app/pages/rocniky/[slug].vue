@@ -169,7 +169,7 @@ const hasGalleryPreview = ref(true);
 				<ContentRenderer :value="page.body" />
 			</section>
 
-			<div v-show="hasGroupImages || hasGalleryPreview">
+			<div v-show="!isCurrentYear && hasGroupImages || hasGalleryPreview">
 				<USeparator icon="i-mdi-history" />
 
 				<!-- Group Photos -->
