@@ -215,7 +215,7 @@ defineShortcuts({
 								<img
 									v-show="!loadedMainImages.has(currentSrc)"
 									:src="img(currentSrc, {}, { preset: 'thumbnailXXSm' })"
-									alt=""
+									:alt="imageTitle"
 									class="absolute inset-0 w-full h-full object-contain blur-md opacity-70 transition-opacity duration-300"
 									@load="onPlaceholderLoad(currentSrc)"
 								>
@@ -223,7 +223,7 @@ defineShortcuts({
 								<NuxtImg
 									:class="loadedMainImages.has(currentSrc) ? 'opacity-100' : 'opacity-0'"
 									:src="currentSrc"
-									autofocus
+									:alt="imageTitle"
 									class="absolute inset-0 w-full h-full object-contain drop-shadow-2xl select-none transition-opacity duration-500 ease-in-out"
 									decoding="async"
 									draggable="false"
@@ -256,7 +256,7 @@ defineShortcuts({
 						class="w-full"
 						orientation="horizontal"
 					>
-						<div class="flex gap-2 w-max py-4 mx-auto px-[calc(50vw-32px)] sm:px-[calc(50vw-40px)]">
+						<div class="flex gap-4 w-max py-4 mx-auto px-[calc(50vw-32px)] sm:px-[calc(50vw-40px)]">
 							<button
 								v-for="(imgSrc, i) in images"
 								:key="i"
