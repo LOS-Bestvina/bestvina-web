@@ -20,8 +20,8 @@
     --color-teal-600: oklch(52.476% 0.08756 218.32);
     --color-teal-700: oklch(39.361% 0.06431 218.29);
     --color-teal-800: oklch(25.016% 0.03704 216.17);
-    --color-teal-900: oklch(0% 0 none);
-    --color-teal-950: oklch(0% 0 none);
+    --color-teal-900: oklch(18.016% 0.02704 216.17);
+    --color-teal-950: oklch(13.016% 0.01704 216.17);
 
     --color-yellow: oklch(82.534% 0.17058 79.939);
     --color-yellow-50: oklch(94.449% 0.06553 88.063);
@@ -47,7 +47,7 @@
     --color-orange-700: oklch(47.866% 0.11383 58.62);
     --color-orange-800: oklch(33.687% 0.07785 61.534);
     --color-orange-900: oklch(17.795% 0.03788 73.138);
-    --color-orange-950: oklch(0% 0 none);
+    --color-orange-950: oklch(12.795% 0.02788 73.138);
 }
 
 :root {
@@ -57,6 +57,48 @@
 
     /* make the default container a bit bigger than NuxtUI normal */
     --ui-container: var(--container-9xl);
+    
+    /* increase contrast */
+    background-color: var(--color-zinc-50);
+    color: var(--color-zinc-900);
+
+    /* background mesh */
+    --mesh-color-1: color-mix(in oklch, var(--color-teal-500), transparent 80%);
+    --mesh-color-2: color-mix(in oklch, var(--color-orange-500), transparent 80%);
+    --mesh-color-3: color-mix(in oklch, var(--color-yellow-500), transparent 85%);
+}
+
+.dark {
+    background-color: var(--color-zinc-950);
+    color: var(--color-zinc-50);
+
+    --mesh-color-1: color-mix(in oklch, var(--color-teal-600), transparent 85%);
+    --mesh-color-2: color-mix(in oklch, var(--color-orange-600), transparent 85%);
+    --mesh-color-3: color-mix(in oklch, var(--color-yellow-600), transparent 90%);
+}
+
+/* Global UTabs Multiline Support */
+[role="tablist"] {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.25rem !important;
+    padding: 0.25rem !important;
+}
+[role="tablist"] > button, [role="tablist"] > a {
+    width: 100% !important;
+}
+
+@media (min-width: 640px) {
+    [role="tablist"] {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        grid-template-columns: none !important;
+        width: auto !important;
+        justify-content: flex-start !important;
+    }
+    [role="tablist"] > button, [role="tablist"] > a {
+        width: auto !important;
+    }
 }
 
 @theme {
