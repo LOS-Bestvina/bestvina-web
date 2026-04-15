@@ -71,50 +71,52 @@ const asSection = (s: unknown) => s as Section;
 </script>
 
 <template>
-	<UScrollArea
+	<div
 		v-if="pageStatus === 'success'"
-		v-slot="{ item: section, index }"
-		:items="sections"
-		:ui="{
-			viewport: 'gap-4',
-		}"
-		class="w-full pb-8"
+		class="w-full pb-16 flex flex-col gap-12"
 	>
 		<div
-			v-if="asSection(section).people.length > 0"
+			v-for="(section, index) in sections"
+			:key="index"
+			class="flex flex-col gap-8"
 		>
-			<USeparator
-				v-if="index != 0"
-				class="my-4"
-			/>
-			<div class="flex flex-row justify-between items-center my-4 min-h-8">
-				<div>
-					<PageSubHeader
-						:id="asSection(section).name.replace(' ', '_').toLowerCase()"
-						:title="asSection(section).name || ''"
-						class="p-0!"
+			<div
+				v-if="asSection(section).people.length > 0"
+				class="flex flex-col gap-4"
+			>
+				<div class="flex flex-row justify-between items-end border-b border-primary-500/10 pb-4 mt-8">
+					<div class="flex items-center gap-4">
+						<div
+							v-if="asSection(section).name"
+							class="w-2 h-8 bg-secondary-500 rounded-full"
+						/>
+						<p class="text-3xl font-black text-highlighted tracking-tight uppercase w-fit">
+							{{ asSection(section).name }}
+						</p>
+					</div>
+					<span class="text-muted text-sm text-center font-medium bg-zinc-400/5 px-3 py-1 rounded-full ring-1 ring-zinc-400/10 mb-1">
+						{{ asSection(section).people.length }} {{ getPersonCountLabel(asSection(section).people.length) }}
+					</span>
+				</div>
+				<div
+					class="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(380px,1fr))] justify-items-stretch gap-8"
+				>
+					<PersonCard
+						v-for="person in asSection(section).people"
+						:key="person.id"
+						:page-id="pageId"
+						:person="person"
+						:show-image="asSection(section).showImages ?? true"
 					/>
 				</div>
-				<span class="text-muted text-sm md:text-md text-right min-w-1/3">
-					celkem: {{ asSection(section).people.length }} {{ getPersonCountLabel(asSection(section).people.length) }}
-				</span>
-			</div>
-			<div
-				class="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(350px,1fr))] justify-items-center gap-8"
-			>
-				<PersonCard
-					v-for="person in asSection(section).people"
-					:key="person.id"
-					:page-id="pageId"
-					:person="person"
-					:show-image="asSection(section).showImages ?? true"
-				/>
 			</div>
 		</div>
-	</UScrollArea>
+	</div>
 	<InDevelopment
 		v-else-if="pageStatus === 'empty'"
 		:show-actions="false"
+		:with-page-wrapper="false"
+		class="mt-48"
 		description="Tato sekce se ještě stydí ukázat se veřejnosti. 🫣"
 	/>
 </template>

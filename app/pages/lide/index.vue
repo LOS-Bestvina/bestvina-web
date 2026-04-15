@@ -102,33 +102,31 @@ const pageId = computed(() => `${rootPageId}/${currentTab.value}`);
 		/>
 
 		<UPageBody>
-			<ClientOnly>
-				<UTabs
-					v-model="currentTab"
-					:content="false"
-					:items="tabs"
-					:ui="{
-						root: 'mb-4',
-						leadingIcon: 'block 2xs:hidden md:block',
-						label: 'hidden 2xs:block',
-					}"
-					color="secondary"
-					variant="pill"
-				/>
-				<PeopleScrollableGrid
-					:key="pageId"
-					:page-id="pageId"
-				/>
-				<template #fallback>
+			<!-- <ClientOnly> -->
+			<UTabs
+				v-model="currentTab"
+				:content="false"
+				:items="tabs"
+				color="secondary"
+				variant="pill"
+				:ui="{
+					list: 'w-full! lg:w-3/4! mx-auto',
+				}"
+			/>
+			<PeopleScrollableGrid
+				:key="pageId"
+				:page-id="pageId"
+			/>
+			<!-- <template #fallback>
 					<div class="w-full h-full flex flex-row justify-center items-center my-16">
 						<UIcon
 							class="text-muted"
-							name="i-svg-spinners-bars-scale-middle"
+							name="i-svg-spinners-blocks-shuffle-3"
 							size="48"
 						/>
 					</div>
 				</template>
-			</ClientOnly>
+			</ClientOnly> -->
 		</UPageBody>
 	</UPage>
 </template>
