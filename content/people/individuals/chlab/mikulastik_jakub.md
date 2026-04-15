@@ -1,6 +1,6 @@
 ---
 name: "Jakub Mikuláštík"
-image: "/imgs/cat2.jpg"
+image: ""
 nickname: ""
 description: ""
 
