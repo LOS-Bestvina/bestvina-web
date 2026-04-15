@@ -14,16 +14,20 @@ const description = ref(
 			description: 'lg:max-w-[80%]',
 			container: 'py-16 pb-16 sm:py-8 sm:pb-16 lg:pb-0 lg:py-40',
 			headline: 'w-fit',
+			wrapper: 'w-fit',
 			header: 'flex flex-col items-center text-center lg:text-start lg:block',
 			footer: 'flex flex-row justify-center lg:block',
 		}"
 		orientation="horizontal"
 	>
 		<template #headline>
-			<LandingHeroInfoHeadline />
+			<!-- <LandingHeroInfoHeadline /> -->
 		</template>
 		<template #title>
-			<span class="leading-tight">Letní odborné soustředění<br><span class="bg-gradient-to-r from-teal-500 to-teal-300  dark:from-teal-500 dark:to-teal-100 bg-clip-text text-transparent animate-gradient">BĚSTVINA</span></span>
+			<span class="leading-tight flex flex-col gap-0 text-center lg:text-start">
+				<span class="text-lg sm:text-2xl font-bold uppercase tracking-widest mb-2">Letní odborné soustředění</span>
+				<span class="bg-linear-to-r from-teal-500 to-teal-300 dark:from-teal-500 dark:to-teal-300 bg-clip-text text-transparent animate-gradient font-black text-7xl lg:text-8xl py-1 pt-2">BĚSTVINA</span>
+			</span>
 		</template>
 		<template #links>
 			<UButton

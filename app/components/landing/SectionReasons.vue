@@ -47,7 +47,6 @@ const links = ref<ButtonProps[]>([
 		:ui="{
 			features: 'sm:grid-cols-1 md:px-16',
 		}"
-		class="bg-neutral-50 dark:bg-neutral-800"
 		title="Tři důvody proč jet na Běstvinu..."
 	/>
 </template>

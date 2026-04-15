@@ -29,7 +29,7 @@ const sponsors = ref([{
 </script>
 
 <template>
-	<div class="bg-muted">
+	<div>
 		<div class="max-w-(--ui-container) flex flex-col lg:grid py-16 lg:py-24 gap-8 sm:gap-16 lg:items-center w-full  mx-auto px-4 sm:px-6 lg:px-8">
 			<div>
 				<p class="text-lg text-center font-semibold text-highlighted mx-8 mb-4">

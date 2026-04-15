@@ -2,41 +2,31 @@
 definePageMeta({
 	layout: "landing",
 });
-
-// used to move from hero to the next section
-const scrollDownALittle = () => {
-	document.getElementById("more")?.scrollIntoView({ behavior: "smooth" });
-};
 </script>
 
 <template>
 	<div>
-		<NuxtImg
-			class="object-cover w-full h-full opacity-7 dark:opacity-7 fixed top-0 left-0 right-0 bottom-0 z-[-999] blur-lg"
-			src="imgs/hero_bg.svg"
-		/>
 		<UMain>
 			<LandingSectionHero />
 
-			<USeparator />
+			<LandingSectionReasons
+				v-motion-slide-visible-once-bottom
+				class="bg-neutral-50 dark:bg-neutral-900"
+			/>
 
-			<LandingSectionReasons />
+			<LandingSectionActivities v-motion-slide-visible-once-bottom />
 
-			<USeparator />
+			<LandingSectionPeople
+				v-motion-slide-visible-once-bottom
+				class="bg-neutral-50 dark:bg-neutral-900"
+			/>
 
-			<LandingSectionActivities />
+			<LandingSectionLocation v-motion-slide-visible-once-bottom />
 
-			<USeparator />
-
-			<LandingSectionPeople />
-
-			<USeparator />
-
-			<LandingSectionLocation />
-
-			<USeparator />
-
-			<LandingLogos />
+			<LandingLogos
+				v-motion-fade-visible-once
+				class="bg-neutral-50 dark:bg-neutral-900"
+			/>
 		</UMain>
 	</div>
 </template>
