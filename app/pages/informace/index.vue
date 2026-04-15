@@ -76,9 +76,9 @@ if (!page.value) {
 					v-if="page.bestvinka"
 					:description="page.bestvinka.description"
 					:icon="page.bestvinka.icon"
-					:label="page.bestvinka.linkLabel"
+					:label="page.bestvinka.links?.[0]?.label"
 					:title="page.bestvinka.title"
-					:to="page.bestvinka.link"
+					:to="page.bestvinka.links?.[0]?.to"
 					class="order-2 md:order-8 lg:order-2"
 				/>
 
@@ -189,7 +189,7 @@ if (!page.value) {
 					class="order-7"
 				/>
 			</div>
-			<section>
+			<section class="hidden">
 				<div class="flex justify-center">
 					<UTabs
 						v-model="currentTab"

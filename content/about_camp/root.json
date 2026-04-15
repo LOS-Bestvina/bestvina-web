@@ -13,8 +13,12 @@
     "title": "Pro mladší",
     "description": "Pro přírodovědně nadané školáky ve věku do 15 let, kteří se ještě nemohou účastnit Běstviny, existuje sesterské soustředění Běstvinka. Soustředění je nabito hrami, soutěžemi, sportem a odborným přírodovědně laděným programem. Jeho délka je také dva týdny a začíná posledním dnem Běstviny.",
     "icon": "i-material-symbols-child-care-outline",
-    "link": "https://bestvinka.vscht.cz/",
-    "linkLabel": "Více o Běstvince"
+    "links": [
+      {
+        "label": "Více o Běstvince",
+        "to": "https://bestvinka.vscht.cz/"
+      }
+    ]
   },
 
   "activities": {
@@ -130,15 +134,15 @@
 
   "chemistry": {
     "title": "Chemie",
-    "description": "Běstvinská sekce chemie se zaměřuje na organickou, anorganickou i analytickou chemii. Naučíš se pracovat v laboratoři a pochopíš principy, které hýbou světem molekul.",
+    "description": "...",
     "icon": "i-lucide-flask-conical",
-    "image": "/imgs/promo/chlab_discussion.jpg"
+    "image": "/imgs/cat1.jpg"
   },
 
   "biology": {
     "title": "Biologie",
-    "description": "V biologické sekci prozkoumáš taje zoologie, botaniky i molekulární biologie. Od pitvání vzorků až po sledování mikroorganismů pod mikroskopem.",
+    "description": "...",
     "icon": "i-mdi-bacteria-outline",
-    "image": "/imgs/promo/people.jpg"
+    "image": "/imgs/cat2.jpg"
   }
 }

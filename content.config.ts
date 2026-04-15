@@ -19,22 +19,12 @@ const FeatureSchema = z.object({
 
 const AboutSectionSchema = z.object({
 	title: z.string(),
-	text: z.string().optional(),
 	description: z.string().optional(),
 	icon: z.string().optional(),
 	image: z.string().optional(),
 	images: z.array(z.string()).optional(),
-	link: z.string().optional(),
-	linkLabel: z.string().optional(),
 	links: z.array(LinkSchema).optional(),
 	mapUrl: z.string().optional(),
-	items: z.array(z.object({
-		title: z.string(),
-		description: z.string(),
-		icon: z.string(),
-		to: z.string().optional(),
-		label: z.string().optional(),
-	})).optional(),
 });
 
 const AboutCampDataSchema = z.object({
