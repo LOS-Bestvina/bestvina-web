@@ -25,8 +25,16 @@ defineSlots<{
 
 <template>
 	<UCard
-		:class="{ 'h-full': !layout || layout === 'single', 'md:min-h-fit': layout && layout !== 'single' }"
-		:ui="layout && layout !== 'single' ? { body: 'p-0 sm:p-0 h-full' } : { body: 'flex flex-col h-full' }"
+		:class="{
+			'h-full': !layout || layout === 'single',
+			'md:min-h-fit': layout && layout !== 'single',
+		}"
+		:ui="
+			layout && layout !== 'single' ? {
+				body: 'p-0 sm:p-0 h-full',
+			} : {
+				body: 'p-6 sm:p-6 flex flex-col h-full',
+			}"
 		class="flex flex-col overflow-hidden bg-muted"
 	>
 		<div

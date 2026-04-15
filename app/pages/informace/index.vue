@@ -85,13 +85,13 @@ if (!page.value) {
 			:title="page.title"
 		/>
 		<UPageBody>
-			<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 				<InfoCard
 					v-if="page.targetPeople"
 					:description="page.targetPeople.text"
 					:icon="page.targetPeople.icon"
 					:title="page.targetPeople.title"
-					class="md:col-span-2"
+					class="md:col-span-2 order1"
 					layout="columns"
 				>
 					<template #secondary>
@@ -112,6 +112,7 @@ if (!page.value) {
 					:label="page.bestvinka.linkLabel"
 					:title="page.bestvinka.title"
 					:to="page.bestvinka.link"
+					class="order-2 md:order-8 lg:order-2"
 				/>
 
 				<InfoCard
@@ -119,7 +120,7 @@ if (!page.value) {
 					:description="page.schedule.text"
 					:icon="page.schedule.icon"
 					:title="page.schedule.title"
-					class="md:row-span-2"
+					class="md:row-span-2 md:col-span-2 lg:col-span-1 order-3"
 					layout="rows"
 				>
 					<template #secondary>
@@ -133,13 +134,14 @@ if (!page.value) {
 					:description="page.location.text"
 					:icon="page.location.icon"
 					:title="page.location.title"
-					class="md:col-span-2"
+					class="md:col-span-2 order-4"
 					layout="columns"
 				>
 					<template #extra>
 						<CardAddressBlock
 							name="Táborová základna VŠCHT Praha"
 							street="Běstvina 155, 538 45 Běstvina"
+							flex-direction="row"
 						/>
 					</template>
 					<template #secondary>
@@ -153,7 +155,7 @@ if (!page.value) {
 					:icon="page.camp.icon"
 					:reversed="true"
 					:title="page.camp.title"
-					class="md:col-span-2"
+					class="md:col-span-2 order-5"
 					layout="columns"
 				>
 					<template #secondary>
@@ -185,7 +187,7 @@ if (!page.value) {
 					:description="page.activities.text"
 					:icon="page.activities.icon"
 					:title="page.activities.title"
-					class="md:col-span-2"
+					class="md:col-span-2 order-6"
 					layout="columns"
 				>
 					<template #secondary>
@@ -217,7 +219,7 @@ if (!page.value) {
 					:description="page.stuff.text"
 					:icon="page.stuff.icon"
 					:title="page.stuff.title"
-					layout="single"
+					class="order-7"
 				/>
 			</div>
 			<section>
@@ -267,8 +269,7 @@ if (!page.value) {
 						:ui="{
 							root: 'md:w-3/4 flex flex-col gap-4',
 							item: 'border last:border border-default rounded-lg transition-transform duration-300',
-							trigger: 'flex items-center gap-3 px-4 py-4 font-semibold text-base text-highlighted hover:bg-elevated transition-colors',
-							icon: 'w-5 h-5 shrink-0 text-muted',
+							trigger: 'flex items-center rounded-lg gap-3 px-4 py-4 font-semibold text-base text-highlighted hover:bg-elevated transition-colors',
 							body: 'px-4 py-2 text-sm',
 						}"
 					/>
