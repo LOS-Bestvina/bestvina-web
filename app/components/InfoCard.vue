@@ -46,30 +46,14 @@ defineSlots<{
 				:class="[reversed ? 'md:order-last' : 'md:order-first']"
 				class="p-6 flex flex-col"
 			>
-				<div
-					v-if="icon"
-					class="flex items-center justify-center p-2 mb-2 bg-primary/20 w-fit aspect-square rounded-xl"
+				<InfoCardHeader
+					:title="title"
+					:description="description"
+					:icon="icon"
+					:icon-color-class="iconColorClass"
 				>
-					<UIcon
-						:class="iconColorClass || 'text-primary'"
-						:name="icon"
-						class="w-10 h-10"
-					/>
-				</div>
-
-				<div>
-					<h3 class="text-xl font-bold mb-2">
-						{{ title }}
-					</h3>
-					<p
-						v-if="description"
-						class="text-muted leading-relaxed mb-4 md:mb-8"
-					>
-						{{ description }}
-					</p>
-					<!-- Extra content -->
 					<slot name="extra" />
-				</div>
+				</InfoCardHeader>
 			</div>
 
 			<!-- Secondary column -->
@@ -84,25 +68,12 @@ defineSlots<{
 		>
 			<!-- Text section -->
 			<div class="p-6 flex flex-col">
-				<div
-					v-if="icon"
-					class="flex items-center justify-center p-2 mb-2 bg-primary/20 w-fit aspect-square rounded-2xl"
-				>
-					<UIcon
-						:class="iconColorClass || 'text-primary'"
-						:name="icon"
-						class="w-10 h-10 p-2 rounded-lg"
-					/>
-				</div>
-
-				<div>
-					<h3 class="text-xl font-bold mb-2">
-						{{ title }}
-					</h3>
-					<p class="text-muted leading-relaxed">
-						{{ description }}
-					</p>
-				</div>
+				<InfoCardHeader
+					:title="title"
+					:description="description"
+					:icon="icon"
+					:icon-color-class="iconColorClass"
+				/>
 			</div>
 
 			<!-- Secondary row -->
@@ -113,27 +84,14 @@ defineSlots<{
 
 		<!-- Single layout -->
 		<template v-else>
-			<div
-				v-if="icon"
-				class="flex items-center justify-center p-2 mb-2 bg-primary/20 w-fit aspect-square rounded-2xl"
+			<InfoCardHeader
+				:title="title"
+				:description="description"
+				:icon="icon"
+				:icon-color-class="iconColorClass"
 			>
-				<UIcon
-					:class="iconColorClass || 'text-primary'"
-					:name="icon"
-					class="w-10 h-10 p-2 rounded-lg"
-				/>
-			</div>
-
-			<div class="">
-				<h3 class="text-xl text-pretty font-bold mb-2">
-					{{ title }}
-				</h3>
-				<p class="text-muted leading-relaxed">
-					{{ description }}
-				</p>
-
 				<slot />
-			</div>
+			</InfoCardHeader>
 			<div
 				v-if="to && label"
 				class="mt-6 pt-2 flex items-end justify-end h-full"

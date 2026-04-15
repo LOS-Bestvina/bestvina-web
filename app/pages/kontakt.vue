@@ -16,41 +16,9 @@ const _contactAction: ButtonProps = {
 const img = useImage();
 const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
 
-interface ContactInterface {
-	name: string;
-	role: string;
-	organization: string;
-	address?: string;
-	img?: string;
-	icon?: string;
-	email: string;
-}
-
-const contacts = ref<ContactInterface[]>([
-	{
-		name: "Jan Kotek",
-		role: "hlavní vedoucí",
-		organization: "Katedra anorganické chemie,\nPřírodovědecká fakulta Univerzita Karlova",
-		// address: "Hlavova 2030/8\n128 00, Praha 2",
-		img: "imgs/people/contacts/kotek_jan.jpg",
-		email: "modrej@natur.cuni.cz",
-	},
-	{
-		name: "Zuzana Kotková",
-		role: "tajemnice Chemické olympiády",
-		organization: "Ústav učitelství chemie a humanitních věd,\nVysoká škola chemicko-technologická v Praze",
-		// address: "Technická 5\n168 28, Praha 6",
-		img: "imgs/people/contacts/kotkova_zuzana.jpg",
-		email: "Zuzana.Kotkova@vscht.cz",
-	},
-	{
-		name: "Petr Šíma",
-		role: "místopředseda Biologické olympiády",
-		organization: "Gymnázium Botičská, Praha",
-		icon: "i-material-symbols-microbiology-outline",
-		email: "sima@gybot.cz",
-	},
-]);
+const { data: contacts } = await useAsyncData("contacts", () => {
+	return queryCollection("contacts").first();
+});
 </script>
 
 <template>
@@ -63,7 +31,7 @@ const contacts = ref<ContactInterface[]>([
 				class="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(350px,1fr))] justify-items-stretch gap-8 lg:gap-16"
 			>
 				<UCard
-					v-for="(person, i) in contacts"
+					v-for="(person, i) in contacts?.contacts"
 					:key="i"
 					class="group h-full overflow-hidden transition-all duration-300 hover:shadow-xl"
 					:ui="{
@@ -146,10 +114,7 @@ const contacts = ref<ContactInterface[]>([
 				</UCard>
 			</div>
 
-			<!--			<InDevelopment
-				:action="contactAction"
-				description="Na této stránce se usilovně pracuje a není proto ještě dostupná. 😢 Pokud mátě jakékoli otázky, kontaktujte mě pomocí tlačítka níže."
-			/> -->
+
 		</UPageBody>
 	</UPage>
 </template>

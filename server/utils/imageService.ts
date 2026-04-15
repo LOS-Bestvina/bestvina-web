@@ -1,8 +1,8 @@
 import { join, resolve } from "path";
 import sizeOf from "image-size";
 import type { BestvinaImage, MinifiedBestvinaImage } from "#shared/utils/imageMapper";
-import { IMAGE_EXTENSIONS } from "#shared/constants";
-import { readdirSync, readFileSync } from "node:fs";
+import { PATHS, IMAGE_EXTENSIONS } from "#shared/constants";
+import { readFile, readdir } from "node:fs/promises";
 
 const VALID_EXTENSIONS_REGEX = new RegExp(`\\.(${IMAGE_EXTENSIONS.join("|")})$`, "i");
 
@@ -33,26 +33,27 @@ export const getGroupTitle = (filename: string, year: number): string | null => 
 	return null;
 };
 
+type AuthorExtractor = (filename: string) => string | undefined;
+
+const authorExtractors: Array<{ fromYear: number; toYear: number; extract: AuthorExtractor }> = [
+	{
+		fromYear: 2010,
+		toYear: 2023,
+		extract: filename => filename.split("-")[3],
+	},
+	{
+		fromYear: 2024,
+		toYear: 2024,
+		extract: filename => filename.split("__")?.at(2)?.split("_")?.at(0)?.split(".")[0]?.toLowerCase(),
+	},
+];
+
 /**
  * Extracts author shortcut based on year-specific naming conventions.
  */
 export const extractAuthorShortcut = (filename: string, year: number): string => {
-	let foundShortcut: string | undefined;
-
-	if (year < 2024) {
-		// Example: 03-13-22-mum-2248.jpg
-		foundShortcut = filename.split("-")[3];
-	}
-	else if (year < 2025) {
-		// Example: B24__20240703_190612__Tana.jpg
-		const parts = filename.split("__");
-		const rawShortcut = parts?.at(2)?.split("_")?.at(0)?.split(".")[0];
-		if (rawShortcut) {
-			foundShortcut = rawShortcut.toLowerCase();
-		}
-	}
-
-	// TODO: implement logic for 2025+ images
+	const strategy = authorExtractors.find(e => year >= e.fromYear && year <= e.toYear);
+	const foundShortcut = strategy?.extract(filename);
 
 	const authorExists = IMAGE_AUTHORS.some(a => a.shortcut === foundShortcut);
 	return authorExists && foundShortcut ? foundShortcut : "unknown";
@@ -71,7 +72,7 @@ export const processImageFile = async (
 	const numericYear = Number(year);
 
 	// Read into Buffer for image-size v2.0 compatibility
-	const buffer = readFileSync(filePath);
+	const buffer = await readFile(filePath);
 	const dimensions = sizeOf(buffer);
 
 	const w = dimensions.width || 1;
@@ -79,7 +80,7 @@ export const processImageFile = async (
 
 	// Build the full object using the shared interface
 	const fullImage: BestvinaImage = {
-		path: `/imgs/years/${year}/${type}/${file}`,
+		path: PATHS.IMAGE_PATH(year, type, file),
 		year: year,
 		width: w,
 		height: h,
@@ -99,7 +100,7 @@ export const getImagesForYear = async (year: string, type: string): Promise<Mini
 	const baseDir = resolve(process.cwd(), "public", "imgs", "years", year, type);
 
 	try {
-		const files = readdirSync(baseDir);
+		const files = await readdir(baseDir);
 		const validFiles = files.filter(file => VALID_EXTENSIONS_REGEX.test(file));
 
 		// Process files sequentially to avoid EMFILE errors
@@ -111,8 +112,14 @@ export const getImagesForYear = async (year: string, type: string): Promise<Mini
 
 		return results;
 	}
-	catch (error) {
-		console.log(error);
-		return [];
+	catch (error: any) {
+		// If directory doesn't exist, return empty array (safe fallback for empty years)
+		if (error.code === "ENOENT") {
+			return [];
+		}
+		throw createError({
+			statusCode: 500,
+			statusMessage: `Failed to read images for year ${year}: ${error.message}`,
+		});
 	}
 };

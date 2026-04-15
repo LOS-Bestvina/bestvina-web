@@ -14,7 +14,7 @@ export default defineAppConfig({
 		},
 		pageHeader: {
 			slots: {
-				root: "relative w-screen ml-[-50vw] left-[50%] px-4 sm:px-6 lg:px-8 py-12 sm:py-20 text-center",
+				root: "relative w-screen ml-[-50vw] left-[50%] px-4 sm:px-6 lg:px-8 py-12 sm:py-20 text-center border-none",
 				container: "flex flex-col items-center w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8",
 				wrapper: "flex flex-col items-center max-w-2xl mx-auto",
 				title: "text-4xl sm:text-5xl font-extrabold tracking-tight text-[var(--ui-text-highlighted)]",

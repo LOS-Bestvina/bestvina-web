@@ -14,6 +14,8 @@ const {
 	availableYears,
 } = useBestvinaImages("gallery", targetYears, { enableUrlSync: true });
 
+const { openImage } = useImageDetail();
+
 const toggleYear = (year: string) => {
 	if (selectedYears.value.includes(year)) {
 		selectedYears.value = selectedYears.value.filter((y: string) => y !== year);
@@ -194,6 +196,7 @@ const isAuthorSelected = (author: any) => {
 					>
 						<JustifiedImageLayout
 							:grouped-images="filteredGroupedImages"
+							@image-click="openImage"
 						>
 							<template #empty>
 								<UEmpty

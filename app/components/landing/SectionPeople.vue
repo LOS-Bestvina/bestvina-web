@@ -1,27 +1,25 @@
 <script lang="ts" setup>
-const img = useImage();
-const src = "/imgs/promo/people.jpg";
-const placeholder = img(src, {}, { preset: "thumbnailXXSm" });
+const { data: page } = await useAsyncData("landing-people", () => {
+	return queryCollection("landing").first();
+});
 
-const description = ref(
-	"O tvůj odborný i neodborný program na Běstvině se budou starat jak studenti vysokých škol jen o pár let starší než ty, "
-	+ "tak i současní vědci a učitelé, kteří Běstvinu zažili z tvojí pozice také. "
-	+ "Kromě nich se samozřejmě setkáš i s významnými osobnostmi, které každý rok Běstvinu navštěvují.",
-);
+const img = useImage();
+const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
 </script>
 
 <template>
 	<UPageSection
-		:description="description"
+		v-if="page"
+		:description="page.people.description"
 		icon="i-carbon-friendship"
 		orientation="horizontal"
 		reverse
-		title="Lidé, se kterými si budeš rozumět!"
+		:title="page.people.title"
 	>
 		<template #default>
 			<NuxtImg
-				:placeholder="placeholder"
-				:src="src"
+				:placeholder="placeholder(page.people.image!)"
+				:src="page.people.image"
 				class="h-full object-cover object-[75%_25%] lg:w-full lg:hover:scale-105 transition-transform rounded-xl"
 				loading="lazy"
 				preset="thumbnailXXLg"
@@ -30,11 +28,13 @@ const description = ref(
 
 		<template #links>
 			<UButton
-				color="secondary"
-				label="Poznej nás všechny"
-				to="/lide"
-				trailing-icon="i-lucide-arrow-right"
-				variant="outline"
+				v-for="(link, index) in page.people.links"
+				:key="index"
+				:color="link.color as any"
+				:label="link.label"
+				:to="link.to"
+				:trailing-icon="link.trailingIcon"
+				:variant="link.variant as any"
 			/>
 		</template>
 	</UPageSection>

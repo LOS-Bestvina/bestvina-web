@@ -1,0 +1,25 @@
+{
+	"contacts": [
+		{
+			"name": "Jan Kotek",
+			"role": "hlavní vedoucí",
+			"organization": "Katedra anorganické chemie,\nPřírodovědecká fakulta Univerzita Karlova",
+			"img": "imgs/people/contacts/kotek_jan.jpg",
+			"email": "modrej@natur.cuni.cz"
+		},
+		{
+			"name": "Zuzana Kotková",
+			"role": "tajemnice Chemické olympiády",
+			"organization": "Ústav učitelství chemie a humanitních věd,\nVysoká škola chemicko-technologická v Praze",
+			"img": "imgs/people/contacts/kotkova_zuzana.jpg",
+			"email": "Zuzana.Kotkova@vscht.cz"
+		},
+		{
+			"name": "Petr Šíma",
+			"role": "místopředseda Biologické olympiády",
+			"organization": "Gymnázium Botičská, Praha",
+			"icon": "i-material-symbols-microbiology-outline",
+			"email": "sima@gybot.cz"
+		}
+	]
+}

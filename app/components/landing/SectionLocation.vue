@@ -1,35 +1,36 @@
 <script lang="ts" setup>
-const img = useImage();
-const src = "/imgs/promo/camp.jpg";
-const placeholder = img(src, {}, { preset: "thumbnailXXSm" });
+const { data: page } = await useAsyncData("landing-location", () => {
+	return queryCollection("landing").first();
+});
 
-const description = ref(
-	"Soustředění se každoročně koná v areálu táborové základny Vysoké školy chemicko-technologické v obci Běstvina "
-	+ "v Železných horách. Bydlet budeš v útulné chatce sdílené s dalšími účastníky (a různorodým kousavým hmyzem).",
-);
+const img = useImage();
+const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
 </script>
 
 <template>
 	<UPageSection
-		:description="description"
+		v-if="page"
+		:description="page.location.description"
 		icon="i-lucide-map-pin"
 		orientation="horizontal"
-		title="Ve středu České republiky"
+		:title="page.location.title"
 	>
 		<template #links>
 			<UButton
-				color="secondary"
-				label="Podívej se, kam pojedeš"
-				to="/informace/#lokace"
-				trailing-icon="i-lucide-arrow-right"
-				variant="outline"
+				v-for="(link, index) in page.location.links"
+				:key="index"
+				:color="link.color as any"
+				:label="link.label"
+				:to="link.to"
+				:trailing-icon="link.trailingIcon"
+				:variant="link.variant as any"
 			/>
 		</template>
 
 		<template #default>
 			<NuxtImg
-				:placeholder="placeholder"
-				:src="src"
+				:placeholder="placeholder(page.location.image!)"
+				:src="page.location.image"
 				class="h-full object-cover object-[75%_25%] lg:w-full lg:hover:scale-105 transition-transform rounded-xl"
 				loading="lazy"
 				preset="thumbnailXXLg"

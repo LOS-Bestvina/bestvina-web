@@ -1,6 +1,7 @@
 import { toValue } from "vue";
 import type { PeoplePageId } from "#shared/constants";
 import type { PeopleCollectionItem } from "@nuxt/content";
+import type { PeopleCollectionItemExtended } from "#shared/types/people";
 
 export default function () {
 	/**
@@ -14,22 +15,22 @@ export default function () {
 
 	const getPageSpecificOrDefaultPersonData = (person: PeopleCollectionItem, pageId: string) => {
 		if (!person.pages)
-			return person;
+			return person as PeopleCollectionItemExtended;
 
 		const pageIdInRecord = pageId.replace("/", "_");
 		const selectedPagePersonData = person.pages?.[pageIdInRecord];
 
 		if (selectedPagePersonData) {
-			person.name = selectedPagePersonData.name || person.name;
-			person.description = selectedPagePersonData.description || person.description;
-			person.nickname = selectedPagePersonData.nickname || person.nickname;
-			person.image = selectedPagePersonData.image || person.image;
-			// @ts-expect-error unresolved reference
-			person.roleTitle = selectedPagePersonData.roleTitle;
-			// @ts-expect-error unresolved reference
-			person.role = selectedPagePersonData.role;
+			const extendedPerson = { ...person } as PeopleCollectionItemExtended;
+			extendedPerson.name = selectedPagePersonData.name || person.name;
+			extendedPerson.description = selectedPagePersonData.description || person.description;
+			extendedPerson.nickname = selectedPagePersonData.nickname || person.nickname;
+			extendedPerson.image = selectedPagePersonData.image || person.image;
+			extendedPerson.roleTitle = selectedPagePersonData.roleTitle;
+			extendedPerson.role = selectedPagePersonData.role;
+			return extendedPerson;
 		}
-		return person;
+		return person as PeopleCollectionItemExtended;
 	};
 
 	const getAllPeopleRaw = async () => {
@@ -47,8 +48,9 @@ export default function () {
 	 * */
 
 	const getPageData = (pageId: MaybeRefOrGetter<string>) => {
+		const key = computed(() => `page-data-${toValue(pageId)}`);
 		return useAsyncData(
-			() => `page-data-${toValue(pageId)}`,
+			key.value,
 			() => {
 				return queryCollection("peoplePages")
 					.where("stem", "=", `people/${toValue(pageId)}`)
@@ -61,8 +63,9 @@ export default function () {
 	};
 
 	const getPerson = (personId: MaybeRefOrGetter<string>) => {
+		const key = computed(() => `person-${getCleanId(personId)}`);
 		return useAsyncData(
-			() => `person-${getCleanId(personId)}`,
+			key.value,
 			() => {
 				return queryCollection("people")
 					.where("stem", "=", `people/individuals/${getCleanId(personId)}`)
@@ -121,8 +124,9 @@ export default function () {
 
 	// return only active people
 	const getPopulatedPageData = (pageId: MaybeRefOrGetter<string>) => {
+		const key = computed(() => `populated-page-data-${toValue(pageId)}`);
 		return useAsyncData(
-			() => `populated-page-data-${toValue(pageId)}`,
+			key.value,
 			async () => {
 				const page = await queryCollection("peoplePages")
 					.where("stem", "=", `people/${toValue(pageId)}`)

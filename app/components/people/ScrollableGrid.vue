@@ -2,6 +2,7 @@
 import PersonCard from "~/components/people/PersonCard.vue";
 import type { PeopleCollectionItemExtended } from "#shared/types/people";
 import { PEOPLE_PAGES } from "#shared/constants";
+import { formatPersonCount } from "#shared/utils/i18n";
 
 const props = defineProps<{
 	pageId: string;
@@ -57,17 +58,6 @@ const pageStatus = computed<"success" | "error" | "empty">(() => {
 	const hasPeople = currentSections.some(s => s.people?.length > 0);
 	return hasPeople ? "success" : "empty";
 });
-
-/**
- * PAGE HELPER FUNCTIONS
- * */
-function getPersonCountLabel(count: number): string {
-	if (count === 1) return "osoba";
-	if (count >= 2 && count <= 4) return "osoby";
-	return "osob";
-}
-
-const asSection = (s: unknown) => s as Section;
 </script>
 
 <template>
@@ -81,32 +71,32 @@ const asSection = (s: unknown) => s as Section;
 			class="flex flex-col gap-8"
 		>
 			<div
-				v-if="asSection(section).people.length > 0"
+				v-if="section.people.length > 0"
 				class="flex flex-col gap-4"
 			>
 				<div class="flex flex-row justify-between items-end border-b border-primary-500/10 pb-4 mt-8">
 					<div class="flex items-center gap-4">
 						<div
-							v-if="asSection(section).name"
+							v-if="section.name"
 							class="w-2 h-8 bg-secondary-500 rounded-full"
 						/>
 						<p class="text-3xl font-black text-highlighted tracking-tight uppercase w-fit">
-							{{ asSection(section).name }}
+							{{ section.name }}
 						</p>
 					</div>
 					<span class="text-muted text-sm text-center font-medium bg-zinc-400/5 px-3 py-1 rounded-full ring-1 ring-zinc-400/10 mb-1">
-						{{ asSection(section).people.length }} {{ getPersonCountLabel(asSection(section).people.length) }}
+						{{ section.people.length }} {{ formatPersonCount(section.people.length) }}
 					</span>
 				</div>
 				<div
 					class="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(380px,1fr))] justify-items-stretch gap-8"
 				>
 					<PersonCard
-						v-for="person in asSection(section).people"
+						v-for="person in section.people"
 						:key="person.id"
 						:page-id="pageId"
 						:person="person"
-						:show-image="asSection(section).showImages ?? true"
+						:show-image="section.showImages ?? true"
 					/>
 				</div>
 			</div>

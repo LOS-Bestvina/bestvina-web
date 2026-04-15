@@ -36,46 +36,10 @@ const tabs: TabsItem[] = [
 	},
 ];
 
-const currentTab = ref(tabs[0]!.value as string);
-
-// sync currentTab ref with route query
-watch(() => route.query.t, (newTab) => {
-	if (newTab && tabs.some(tab => tab.value === newTab)) {
-		currentTab.value = newTab as string;
-	}
-}, { immediate: true });
-
-// update URL when tab changes
-watch(currentTab, (newTab) => {
-	if (newTab !== route.query.t) {
-		router.push({
-			path: "/lide",
-			query: { t: newTab },
-		});
-	}
-});
-
-const checkInitialRouteQueryParameter = () => {
-	const validTabValues = [...tabs.map(value => value.value), ""];
-	const selectedTabFromQuery = route.query.t as string;
-
-	if (!validTabValues.includes(selectedTabFromQuery)) {
-		// if non-existent tab requested, redirect to 'vsichni' tab
-		router.push({
-			path: "/lide",
-		});
-		currentTab.value = tabs[0]!.value as string;
-	}
-	else {
-		currentTab.value = selectedTabFromQuery;
-	}
-};
-// onMounted(() => {
-// 	checkInitialRouteQueryParameter();
-// });
+const { currentTab, validateInitialTab } = useTabUrlSync(tabs as { label: string; value: string }[], "/lide");
 
 if (import.meta.client) {
-	checkInitialRouteQueryParameter();
+	validateInitialTab();
 }
 
 /**

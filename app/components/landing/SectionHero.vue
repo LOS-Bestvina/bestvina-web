@@ -1,15 +1,13 @@
 <script lang="ts" setup>
-import { CURRENT_YEAR } from "#shared/constants";
-
-const description = ref(
-	"Dvoutýdenní soustředění pro nejlepší středoškolské chemiky a biology z celé České republiky podporované "
-	+ "přírodovědně zaměřenými fakultami předních českých univerzit.",
-);
+const { data: page } = await useAsyncData("landing-hero", () => {
+	return queryCollection("landing").first();
+});
 </script>
 
 <template>
 	<UPageHero
-		:description="description"
+		v-if="page"
+		:description="page.hero.description"
 		:ui="{
 			description: 'lg:max-w-[80%]',
 			container: 'py-16 pb-16 sm:py-8 sm:pb-16 lg:pb-0 lg:py-40',
@@ -25,27 +23,21 @@ const description = ref(
 		</template>
 		<template #title>
 			<span class="leading-tight flex flex-col gap-0 text-center lg:text-start">
-				<span class="text-lg sm:text-2xl font-bold uppercase tracking-widest mb-2">Letní odborné soustředění</span>
-				<span class="bg-linear-to-r from-teal-500 to-teal-300 dark:from-teal-500 dark:to-teal-300 bg-clip-text text-transparent animate-gradient font-black text-7xl lg:text-8xl py-1 pt-2">BĚSTVINA</span>
+				<span class="text-lg sm:text-2xl font-black uppercase tracking-widest mb-2">{{ page.hero.titlePrefix }}</span>
+				<span class="bg-linear-to-r from-teal-500 to-teal-300 dark:from-teal-500 dark:to-teal-300 bg-clip-text text-transparent animate-gradient font-black text-7xl lg:text-8xl py-1 pt-2">{{ page.hero.titleMain }}</span>
 			</span>
 		</template>
 		<template #links>
 			<UButton
-				:to="`/rocniky/`+ CURRENT_YEAR.toString()"
-				color="primary"
-				label="Aktuální ročník"
-				prefetch-on="visibility"
-				size="xl"
-				trailing-icon="i-lucide-arrow-right"
-			/>
-			<UButton
-				color="neutral"
-				label="O soustředění"
-				prefetch-on="visibility"
-				size="xl"
-				to="/informace"
-				trailing-icon="i-lucide-arrow-right"
-				variant="subtle"
+				v-for="(link, index) in page.hero.links"
+				:key="index"
+				:color="link.color as any"
+				:label="link.label"
+				:prefetch-on="'visibility'"
+				:size="'xl'"
+				:to="link.to"
+				:trailing-icon="link.trailingIcon"
+				:variant="link.variant as any"
 			/>
 		</template>
 

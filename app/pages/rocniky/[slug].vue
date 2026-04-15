@@ -16,7 +16,7 @@ if (!page.value || !page.value.year) {
 	throw createError({ statusCode: 404, statusMessage: "Ročník nenalezen!", fatal: true });
 }
 
-const isCurrentYear = ref(page.value?.year == CURRENT_YEAR || false);
+const isCurrentYear = computed(() => Number(page.value?.year) === CURRENT_YEAR);
 
 // get surroundings for navigation
 async function getSurroundings() {
@@ -42,7 +42,7 @@ const surround = await getSurroundings();
 // date formatter -> ddd dd. MM.
 const formatDate = (dateString: string, prefix: string = "", thisYearEmptyValue: string = "bude upřesněno") => {
 	if (!dateString)
-		return (CURRENT_YEAR == page.value?.year) ? thisYearEmptyValue : "---";
+		return isCurrentYear.value ? thisYearEmptyValue : "---";
 	const date = new Date(dateString ?? "");
 	if (isNaN(date.getTime()))
 		return dateString ? dateString : "---";
@@ -52,23 +52,27 @@ const formatDate = (dateString: string, prefix: string = "", thisYearEmptyValue:
 };
 
 const formatDateRange = (dateStringStart: string, dateStringEnd: string, thisYearEmptyValue: string = "bude upřesněno") => {
-	if (!dateStringStart || !dateStringEnd)
-		return (CURRENT_YEAR == page.value?.year) ? thisYearEmptyValue : "---";
+	if (!dateStringStart && !dateStringEnd)
+		return isCurrentYear.value ? thisYearEmptyValue : "---";
 
-	return formatDate(dateStringStart) + " \u2013 " + formatDate(dateStringEnd);
+	const start = formatDate(dateStringStart, "", isCurrentYear.value ? thisYearEmptyValue : "???");
+	const end = formatDate(dateStringEnd, "", isCurrentYear.value ? thisYearEmptyValue : "???");
+
+	return start + " \u2013 " + end;
 };
 
 // price formatter -> <number> Kč
 const formatPrice = (price: number | undefined, thisYearEmptyValue: string = "bude upřesněno") => {
 	if (!price)
-		return (CURRENT_YEAR == page.value?.year) ? thisYearEmptyValue : "---";
+		return isCurrentYear.value ? thisYearEmptyValue : "---";
 	if (isNaN(price))
 		return "---";
 	return `${price} Kč`;
 };
 
-const hasGroupImages = ref(true);
-const hasGalleryPreview = ref(true);
+const hasGroupImages = ref(false);
+const hasGalleryPreview = ref(false);
+const checksCompleted = ref(0);
 </script>
 
 <template>
@@ -77,9 +81,9 @@ const hasGalleryPreview = ref(true);
 		id="pageId"
 	>
 		<UPageHeader
-			:description="`${isCurrentYear ? 'Táborové téma se dozvíš až na začátku soustředění!' : ''}`"
+			:description="(!page.theme && isCurrentYear) ? 'Táborové téma se dozvíš až na začátku soustředění!' : ''"
 			:headline="`Ročník ${page.year}`"
-			:title="`${isCurrentYear ? 'Aktuální ročník' : page.theme}`"
+			:title="page.theme || (isCurrentYear ? 'Aktuální ročník' : '')"
 		/>
 		<UPageBody>
 			<section
@@ -169,23 +173,23 @@ const hasGalleryPreview = ref(true);
 				<ContentRenderer :value="page.body" />
 			</section>
 
-			<div v-show="hasGroupImages || hasGalleryPreview">
+			<div v-show="!isCurrentYear && (hasGroupImages || hasGalleryPreview)">
 				<USeparator icon="i-mdi-history" />
 
 				<!-- Group Photos -->
 				<GradeGroupImages
 					:year="page.year.toString()"
-					@has-content="(val) => { hasGroupImages = val }"
+					@has-content="(val) => { hasGroupImages = val; checksCompleted++ }"
 				/>
 
 				<!-- Gallery -->
 				<GradeGalleryPreview
 					:year="page.year.toString()"
-					@has-content="(val) => { hasGalleryPreview = val }"
+					@has-content="(val) => { hasGalleryPreview = val; checksCompleted++ }"
 				/>
 			</div>
 			<div
-				v-if="!isCurrentYear && !hasGroupImages && !hasGalleryPreview"
+				v-if="!isCurrentYear && checksCompleted >= 2 && !hasGroupImages && !hasGalleryPreview"
 			>
 				<USeparator
 					class="mb-8"

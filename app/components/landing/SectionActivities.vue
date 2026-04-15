@@ -1,26 +1,24 @@
 <script lang="ts" setup>
-const img = useImage();
-const src = "/imgs/promo/fireball.jpg";
-const placeholder = img(src, {}, { preset: "thumbnailXXSm" });
+const { data: page } = await useAsyncData("landing-activities", () => {
+	return queryCollection("landing").first();
+});
 
-const description = ref(
-	"Běstvina není jako škola – nebudeš sedět v lavici a biflovat se zbytečnosti. "
-	+ "Tady získáš znalosti, se kterými ohromíš rodiče, spolužáky, ale i sám sebe. "
-	+ "Mimo to si vyzkoušíš práci v laboratořích se špičkovým vybavením a naučíš se poznávat přírodu kolem sebe. "
-	+ "Těš se také na táboráky, sportovní vyžití a další neodborný program.");
+const img = useImage();
+const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
 </script>
 
 <template>
 	<UPageSection
-		:description="description"
+		v-if="page"
+		:description="page.activities.description"
 		icon="i-lucide-cat"
 		orientation="horizontal"
-		title="Nudit se rozhodně nebudeš!"
+		:title="page.activities.title"
 	>
 		<template #default>
 			<NuxtImg
-				:placeholder="placeholder"
-				:src="src"
+				:placeholder="placeholder(page.activities.image!)"
+				:src="page.activities.image"
 				class="h-full object-cover object-[75%_25%] lg:w-full lg:hover:scale-105 transition-transform rounded-xl"
 				loading="lazy"
 				preset="thumbnailXXLg"
@@ -29,11 +27,13 @@ const description = ref(
 
 		<template #links>
 			<UButton
-				color="secondary"
-				label="Prohlédni si, co tě čeká"
-				to="/informace"
-				trailing-icon="i-lucide-arrow-right"
-				variant="outline"
+				v-for="(link, index) in page.activities.links"
+				:key="index"
+				:color="link.color as any"
+				:label="link.label"
+				:to="link.to"
+				:trailing-icon="link.trailingIcon"
+				:variant="link.variant as any"
 			/>
 		</template>
 	</UPageSection>

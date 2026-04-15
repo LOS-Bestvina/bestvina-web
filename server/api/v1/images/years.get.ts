@@ -1,13 +1,11 @@
 import { resolve } from "path";
-import { readdirSync } from "node:fs";
+import { readdir } from "node:fs/promises";
 
-// TODO: might require further improvement to use async fs
-// for now, this fixes the EMFILE (too many open) during prerender
 export default defineEventHandler(async () => {
 	const baseDir = resolve(process.cwd(), "public", "imgs", "years");
 
 	try {
-		const entries = readdirSync(baseDir, { withFileTypes: true });
+		const entries = await readdir(baseDir, { withFileTypes: true });
 
 		const years = entries
 			.filter(entry => entry.isDirectory() && entry.name.match(/^\d{4}$/))
@@ -31,8 +29,10 @@ export default defineEventHandler(async () => {
 
 		return { years: response };
 	}
-	catch (error) {
-		console.log(error);
-		return { years: [] };
+	catch (error: any) {
+		throw createError({
+			statusCode: 500,
+			statusMessage: `Failed to read images directory: ${error.message}`,
+		});
 	}
 });

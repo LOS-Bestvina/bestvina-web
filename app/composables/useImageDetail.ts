@@ -1,4 +1,3 @@
-import { watch } from "vue";
 import { LazyImageDetailModal } from "#components";
 
 export interface ImagePayload {
@@ -73,9 +72,8 @@ export interface ImageDetailOptions {
 	loopImages?: boolean;
 }
 
-const isModalOpen = ref(false);
-
 export function useImageDetail(options: MaybeRefOrGetter<ImageDetailOptions> = { }) {
+	const isModalOpen = useState("imageDetailModalOpen", () => false);
 	const route = useRoute();
 	const router = useRouter();
 	const overlay = useOverlay();
