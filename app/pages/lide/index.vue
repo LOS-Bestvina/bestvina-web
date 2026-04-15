@@ -6,8 +6,6 @@ definePageMeta({
 	layout: "page",
 });
 
-const route = useRoute();
-const router = useRouter();
 const { getPageData } = usePeopleData();
 
 /**

@@ -12,14 +12,16 @@
 			"role": "tajemnice Chemické olympiády",
 			"organization": "Ústav učitelství chemie a humanitních věd,\nVysoká škola chemicko-technologická v Praze",
 			"img": "imgs/people/contacts/kotkova_zuzana.jpg",
-			"email": "Zuzana.Kotkova@vscht.cz"
+			"email": "Zuzana.Kotkova@vscht.cz",
+			"address": "Technická 5, 166 28 Praha 6"
 		},
 		{
 			"name": "Petr Šíma",
 			"role": "místopředseda Biologické olympiády",
 			"organization": "Gymnázium Botičská, Praha",
 			"icon": "i-material-symbols-microbiology-outline",
-			"email": "sima@gybot.cz"
+			"email": "sima@gybot.cz",
+			"address": "Botičská 1, 128 00 Praha 2"
 		}
 	]
 }

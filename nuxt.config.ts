@@ -14,10 +14,7 @@ export default defineNuxtConfig({
 	ssr: true,
 	imports: {
 		dirs: [
-			"hooks",
-			"utils",
-			"models/**",
-			"types/**",
+			"composables/**",
 		],
 	},
 	devtools: {
@@ -68,6 +65,7 @@ export default defineNuxtConfig({
 		"/informace": { prerender: true },
 		"/_studio": { ssr: true },
 		"/api/**": { cors: true, prerender: true },
+		"/api/v1/images/galerie/**": { redirect: "/api/v1/images/gallery/**" },
 	},
 	compatibilityDate: "2025-11-30",
 	nitro: {

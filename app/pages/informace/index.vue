@@ -5,8 +5,6 @@ definePageMeta({
 	layout: "page",
 });
 
-const route = useRoute();
-const router = useRouter();
 const img = useImage();
 
 const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
@@ -56,14 +54,15 @@ if (!page.value) {
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 				<InfoCard
 					v-if="page.targetPeople"
-					:description="page.targetPeople.text"
+					:description="page.targetPeople.description"
 					:icon="page.targetPeople.icon"
 					:title="page.targetPeople.title"
-					class="md:col-span-2 order1"
+					class="md:col-span-2 order-1"
 					layout="columns"
 				>
 					<template #secondary>
 						<NuxtImg
+							v-if="page.targetPeople.image"
 							:placeholder="placeholder(page.targetPeople.image)"
 							:src="page.targetPeople.image"
 							class="w-full h-full object-cover md:object-[30%_0%] lg:object-center"
@@ -75,7 +74,7 @@ if (!page.value) {
 
 				<InfoCard
 					v-if="page.bestvinka"
-					:description="page.bestvinka.text"
+					:description="page.bestvinka.description"
 					:icon="page.bestvinka.icon"
 					:label="page.bestvinka.linkLabel"
 					:title="page.bestvinka.title"
@@ -85,7 +84,7 @@ if (!page.value) {
 
 				<InfoCard
 					v-if="page.schedule"
-					:description="page.schedule.text"
+					:description="page.schedule.description"
 					:icon="page.schedule.icon"
 					:title="page.schedule.title"
 					class="md:row-span-2 md:col-span-2 lg:col-span-1 order-3"
@@ -99,7 +98,7 @@ if (!page.value) {
 				<InfoCard
 					v-if="page.location"
 					id="lokace"
-					:description="page.location.text"
+					:description="page.location.description"
 					:icon="page.location.icon"
 					:title="page.location.title"
 					class="md:col-span-2 order-4"
@@ -119,7 +118,7 @@ if (!page.value) {
 
 				<InfoCard
 					v-if="page.camp"
-					:description="page.camp.text"
+					:description="page.camp.description"
 					:icon="page.camp.icon"
 					:reversed="true"
 					:title="page.camp.title"
@@ -152,7 +151,7 @@ if (!page.value) {
 
 				<InfoCard
 					v-if="page.activities"
-					:description="page.activities.text"
+					:description="page.activities.description"
 					:icon="page.activities.icon"
 					:title="page.activities.title"
 					class="md:col-span-2 order-6"
@@ -184,7 +183,7 @@ if (!page.value) {
 
 				<InfoCard
 					v-if="page.stuff"
-					:description="page.stuff.text"
+					:description="page.stuff.description"
 					:icon="page.stuff.icon"
 					:title="page.stuff.title"
 					class="order-7"
@@ -197,8 +196,8 @@ if (!page.value) {
 						:content="true"
 						:items="tabs"
 						:ui="{
-							list: 'w-full md:w-1/2 rounded-full mb-8',
-							root: 'w-full md:w-3/4',
+							list: 'w-full! lg:w-1/2! mx-auto rounded-full mb-8',
+							root: 'w-full md:w-3/4! mx-auto',
 							indicator: `rounded-full`,
 						}"
 						color="secondary"
@@ -207,20 +206,22 @@ if (!page.value) {
 					>
 						<template #chemistry>
 							<AboutTabbedCard
-								color="secondary"
-								description="adsfklajfkladjfaljfdlakjkldfaklsdjfakl;dsfjadskfl;afj; aksjfkad adjs fads fjkda jakl dfadsf"
-								image="/imgs/cat1.jpg"
-								title="Chemie"
+								v-if="page.chemistry"
+								:color="'secondary'"
+								:description="page.chemistry.description"
+								:image="page.chemistry.image"
+								:title="page.chemistry.title"
 							/>
 						</template>
 
 						<template #biology>
 							<AboutTabbedCard
-								color="green"
-								description="adsfklajfkladjfaljfdlakjkldfaklsdjfakl;dsfjadskfl;afj; aksjfkad adjs fads fjkda jakl dfadsf"
-								image="/imgs/cat2.jpg"
-								reverse
-								title="Biologie"
+								v-if="page.biology"
+								:color="'green'"
+								:description="page.biology.description"
+								:image="page.biology.image"
+								:reverse="true"
+								:title="page.biology.title"
 							/>
 						</template>
 					</UTabs>
@@ -228,7 +229,7 @@ if (!page.value) {
 			</section>
 			<section v-if="page.accordion">
 				<PageSubHeader
-					:title="page.accordion.title as string"
+					:title="page.accordion.title"
 					class="text-center"
 				/>
 				<div class="flex justify-center pb-4">

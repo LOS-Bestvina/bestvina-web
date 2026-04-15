@@ -4,22 +4,22 @@
 
   "targetPeople": {
     "title": "Pro koho",
-    "text": "Běstvina je primárně určena žákům 1. až 3. ročníku středních škol (a odpovídajícím ročníkům na gymnáziích), kteří si chtějí prohloubit své znalosti nad rámec školní výuky. Výběr účastníků probíhá na základě výsledků krajských kol Chemické či Biologické olympiády.",
+    "description": "Běstvina je primárně určena žákům 1. až 3. ročníku středních škol (a odpovídajícím ročníkům na gymnáziích), kteří si chtějí prohloubit své znalosti nad rámec školní výuky. Výběr účastníků probíhá na základě výsledků krajských kol Chemické či Biologické olympiády.",
     "icon": "i-mdi-school",
     "image": "/imgs/promo/chlab_discussion.jpg"
   },
 
-  "bestvinka":{
+  "bestvinka": {
     "title": "Pro mladší",
-    "text": "Pro přírodovědně nadané školáky ve věku do 15 let, kteří se ještě nemohou účastnit Běstviny, existuje sesterské soustředění Běstvinka. Soustředění je nabito hrami, soutěžemi, sportem a odborným přírodovědně laděným programem. Jeho délka je také dva týdny a začíná posledním dnem Běstviny.",
+    "description": "Pro přírodovědně nadané školáky ve věku do 15 let, kteří se ještě nemohou účastnit Běstviny, existuje sesterské soustředění Běstvinka. Soustředění je nabito hrami, soutěžemi, sportem a odborným přírodovědně laděným programem. Jeho délka je také dva týdny a začíná posledním dnem Běstviny.",
     "icon": "i-material-symbols-child-care-outline",
     "link": "https://bestvinka.vscht.cz/",
     "linkLabel": "Více o Běstvince"
   },
 
   "activities": {
-    "title":"Doplňkové aktivity",
-    "text": "Běstvina není jen o učení! Máš-li v sobě sportovního ducha, můžeš se zúčastnit turnajů ve fotbale, volejbale, stolním tenise nebo i šachu. Tradičně se utkávají chemici proti biologům, kde nemůžou chybět dýmovnice a kopřivy! Večer si můžeš zazpívat u táboráku s kytarou nebo zahrát deskové hry. A chybět nebude ani bál a diskotéka!",
+    "title": "Doplňkové aktivity",
+    "description": "Běstvina není jen o učení! Máš-li v sobě sportovního ducha, můžeš se zúčastnit turnajů ve fotbale, volejbale, stolním tenise nebo i šachu. Tradičně se utkávají chemici proti biologům, kde nemůžou chybět dýmovnice a kopřivy! Večer si můžeš zazpívat u táboráku s kytarou nebo zahrát deskové hry. A chybět nebude ani bál a diskotéka!",
     "icon": "i-material-symbols-sports-baseball-outline",
     "images": [
       "/imgs/promo/football.jpg",
@@ -33,7 +33,7 @@
 
   "camp": {
     "title": "Tábor",
-    "text": "Původní tábor v posledních letech postupně prochází rozsáhlou rekonstrukcí, může tedy nabídnout moderní sociální zařízení. Jak ve zbrusu nových srubech, tak v chatkách jsou k dispozici zásuvky. Postele jsou vybaveny matracemi, polštářem i prostěradlem, k úplnému komfortu tedy budete potřebovat opravdu jen spacák.",
+    "description": "Původní tábor v posledních letech postupně prochází rozsáhlou rekonstrukcí, může tedy nabídnout moderní sociální zařízení. Jak ve zbrusu nových srubech, tak v chatkách jsou k dispozici zásuvky. Postele jsou vybaveny matracemi, polštářem i prostěradlem, k úplnému komfortu tedy budete potřebovat opravdu jen spacák.",
     "icon": "i-mdi-campfire",
     "images": [
       "/imgs/camp/img1.jpg",
@@ -46,7 +46,7 @@
 
   "schedule": {
     "title": "Typický program dne",
-    "text": "Ačkoli není každý den soustředění úplně stejný, běžný den se řídí tímto přibližným programem.",
+    "description": "Ačkoli není každý den soustředění úplně stejný, běžný den se řídí tímto přibližným programem.",
     "icon": "i-mdi-schedule",
     "events": [
       {
@@ -89,8 +89,8 @@
   },
 
   "location": {
-    "title":"Lokace",
-    "text": "Táborová základna se nachází v malebné přírodě Železných hor, nedaleko obce Seč. Ubytování je zajištěno v dřevěných chatkách a srubech. K dispozici je také menší soukromé parkoviště přímo v areálu.",
+    "title": "Lokace",
+    "description": "Táborová základna se nachází v malebné přírodě Železných hor, nedaleko obce Seč. Ubytování je zajištěno v dřevěných chatkách a srubech. K dispozici je také menší soukromé parkoviště přímo v areálu.",
     "icon": "i-mdi-map",
     "mapUrl": "https://www.google.com/maps/embed/v1/place?key=AIzaSyDQSQUqQqUULFyg5w2cR_eQjUksSWnvBLk&q=ChIJX41Emh1NDEcR99WsK3h3On4%0AB%C4%9Bstvina%20155%2C%20538%2045%20B%C4%9Bstvina",
     "staticMapImage": "/imgs/bestvina_static_map.png"
@@ -98,7 +98,7 @@
 
   "stuff": {
     "title": "Nezapomeň si zabalit...",
-    "text": "Dostatečně teplý spacák, sportovní oblečení a obuv, čelovka či jiná svítilna (ideálně, aby vydržela aspoň pár hodin svítit), sešit a psací potřeby – to je nejnutnější základ! Hodit se ti dále můžou plavky, powerbanka, pláštěnka.",
+    "description": "Dostatečně teplý spacák, sportovní oblečení a obuv, čelovka či jiná svítilna (ideálně, aby vydržela aspoň pár hodin svítit), sešit a psací potřeby – to je nejnutnější základ! Hodit se ti dále můžou plavky, powerbanka, pláštěnka.",
     "icon": "i-material-symbols-travel-luggage-and-bags-outline"
   },
 
@@ -126,5 +126,19 @@
         "content": "Ano, možné to je. Připrav se však na to, že tvůj zážitek nebude kompletní, protože některé aktivity nelze z organizačních důvodů přesunout."
       }
     ]
+  },
+
+  "chemistry": {
+    "title": "Chemie",
+    "description": "Běstvinská sekce chemie se zaměřuje na organickou, anorganickou i analytickou chemii. Naučíš se pracovat v laboratoři a pochopíš principy, které hýbou světem molekul.",
+    "icon": "i-lucide-flask-conical",
+    "image": "/imgs/promo/chlab_discussion.jpg"
+  },
+
+  "biology": {
+    "title": "Biologie",
+    "description": "V biologické sekci prozkoumáš taje zoologie, botaniky i molekulární biologie. Od pitvání vzorků až po sledování mikroorganismů pod mikroskopem.",
+    "icon": "i-mdi-bacteria-outline",
+    "image": "/imgs/promo/people.jpg"
   }
 }

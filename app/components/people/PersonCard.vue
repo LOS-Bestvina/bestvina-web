@@ -34,7 +34,7 @@ defineProps<{
 					v-if="person.image"
 					:placeholder="placeholder(person.image)"
 					:src="person.image"
-					class="w-full h-full object-cover grayscale-[15%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
+					class="w-full h-full object-cover grayscale-15 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
 					preset="thumbnailLg"
 				/>
 				<div

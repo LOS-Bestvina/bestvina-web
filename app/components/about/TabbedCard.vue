@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 interface Props {
 	title: string;
-	description: string;
+	description: string | undefined;
 	reverse?: boolean;
-	image: string;
+	image: string | undefined;
 }
 
 withDefaults(defineProps<Props>(), {

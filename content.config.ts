@@ -27,6 +27,7 @@ const AboutSectionSchema = z.object({
 	link: z.string().optional(),
 	linkLabel: z.string().optional(),
 	links: z.array(LinkSchema).optional(),
+	mapUrl: z.string().optional(),
 	items: z.array(z.object({
 		title: z.string(),
 		description: z.string(),
@@ -44,7 +45,7 @@ const AboutCampDataSchema = z.object({
 	activities: AboutSectionSchema,
 	schedule: z.object({
 		title: z.string(),
-		text: z.string().optional(),
+		description: z.string().optional(),
 		icon: z.string(),
 		events: z.array(z.object({
 			time: z.string(),
@@ -189,6 +190,7 @@ export default defineContentConfig({
 					img: z.string().optional(),
 					email: z.string(),
 					icon: z.string().optional(),
+					address: z.string().optional(),
 				})),
 			}),
 		}),

@@ -7,13 +7,31 @@ const imgsDir: string = "public/imgs";
 const outputDir: string = ".prerender";
 const routesFilename: string = "imgs-routes.json";
 
-const CONFIG: Record<string, string[]> = {
-	gallery: ["thumbnailXXSm", "thumbnailSm", "thumbnailMd", "thumbnailXLg", "thumbnailXXLg"],
-	groups: ["thumbnailXXSm", "thumbnailSm", "thumbnailLg", "thumbnailXXLg"],
-	team: ["thumbnailXXSm", "thumbnailMd", "thumbnailLg", "thumbnailXXLg"],
-	promo: ["thumbnailXXSm", "thumbnailMd", "thumbnailXLg", "thumbnailXXLg"],
-	default: ["thumbnailXXSm", "thumbnailMd"],
-};
+interface PrerenderRule {
+	patterns: string[];
+	presets: string[];
+}
+
+const PRESET_RULES: PrerenderRule[] = [
+	{
+		patterns: ["**/gallery/**"],
+		presets: ["thumbnailXXSm", "thumbnailSm", "thumbnailMd", "thumbnailXLg", "thumbnailXXLg"],
+	},
+	{
+		patterns: ["**/groups/**"],
+		presets: ["thumbnailXXSm", "thumbnailSm", "thumbnailLg", "thumbnailXXLg"],
+	},
+	{
+		patterns: ["**/people/**"],
+		presets: ["thumbnailXXSm", "thumbnailMd", "thumbnailLg", "thumbnailXXLg"],
+	},
+	{
+		patterns: ["**/promo/**"],
+		presets: ["thumbnailXXSm", "thumbnailMd", "thumbnailXLg", "thumbnailXXLg"],
+	},
+];
+
+const DEFAULT_PRESETS = ["thumbnailXXSm", "thumbnailMd"];
 
 const PRESET_MAP: Record<string, string> = {
 	thumbnailXXSm: "w_20",
@@ -23,6 +41,17 @@ const PRESET_MAP: Record<string, string> = {
 	thumbnailXLg: "w_1080&q_50",
 	thumbnailXXLg: "w_1920&q_50",
 };
+
+/**
+ * Converts a glob-like pattern to a Regular Expression.
+ */
+function patternToRegex(pattern: string): RegExp {
+	const escaped = pattern.replace(/[.+^${}()|[\]\\]/g, "\\$&");
+	const regexString = escaped
+		.replace(/\*\*/g, ".+") // ** any chars
+		.replace(/\*/g, "[^/]+"); // * any chars except slash
+	return new RegExp(`^${regexString}$`);
+}
 
 async function getAllImages(dir: string, recursively: boolean = true) {
 	const entries = await readdir(resolve(dir), { withFileTypes: true, recursive: recursively });
@@ -43,17 +72,19 @@ async function getAllImages(dir: string, recursively: boolean = true) {
 function getImgsRoutes(images: string[]): string[] {
 	const routes: string[] = [];
 
+	// pre-compile patterns to avoid redundant overhead
+	const compiledRules = PRESET_RULES.map(rule => ({
+		regexes: rule.patterns.map(patternToRegex),
+		presets: rule.presets,
+	}));
+
 	images.forEach((image) => {
-		// Identify folder from path (e.g., imgs/years/2026/gallery/img.jpg -> gallery)
-		const parts = image.split("/");
-		let folderKey = "default";
+		// find the first rule that matches any of its patterns
+		const matchingRule = compiledRules.find(rule =>
+			rule.regexes.some(regex => regex.test(image)),
+		);
 
-		if (parts.includes("gallery")) folderKey = "gallery";
-		else if (parts.includes("groups")) folderKey = "groups";
-		else if (parts.includes("team")) folderKey = "team";
-		else if (parts.includes("promo")) folderKey = "promo";
-
-		const presets = CONFIG[folderKey] || CONFIG.default;
+		const presets = matchingRule ? matchingRule.presets : DEFAULT_PRESETS;
 
 		presets.forEach((preset) => {
 			const ipxSegment = PRESET_MAP[preset];
