@@ -53,13 +53,16 @@ watch(
 		/>
 		<UBanner
 			id="in-development"
+			color="secondary"
+			variant="soft"
+			icon="i-heroicons-beaker"
 			:ui="{
-				root: 'py-2',
-				title: 'line-clamp-3 whitespace-normal',
+				root: 'py-2 ring-1 ring-secondary-500/20 backdrop-blur-md',
+				title: 'line-clamp-3 whitespace-normal font-medium',
 			}"
 			class="h-fit"
 			close
-			title="Web je stále v raných fázích vývoje a nemusí zatím fungovat zcela podle představ..."
+			title="Na webu se stále usilovně pracuje. Omluv případné chyby nebo chybějící části."
 		/>
 		<NuxtLayout>
 			<div
