@@ -8,11 +8,11 @@ const outputDir: string = ".prerender";
 const routesFilename: string = "imgs-routes.json";
 
 const CONFIG: Record<string, string[]> = {
-	gallery: ["thumbnailXXSm", "thumbnailSm", "thumbnailMd", "thumbnailXLg", "thumbnailXXLg", "original"],
-	groups: ["thumbnailXXSm", "thumbnailSm", "thumbnailLg", "thumbnailXXLg", "original"],
-	team: ["thumbnailXXSm", "thumbnailMd", "thumbnailLg", "thumbnailXXLg", "original"],
-	promo: ["thumbnailXXSm", "thumbnailMd", "thumbnailXLg", "thumbnailXXLg", "original"],
-	default: ["thumbnailXXSm", "thumbnailMd", "original"],
+	gallery: ["thumbnailXXSm", "thumbnailSm", "thumbnailMd", "thumbnailXLg", "thumbnailXXLg"],
+	groups: ["thumbnailXXSm", "thumbnailSm", "thumbnailLg", "thumbnailXXLg"],
+	team: ["thumbnailXXSm", "thumbnailMd", "thumbnailLg", "thumbnailXXLg"],
+	promo: ["thumbnailXXSm", "thumbnailMd", "thumbnailXLg", "thumbnailXXLg"],
+	default: ["thumbnailXXSm", "thumbnailMd"],
 };
 
 const PRESET_MAP: Record<string, string> = {
@@ -22,7 +22,6 @@ const PRESET_MAP: Record<string, string> = {
 	thumbnailLg: "w_720&q_50",
 	thumbnailXLg: "w_1080&q_50",
 	thumbnailXXLg: "w_1920&q_50",
-	original: "_",
 };
 
 async function getAllImages(dir: string, recursively: boolean = true) {
