@@ -170,12 +170,15 @@ export const useBestvinaImages = (
 
 	const filteredGroupedImages = computed(() => {
 		const result: Record<string, BestvinaImage[]> = {};
+		const authorsToFilter = selectedAuthors.value.map(a => String(a).trim());
+		const yearsToFilter = selectedYears.value.map(y => String(y).trim());
+
 		for (const [year, images] of Object.entries(groupedImages.value)) {
-			if (selectedYears.value.length > 0 && !selectedYears.value.includes(year)) {
+			if (yearsToFilter.length > 0 && !yearsToFilter.includes(String(year).trim())) {
 				continue;
 			}
-			const yearFilteredImages = selectedAuthors.value.length > 0
-				? images.filter(img => img.author && selectedAuthors.value.includes(img.author.shortcut))
+			const yearFilteredImages = authorsToFilter.length > 0
+				? images.filter(img => img.author && authorsToFilter.includes(img.author.shortcut))
 				: images;
 
 			if (yearFilteredImages.length > 0) {
