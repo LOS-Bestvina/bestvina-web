@@ -65,8 +65,9 @@ const contacts = ref<ContactInterface[]>([
 				<UCard
 					v-for="(person, i) in contacts"
 					:key="i"
-					class="group overflow-hidden transition-all duration-300 hover:shadow-xl"
+					class="group h-full overflow-hidden transition-all duration-300 hover:shadow-xl"
 					:ui="{
+						root: 'flex flex-col h-full',
 						header: 'p-0!',
 						body: 'flex flex-col gap-6 p-8! grow',
 						footer: 'px-8! py-6! border-t border-white/5',
@@ -124,7 +125,6 @@ const contacts = ref<ContactInterface[]>([
 									readonly
 									class="w-full flex-1"
 									variant="none"
-									:ui="{ input: 'text-center text-xs sm:text-sm font-mono text-muted' }"
 								/>
 								<CopyButton
 									:value="person.email"
