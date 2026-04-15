@@ -5,6 +5,8 @@ const props = defineProps<{
 	country?: string;
 	size?: "xs" | "sm" | "md" | "lg" | "xl";
 	iconSize?: number;
+	hideIcon?: boolean;
+	flexDirection?: "row" | "col";
 }>();
 
 const iconSizeValue = computed(() => props.iconSize ?? 5);
@@ -21,8 +23,12 @@ const textSizeClass = computed(() => {
 </script>
 
 <template>
-	<div class="flex items-start gap-3 pt-2">
+	<div
+		:class="['flex', flexDirection === 'row' ? 'items-start flex-row' : 'items-center flex-col']"
+		class="gap-3 pt-2"
+	>
 		<UIcon
+			v-if="!hideIcon"
 			:class="['w-'+iconSizeValue, 'h-'+iconSizeValue]"
 			class="w-5 h-5 text-secondary mt-1 shrink-0"
 			name="i-heroicons-map-pin-solid"
