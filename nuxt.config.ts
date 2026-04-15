@@ -40,6 +40,7 @@ export default defineNuxtConfig({
 		"@nuxt/ui",
 		"@nuxt/scripts",
 		"nuxt-studio",
+		"@vueuse/motion/nuxt",
 	],
 	ssr: true,
 	imports: {
@@ -126,7 +127,7 @@ export default defineNuxtConfig({
 			{
 				name: "Poppins",
 				provider: "google",
-				// weights: [200, 400, 500, 600, 700, 800, 900],
+				weights: [300, 400, 500, 600, 700, 800],
 				preload: true,
 				display: "swap",
 			},
