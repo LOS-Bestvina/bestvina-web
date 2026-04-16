@@ -237,9 +237,7 @@ if (!page.value) {
 						:items="page.accordion.items"
 						:ui="{
 							root: 'md:w-3/4 flex flex-col gap-4',
-							item: 'border last:border border-default rounded-lg transition-transform duration-300',
-							trigger: 'flex items-center rounded-lg gap-3 px-4 py-4 font-semibold text-base text-highlighted hover:bg-elevated transition-colors',
-							body: 'px-4 py-2 text-sm',
+							trigger: 'hover:bg-secondary/10 transition-colors',
 						}"
 					/>
 				</div>
