@@ -2,10 +2,11 @@
   "header": "biologie",
   "sections": [
     {
-      "name": "",
+      "name": "Přednášející",
       "people": [
         "martinek_jan",
-        "bohutinsky_daniel"
+        "bohutinsky_daniel",
+        "schimer_jiri"
       ]
     },
     {

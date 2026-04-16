@@ -87,7 +87,7 @@ export default function () {
 		return useAsyncData(`all-people-data-sorted-${toValue(pageId)}`, async () => {
 			const peopleRaw = await getAllPeopleRaw();
 			return peopleRaw
-				.filter(person => !person.isFormer && !person.isHidden)
+				.filter(person => !person.isFormer && !person.isHidden && !person.pages?.externi)
 				.map(person => getPageSpecificOrDefaultPersonData(person, toValue(pageId)))
 				.sort((a, b) => a.name.localeCompare(b.name));
 		});
