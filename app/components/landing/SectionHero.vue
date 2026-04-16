@@ -9,7 +9,7 @@ const { data: page } = await useAsyncData("landing-hero", () => {
 		v-if="page"
 		:description="page.hero.description"
 		:ui="{
-			description: 'lg:max-w-[80%]',
+			description: 'lg:w-1/2',
 			container: 'py-16 pb-16 sm:py-8 sm:pb-16 lg:pb-0 lg:py-40',
 			headline: 'w-fit',
 			wrapper: 'w-fit',
@@ -23,7 +23,7 @@ const { data: page } = await useAsyncData("landing-hero", () => {
 		</template>
 		<template #title>
 			<span class="leading-tight flex flex-col gap-0 text-center lg:text-start">
-				<span class="text-lg sm:text-2xl font-black uppercase tracking-widest mb-2">{{ page.hero.titlePrefix }}</span>
+				<span class="text-3xl sm:text-4xl font-black uppercase tracking-widest mb-2 px-16 lg:px-0 lg:pe-16">{{ page.hero.titlePrefix }}</span>
 				<span class="bg-linear-to-r from-teal-500 to-teal-300 dark:from-teal-500 dark:to-teal-300 bg-clip-text text-transparent animate-gradient font-black text-7xl lg:text-8xl py-1 pt-2">{{ page.hero.titleMain }}</span>
 			</span>
 		</template>
