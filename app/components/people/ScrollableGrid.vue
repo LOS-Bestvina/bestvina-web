@@ -22,11 +22,11 @@ const specialPagePeople = ref<PeopleCollectionItemExtended[]>([]);
 
 if (pageId.value === ALL_PEOPLE_PAGE_ID) {
 	const { data } = await getAllActivePeopleSortedForPage(ALL_PEOPLE_PAGE_ID);
-	specialPagePeople.value = data.value;
+	specialPagePeople.value = data.value ?? [];
 }
 else if (pageId.value === PEOPLE_PAGES.FORMER) {
 	const { data } = await getAllFormerPeopleSorted(PEOPLE_PAGES.FORMER);
-	specialPagePeople.value = data.value;
+	specialPagePeople.value = data.value ?? [];
 }
 
 /**

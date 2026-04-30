@@ -81,8 +81,8 @@ const LandingPageSchema = z.object({
 
 const YearsPageSchema = z.object({
 	year: z.number().int(),
-	coverImg: z.string(), // path to image
-	theme: z.string(),
+	coverImg: z.string().optional(), // path to image
+	theme: z.string().optional(),
 
 	term: z.object({
 		startDate: z.date(),
@@ -194,7 +194,7 @@ export default defineContentConfig({
 				contacts: z.array(z.object({
 					name: z.string(),
 					role: z.string(),
-					organization: z.string(),
+					organization: z.string().optional(),
 					img: z.string().optional(),
 					email: z.string(),
 					icon: z.string().optional(),

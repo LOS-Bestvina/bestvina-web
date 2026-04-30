@@ -1,11 +1,12 @@
 import type { BestvinaImage } from "#shared/utils/imageMapper";
 import type { YearApiResponse } from "./useImageYears";
+import type { Photographer } from "#shared/types/photographer";
 
 export function useImageFilters(
 	groupedImages: Ref<Record<string, BestvinaImage[]>>,
 	allAvailableYears: Ref<YearApiResponse[]>,
 	selectedYears: Ref<string[]>,
-	selectedAuthors: Ref<string[]>
+	selectedAuthors: Ref<string[]>,
 ) {
 	const filteredImages = computed(() => {
 		let flatList: BestvinaImage[] = [];
@@ -40,11 +41,10 @@ export function useImageFilters(
 	});
 
 	const availableAuthors = computed(() => {
-		const authorsMap = new Map<string, unknown>();
+		const authorsMap = new Map<string, Photographer>();
 		Object.values(groupedImages.value).flat().forEach((img) => {
 			if (img.author) authorsMap.set(img.author.shortcut, img.author);
 		});
-		// @ts-expect-error unresolved author name object types
 		return Array.from(authorsMap.values()).sort((a, b) => a.name.localeCompare(b.name));
 	});
 

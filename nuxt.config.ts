@@ -1,3 +1,4 @@
+import { defineNuxtConfig } from "nuxt/config";
 import { getApiRoutesToPrerender, getImgRoutes } from "./scripts/getPrerenderRoutes";
 
 export default defineNuxtConfig({
@@ -18,7 +19,7 @@ export default defineNuxtConfig({
 		],
 	},
 	devtools: {
-		enabled: false,
+		enabled: true,
 		timeline: {
 			enabled: true,
 		},
@@ -33,6 +34,9 @@ export default defineNuxtConfig({
 		},
 	},
 	css: ["~/assets/css/main.css"],
+	content: {
+		experimental: { sqliteConnector: "native" },
+	},
 	ui: {
 		theme: {
 			transitions: true,
@@ -70,8 +74,6 @@ export default defineNuxtConfig({
 			crawlLinks: true,
 			routes: [
 				"/",
-				...getApiRoutesToPrerender(),
-				...getImgRoutes(),
 			],
 		},
 	},

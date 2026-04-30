@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { onMounted } from "#imports";
 import { cs } from "@nuxt/ui/locale";
 import type { NuxtError } from "#app";
 

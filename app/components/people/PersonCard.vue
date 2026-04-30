@@ -1,14 +1,11 @@
 <script lang="ts" setup>
-import type { PeopleCollectionItem } from "@nuxt/content";
+import type { PeopleCollectionItemExtended } from "#shared/types/people";
 
 const img = useImage();
 const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
 
 defineProps<{
-	person: PeopleCollectionItem & {
-		roleTitle: string | undefined;
-		role: string | undefined;
-	};
+	person: PeopleCollectionItemExtended;
 	pageId: string;
 	showImage: boolean;
 }>();
