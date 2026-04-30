@@ -1,13 +1,3 @@
-<script lang="ts" setup>
-definePageMeta({
-	layout: "page",
-});
-</script>
-
 <template>
-	<UPage
-		class=""
-	>
-		<UPageBody class="flex flex-col items-center justify-center gap-8" />
-	</UPage>
+	<h1>Hello world</h1>
 </template>

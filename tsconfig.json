@@ -1,9 +1,11 @@
 {
   // https://nuxt.com/docs/guide/concepts/typescript
   "files": [],
-  "lib": [
-    "es2021"
-  ],
+  "compilerOptions": {
+    "lib": [
+      "es2021"
+    ],
+  },
   "references": [
     {
       "path": "./.nuxt/tsconfig.app.json"

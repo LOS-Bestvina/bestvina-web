@@ -1,35 +1,5 @@
-import { existsSync, readFileSync } from "fs";
-import { resolve } from "path";
-import { CURRENT_YEAR, OLDEST_YEAR } from "./shared/constants";
-
-const imgsRoutesPath = resolve(".prerender/imgs-routes.json");
-
-const getApiRoutesToPrerender = (): string[] => {
-	const apiRoutes: string[] = [];
-
-	for (let year = OLDEST_YEAR; year <= CURRENT_YEAR; year++) {
-		apiRoutes.push(`/api/v1/images/gallery/${year}`);
-		apiRoutes.push(`/api/v1/images/groups/${year}`);
-	}
-
-	// global API endpoints
-	apiRoutes.push(`/api/v1/images/years`);
-	apiRoutes.push(`/api/v1/images/photographers`);
-
-	return apiRoutes;
-};
-
-const getImgRoutes = (): string[] => {
-	if (!existsSync(imgsRoutesPath)) {
-		throw new Error("File ./prerender/imgs-routes.json not found. You need to run `npm run prerender` first.");
-	}
-	try {
-		return JSON.parse(readFileSync(imgsRoutesPath, "utf-8"));
-	}
-	catch (error) {
-		throw new Error(`Getting imgs routes failed: ${error}`);
-	}
-};
+import { defineNuxtConfig } from "nuxt/config";
+import { getApiRoutesToPrerender, getImgRoutes } from "./scripts/getPrerenderRoutes";
 
 export default defineNuxtConfig({
 	modules: [
@@ -39,15 +9,13 @@ export default defineNuxtConfig({
 		"@nuxt/image",
 		"@nuxt/ui",
 		"@nuxt/scripts",
-		"nuxt-studio",
+		// "nuxt-studio",
+		"@vueuse/motion/nuxt",
 	],
 	ssr: true,
 	imports: {
 		dirs: [
-			"hooks",
-			"utils",
-			"models/**",
-			"types/**",
+			"composables/**",
 		],
 	},
 	devtools: {
@@ -57,9 +25,6 @@ export default defineNuxtConfig({
 		},
 	},
 	app: {
-		rootAttrs: {
-			id: "app",
-		},
 		pageTransition: {
 			name: "page",
 			mode: "out-in",
@@ -67,7 +32,7 @@ export default defineNuxtConfig({
 	},
 	css: ["~/assets/css/main.css"],
 	content: {
-		experimental: { nativeSqlite: true },
+		experimental: { sqliteConnector: "native" },
 	},
 	ui: {
 		theme: {
@@ -88,7 +53,7 @@ export default defineNuxtConfig({
 		colorMode: true,
 	},
 	routeRules: {
-		// Homepage pre-rendered at build time
+		"/**": { },
 		"/": { prerender: true },
 		"/kronika": { prerender: true },
 		"/rocniky/**": { prerender: true },
@@ -106,9 +71,21 @@ export default defineNuxtConfig({
 			crawlLinks: true,
 			routes: [
 				"/",
-				...getApiRoutesToPrerender(),
-				...getImgRoutes(),
 			],
+		},
+	},
+	vite: {
+		optimizeDeps: {
+			include: [
+				"@vue/devtools-core",
+				"@vue/devtools-kit",
+			],
+		},
+	},
+	hooks: {
+		"prerender:routes"({ routes }) {
+			getApiRoutesToPrerender().forEach(route => routes.add(route));
+			getImgRoutes().forEach(route => routes.add(route));
 		},
 	},
 	eslint: {
@@ -126,7 +103,7 @@ export default defineNuxtConfig({
 			{
 				name: "Poppins",
 				provider: "google",
-				// weights: [200, 400, 500, 600, 700, 800, 900],
+				weights: [300, 400, 500, 600, 700, 800],
 				preload: true,
 				display: "swap",
 			},
@@ -175,14 +152,6 @@ export default defineNuxtConfig({
 					quality: 50,
 				},
 			},
-		},
-	},
-	studio: {
-		repository: {
-			provider: "github",
-			owner: "FelyCZ",
-			repo: "bestvina-web",
-			branch: "master",
 		},
 	},
 });

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { computed, nextTick, onBeforeUpdate, onMounted, reactive, ref, watch } from "vue";
-import { useSwipe, useThrottleFn } from "@vueuse/core";
+import { nextTick, onBeforeUpdate, onMounted, ref, watch } from "vue";
+import { useSwipe } from "@vueuse/core";
 import type { CopyButton } from "#components";
 
 const props = defineProps<{
@@ -11,67 +11,30 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(["close"]);
-
 const url = useRequestURL();
-
-// State
-const currentSrc = ref(props.initialSrc);
-const transitionName = ref("slide-left");
-const currentIndex = computed(() => props.images.indexOf(currentSrc.value));
-
-// Image loading tracking
 const img = useImage();
-const loadedMainImages = reactive(new Set<string>());
-const loadedPlaceholders = reactive(new Set<string>());
-const loadedThumbnails = reactive(new Set<string>());
 
-const onMainLoad = (src: string) => loadedMainImages.add(src);
-const onPlaceholderLoad = (src: string) => loadedPlaceholders.add(src);
-const onThumbLoad = (src: string) => loadedThumbnails.add(src);
-
-// Delay thumbnail loading until at least one main image starts loading
-const canLoadThumbnails = ref(false);
-watch(
+// Main Logic extracted to Composable
+const {
+	currentSrc,
+	currentIndex,
+	transitionName,
+	goTo,
+	next,
+	prev,
+	canNavigate,
 	loadedMainImages,
-	(set) => {
-		if (set.size > 0 && !canLoadThumbnails.value) canLoadThumbnails.value = true;
-	},
-	{ deep: true, immediate: true },
-);
-
-// Navigation
-const goTo = (index: number) => {
-	let targetIndex = index;
-
-	if (props.loop) {
-		if (targetIndex < 0) targetIndex = props.images.length - 1;
-		if (targetIndex >= props.images.length) targetIndex = 0;
-	}
-
-	if (currentIndex.value === props.images.length - 1 && targetIndex === 0) {
-		transitionName.value = "slide-left";
-	}
-	else if (currentIndex.value === 0 && targetIndex === props.images.length - 1) {
-		transitionName.value = "slide-right";
-	}
-	else {
-		transitionName.value = targetIndex > currentIndex.value ? "slide-left" : "slide-right";
-	}
-
-	if (props.images[targetIndex]) currentSrc.value = props.images[targetIndex]!;
-	if (props.onNavigate) props.onNavigate(currentSrc.value);
-};
-
-// Throttle to prevent animation glitches when keys are held down
-const next = useThrottleFn(() => goTo(currentIndex.value + 1), 100);
-const prev = useThrottleFn(() => goTo(currentIndex.value - 1), 100);
-
-const canNavigate = (direction: "left" | "right"): boolean => {
-	if (props.loop) return true;
-	const shift = direction === "left" ? -1 : 1;
-	const nextIndex = currentIndex.value + shift;
-	return nextIndex >= 0 && nextIndex < props.images.length;
-};
+	loadedPlaceholders,
+	loadedThumbnails,
+	allowedMain,
+	canLoadThumbnails,
+	onMainLoad,
+	onPlaceholderLoad,
+	onThumbLoad,
+} = useImageGallery(props.images, props.initialSrc, {
+	loop: props.loop,
+	onNavigate: props.onNavigate,
+});
 
 // Swipe gestures
 const swipeZone = ref<HTMLElement | null>(null);
@@ -82,10 +45,9 @@ useSwipe(swipeZone, {
 	},
 });
 
-// Thumbnail scrolling
+// Thumbnail scrolling (UI specific logic stays here)
 const thumbRefs = ref<HTMLElement[]>([]);
 
-// Clear refs to prevent stale DOM elements on re-renders
 onBeforeUpdate(() => {
 	thumbRefs.value = [];
 });
@@ -101,36 +63,15 @@ const centerThumbnail = (isInitial = false) => {
 					block: "nearest",
 				});
 			}
-		}, isInitial ? 100 : 0); // Wait for initial modal animation
+		}, isInitial ? 100 : 0);
 	});
 };
 
 onMounted(() => centerThumbnail(true));
 watch(currentIndex, () => centerThumbnail(false), { flush: "post" });
 
-// Preload queue for adjacent images
-const allowedMain = reactive(new Set<number>());
-watch(
-	currentIndex,
-	(newIndex) => {
-		const totalImages = props.images.length;
-		const surroundingImagesToPreload = 1;
-
-		for (let i = -surroundingImagesToPreload; i <= surroundingImagesToPreload; i++) {
-			let target = newIndex + i;
-			if (props.loop) {
-				if (target < 0) target += totalImages;
-				if (target >= totalImages) target -= totalImages;
-			}
-			if (target >= 0 && target < totalImages) allowedMain.add(target);
-		}
-	},
-	{ immediate: true },
-);
-
 // Actions & Shortcuts
 const imageTitle = computed(() => currentSrc.value.split("/").pop() || "fotografie");
-
 const downloadLinkRef = ref<HTMLAnchorElement | null>(null);
 const copyButtonRef = ref<InstanceType<typeof CopyButton> | null>(null);
 
@@ -215,7 +156,7 @@ defineShortcuts({
 								<img
 									v-show="!loadedMainImages.has(currentSrc)"
 									:src="img(currentSrc, {}, { preset: 'thumbnailXXSm' })"
-									alt=""
+									:alt="imageTitle"
 									class="absolute inset-0 w-full h-full object-contain blur-md opacity-70 transition-opacity duration-300"
 									@load="onPlaceholderLoad(currentSrc)"
 								>
@@ -223,7 +164,7 @@ defineShortcuts({
 								<NuxtImg
 									:class="loadedMainImages.has(currentSrc) ? 'opacity-100' : 'opacity-0'"
 									:src="currentSrc"
-									autofocus
+									:alt="imageTitle"
 									class="absolute inset-0 w-full h-full object-contain drop-shadow-2xl select-none transition-opacity duration-500 ease-in-out"
 									decoding="async"
 									draggable="false"
@@ -256,7 +197,7 @@ defineShortcuts({
 						class="w-full"
 						orientation="horizontal"
 					>
-						<div class="flex gap-2 w-max py-4 mx-auto px-[calc(50vw-32px)] sm:px-[calc(50vw-40px)]">
+						<div class="flex gap-4 w-max py-4 mx-auto px-[calc(50vw-32px)] sm:px-[calc(50vw-40px)]">
 							<button
 								v-for="(imgSrc, i) in images"
 								:key="i"

@@ -13,6 +13,5 @@ degreesAfterName: ""
 pages:
   aktivni_chemie:
     role: ""
-    description: ""
-    name: ""
+    roleTitle: "Přednášející fyzikální chemie"
 ---

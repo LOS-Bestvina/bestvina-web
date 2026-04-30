@@ -90,16 +90,15 @@ const items = computed<NavigationMenuItem[]>(() => [
 
 		<UNavigationMenu
 			:items="items"
-			:ui="{
-				viewport: '',
-			}"
 			class="hidden lg:inline-flex border-default data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-48"
 			orientation="horizontal"
 			variant="pill"
 		/>
 
 		<template #right>
-			<UColorModeButton />
+			<ClientOnly>
+				<UColorModeButton />
+			</ClientOnly>
 		</template>
 
 		<template #body>
@@ -108,8 +107,7 @@ const items = computed<NavigationMenuItem[]>(() => [
 				class="-mx-2.5"
 				orientation="vertical"
 			/>
-
-			<USeparator class="my-6" />
+			<LazyUSeparator class="my-6" />
 		</template>
 	</UHeader>
 </template>

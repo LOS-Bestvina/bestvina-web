@@ -3,40 +3,39 @@ definePageMeta({
 	layout: "landing",
 });
 
-// used to move from hero to the next section
-const scrollDownALittle = () => {
-	document.getElementById("more")?.scrollIntoView({ behavior: "smooth" });
-};
+const { data: landingData } = await useAsyncData("landing-data", async () => {
+	return await queryCollection("landing").first();
+});
+
+if (!landingData.value) {
+	throw createError({ statusCode: 404, statusMessage: "Stránka nenalezena!", fatal: true });
+}
 </script>
 
 <template>
-	<div>
-		<NuxtImg
-			class="object-cover w-full h-full opacity-7 dark:opacity-7 fixed top-0 left-0 right-0 bottom-0 z-[-999] blur-lg"
-			src="imgs/hero_bg.svg"
+	<div v-if="landingData">
+		<LandingSectionHero :data="landingData.hero" />
+		<LandingSectionReasons
+			v-motion-slide-visible-once-bottom
+			:data="landingData.reasons"
+			solid-background
 		/>
-		<UMain>
-			<LandingSectionHero />
-
-			<USeparator />
-
-			<LandingSectionReasons />
-
-			<USeparator />
-
-			<LandingSectionActivities />
-
-			<USeparator />
-
-			<LandingSectionPeople />
-
-			<USeparator />
-
-			<LandingSectionLocation />
-
-			<USeparator />
-
-			<LandingLogos />
-		</UMain>
+		<LandingSectionActivities
+			v-motion-slide-visible-once-bottom
+			:data="landingData.activities"
+		/>
+		<LandingSectionPeople
+			v-motion-slide-visible-once-bottom
+			:data="landingData.people"
+			solid-background
+		/>
+		<LandingSectionLocation
+			v-motion-slide-visible-once-bottom
+			:data="landingData.location"
+		/>
+		<LandingLogos
+			v-motion-slide-visible-once-bottom
+			class="bg-neutral-50 dark:bg-neutral-900/50"
+		/>
 	</div>
 </template>

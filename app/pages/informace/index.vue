@@ -5,8 +5,6 @@ definePageMeta({
 	layout: "page",
 });
 
-const route = useRoute();
-const router = useRouter();
 const img = useImage();
 
 const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
@@ -29,43 +27,11 @@ const tabs: TabsItem[] = [
 	},
 ];
 
-const currentTab = ref(tabs[0]!.value as string);
+const { currentTab, validateInitialTab } = useTabUrlSync(tabs as { label: string; value: string }[], "/informace");
 
-// sync currentTab ref with route query
-watch(() => route.query.t, (newTab) => {
-	if (newTab && tabs.some(tab => tab.value === newTab)) {
-		currentTab.value = newTab as string;
-	}
-}, { immediate: true });
-
-// update URL when tab changes
-watch(currentTab, (newTab) => {
-	if (newTab !== route.query.t) {
-		router.push({
-			path: "/informace",
-			query: { t: newTab },
-			hash: route.hash,
-		});
-	}
-});
-
-const checkInitialRouteQueryParameter = () => {
-	const validTabValues = [...tabs.map(value => value.value), ""];
-	const selectedTabFromQuery = route.query.t as string;
-
-	if (!validTabValues.includes(selectedTabFromQuery)) {
-		// if non-existent tab requested, redirect to the chemistry tab
-		router.push({
-			path: "/informace",
-			hash: route.hash,
-		});
-		currentTab.value = tabs[0]!.value as string;
-	}
-	else {
-		currentTab.value = selectedTabFromQuery;
-	}
-};
-checkInitialRouteQueryParameter();
+if (import.meta.client) {
+	validateInitialTab();
+}
 
 /**
  * FETCH PAGE DATA
@@ -85,17 +51,18 @@ if (!page.value) {
 			:title="page.title"
 		/>
 		<UPageBody>
-			<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 				<InfoCard
 					v-if="page.targetPeople"
-					:description="page.targetPeople.text"
+					:description="page.targetPeople.description"
 					:icon="page.targetPeople.icon"
 					:title="page.targetPeople.title"
-					class="md:col-span-2"
+					class="md:col-span-2 order-1"
 					layout="columns"
 				>
 					<template #secondary>
 						<NuxtImg
+							v-if="page.targetPeople.image"
 							:placeholder="placeholder(page.targetPeople.image)"
 							:src="page.targetPeople.image"
 							class="w-full h-full object-cover md:object-[30%_0%] lg:object-center"
@@ -107,19 +74,20 @@ if (!page.value) {
 
 				<InfoCard
 					v-if="page.bestvinka"
-					:description="page.bestvinka.text"
+					:description="page.bestvinka.description"
 					:icon="page.bestvinka.icon"
-					:label="page.bestvinka.linkLabel"
+					:label="page.bestvinka.links?.[0]?.label"
 					:title="page.bestvinka.title"
-					:to="page.bestvinka.link"
+					:to="page.bestvinka.links?.[0]?.to"
+					class="order-2 md:order-8 lg:order-2"
 				/>
 
 				<InfoCard
 					v-if="page.schedule"
-					:description="page.schedule.text"
+					:description="page.schedule.description"
 					:icon="page.schedule.icon"
 					:title="page.schedule.title"
-					class="md:row-span-2"
+					class="md:row-span-2 md:col-span-2 lg:col-span-1 order-3"
 					layout="rows"
 				>
 					<template #secondary>
@@ -130,16 +98,17 @@ if (!page.value) {
 				<InfoCard
 					v-if="page.location"
 					id="lokace"
-					:description="page.location.text"
+					:description="page.location.description"
 					:icon="page.location.icon"
 					:title="page.location.title"
-					class="md:col-span-2"
+					class="md:col-span-2 order-4"
 					layout="columns"
 				>
 					<template #extra>
 						<CardAddressBlock
 							name="Táborová základna VŠCHT Praha"
 							street="Běstvina 155, 538 45 Běstvina"
+							flex-direction="row"
 						/>
 					</template>
 					<template #secondary>
@@ -149,11 +118,11 @@ if (!page.value) {
 
 				<InfoCard
 					v-if="page.camp"
-					:description="page.camp.text"
+					:description="page.camp.description"
 					:icon="page.camp.icon"
 					:reversed="true"
 					:title="page.camp.title"
-					class="md:col-span-2"
+					class="md:col-span-2 order-5"
 					layout="columns"
 				>
 					<template #secondary>
@@ -182,10 +151,10 @@ if (!page.value) {
 
 				<InfoCard
 					v-if="page.activities"
-					:description="page.activities.text"
+					:description="page.activities.description"
 					:icon="page.activities.icon"
 					:title="page.activities.title"
-					class="md:col-span-2"
+					class="md:col-span-2 order-6"
 					layout="columns"
 				>
 					<template #secondary>
@@ -214,21 +183,21 @@ if (!page.value) {
 
 				<InfoCard
 					v-if="page.stuff"
-					:description="page.stuff.text"
+					:description="page.stuff.description"
 					:icon="page.stuff.icon"
 					:title="page.stuff.title"
-					layout="single"
+					class="order-7"
 				/>
 			</div>
-			<section>
+			<section class="hidden">
 				<div class="flex justify-center">
 					<UTabs
 						v-model="currentTab"
 						:content="true"
 						:items="tabs"
 						:ui="{
-							list: 'w-full md:w-1/2 rounded-full mb-8',
-							root: 'w-full md:w-3/4',
+							list: 'w-full! lg:w-1/2! mx-auto rounded-full mb-8',
+							root: 'w-full md:w-3/4! mx-auto',
 							indicator: `rounded-full`,
 						}"
 						color="secondary"
@@ -237,20 +206,22 @@ if (!page.value) {
 					>
 						<template #chemistry>
 							<AboutTabbedCard
-								color="secondary"
-								description="adsfklajfkladjfaljfdlakjkldfaklsdjfakl;dsfjadskfl;afj; aksjfkad adjs fads fjkda jakl dfadsf"
-								image="/imgs/cat1.jpg"
-								title="Chemie"
+								v-if="page.chemistry"
+								:color="'secondary'"
+								:description="page.chemistry.description"
+								:image="page.chemistry.image"
+								:title="page.chemistry.title"
 							/>
 						</template>
 
 						<template #biology>
 							<AboutTabbedCard
-								color="green"
-								description="adsfklajfkladjfaljfdlakjkldfaklsdjfakl;dsfjadskfl;afj; aksjfkad adjs fads fjkda jakl dfadsf"
-								image="/imgs/cat2.jpg"
-								reverse
-								title="Biologie"
+								v-if="page.biology"
+								:color="'green'"
+								:description="page.biology.description"
+								:image="page.biology.image"
+								:reverse="true"
+								:title="page.biology.title"
 							/>
 						</template>
 					</UTabs>
@@ -258,7 +229,7 @@ if (!page.value) {
 			</section>
 			<section v-if="page.accordion">
 				<PageSubHeader
-					:title="page.accordion.title as string"
+					:title="page.accordion.title"
 					class="text-center"
 				/>
 				<div class="flex justify-center pb-4">
@@ -266,10 +237,7 @@ if (!page.value) {
 						:items="page.accordion.items"
 						:ui="{
 							root: 'md:w-3/4 flex flex-col gap-4',
-							item: 'border last:border border-default rounded-lg transition-transform duration-300',
-							trigger: 'flex items-center gap-3 px-4 py-4 font-semibold text-base text-highlighted hover:bg-elevated transition-colors',
-							icon: 'w-5 h-5 shrink-0 text-muted',
-							body: 'px-4 py-2 text-sm',
+							trigger: 'hover:bg-secondary/10 transition-colors',
 						}"
 					/>
 				</div>

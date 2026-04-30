@@ -9,6 +9,8 @@ const emit = defineEmits<{
 
 const { filteredGroupedImages, selectedYears, pending } = useBestvinaImages("groups", props.year);
 
+const { openImage } = useImageDetail();
+
 watch(
 	() => props.year,
 	(newYear) => {
@@ -38,6 +40,7 @@ watch(pending, (isPending) => {
 			:grouped-images="filteredGroupedImages"
 			:target-height="260"
 			hide-headers
+			@image-click="openImage"
 		>
 			<template #image="{ image, item }">
 				<GalleryImage

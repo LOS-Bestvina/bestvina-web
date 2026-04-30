@@ -6,15 +6,10 @@
   "sections": [
     {
       "people": [
-        "external1",
-        "external2"
-      ]
-    },
-    {
-      "name": "some other section",
-      "people": [
-        "external3",
-        "external4"
+        "external/konvalinka_jan",
+        "external/hlouchova_klara",
+        "external/drabova_dana",
+        "external/mason_phil"
       ]
     }
   ]

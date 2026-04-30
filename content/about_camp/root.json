@@ -4,22 +4,26 @@
 
   "targetPeople": {
     "title": "Pro koho",
-    "text": "Běstvina je primárně určena žákům 1. až 3. ročníku středních škol (a odpovídajícím ročníkům na gymnáziích), kteří si chtějí prohloubit své znalosti nad rámec školní výuky. Výběr účastníků probíhá na základě výsledků krajských kol Chemické či Biologické olympiády.",
+    "description": "Běstvina je primárně určena žákům 1. až 3. ročníku středních škol (a odpovídajícím ročníkům na gymnáziích), kteří si chtějí prohloubit své znalosti nad rámec školní výuky. Výběr účastníků probíhá na základě výsledků krajských kol Chemické či Biologické olympiády.",
     "icon": "i-mdi-school",
     "image": "/imgs/promo/chlab_discussion.jpg"
   },
 
-  "bestvinka":{
+  "bestvinka": {
     "title": "Pro mladší",
-    "text": "Pro přírodovědně nadané školáky ve věku do 15 let, kteří se ještě nemohou účastnit Běstviny, existuje sesterské soustředění Běstvinka. Soustředění je nabito hrami, soutěžemi, sportem a odborným přírodovědně laděným programem. Jeho délka je také dva týdny a začíná posledním dnem Běstviny.",
+    "description": "Pro přírodovědně nadané školáky ve věku do 15 let, kteří se ještě nemohou účastnit Běstviny, existuje sesterské soustředění Běstvinka. Soustředění je nabito hrami, soutěžemi, sportem a odborným přírodovědně laděným programem. Jeho délka je také dva týdny a začíná posledním dnem Běstviny.",
     "icon": "i-material-symbols-child-care-outline",
-    "link": "https://bestvinka.vscht.cz/",
-    "linkLabel": "Více o Běstvince"
+    "links": [
+      {
+        "label": "Více o Běstvince",
+        "to": "https://bestvinka.vscht.cz/"
+      }
+    ]
   },
 
   "activities": {
-    "title":"Doplňkové aktivity",
-    "text": "Běstvina není jen o učení! Máš-li v sobě sportovního ducha, můžeš se zúčastnit turnajů ve fotbale, volejbale, stolním tenise nebo i šachu. Tradičně se utkávají chemici proti biologům, kde nemůžou chybět dýmovnice a kopřivy! Večer si můžeš zazpívat u táboráku s kytarou nebo zahrát deskové hry. A chybět nebude ani bál a diskotéka!",
+    "title": "Doplňkové aktivity",
+    "description": "Běstvina není jen o učení! Máš-li v sobě sportovního ducha, můžeš se zúčastnit turnajů ve fotbale, volejbale, stolním tenise nebo i šachu. Tradičně se utkávají chemici proti biologům, kde nemůžou chybět dýmovnice a kopřivy! Večer si můžeš zazpívat u táboráku s kytarou nebo zahrát deskové hry. A chybět nebude ani bál a diskotéka!",
     "icon": "i-material-symbols-sports-baseball-outline",
     "images": [
       "/imgs/promo/football.jpg",
@@ -33,7 +37,7 @@
 
   "camp": {
     "title": "Tábor",
-    "text": "Původní tábor v posledních letech postupně prochází rozsáhlou rekonstrukcí, může tedy nabídnout moderní sociální zařízení. Jak ve zbrusu nových srubech, tak v chatkách jsou k dispozici zásuvky. Postele jsou vybaveny matracemi, polštářem i prostěradlem, k úplnému komfortu tedy budete potřebovat opravdu jen spacák.",
+    "description": "Původní tábor v posledních letech postupně prochází rozsáhlou rekonstrukcí, může tedy nabídnout moderní sociální zařízení. Jak ve zbrusu nových srubech, tak v chatkách jsou k dispozici zásuvky. Postele jsou vybaveny matracemi, polštářem i prostěradlem, k úplnému komfortu tedy budete potřebovat opravdu jen spacák.",
     "icon": "i-mdi-campfire",
     "images": [
       "/imgs/camp/img1.jpg",
@@ -46,7 +50,7 @@
 
   "schedule": {
     "title": "Typický program dne",
-    "text": "Ačkoli není každý den soustředění úplně stejný, běžný den se řídí tímto přibližným programem.",
+    "description": "Ačkoli není každý den soustředění úplně stejný, běžný den se řídí tímto přibližným programem.",
     "icon": "i-mdi-schedule",
     "events": [
       {
@@ -89,8 +93,8 @@
   },
 
   "location": {
-    "title":"Lokace",
-    "text": "Táborová základna se nachází v malebné přírodě Železných hor, nedaleko obce Seč. Ubytování je zajištěno v dřevěných chatkách a srubech. K dispozici je také menší soukromé parkoviště přímo v areálu.",
+    "title": "Lokace",
+    "description": "Táborová základna se nachází v malebné přírodě Železných hor, nedaleko obce Seč. Ubytování je zajištěno v dřevěných chatkách a srubech. K dispozici je také menší soukromé parkoviště přímo v areálu.",
     "icon": "i-mdi-map",
     "mapUrl": "https://www.google.com/maps/embed/v1/place?key=AIzaSyDQSQUqQqUULFyg5w2cR_eQjUksSWnvBLk&q=ChIJX41Emh1NDEcR99WsK3h3On4%0AB%C4%9Bstvina%20155%2C%20538%2045%20B%C4%9Bstvina",
     "staticMapImage": "/imgs/bestvina_static_map.png"
@@ -98,7 +102,7 @@
 
   "stuff": {
     "title": "Nezapomeň si zabalit...",
-    "text": "Dostatečně teplý spacák, sportovní oblečení a obuv, čelovka či jiná svítilna (ideálně, aby vydržela aspoň pár hodin svítit), sešit a psací potřeby – to je nejnutnější základ! Hodit se ti dále můžou plavky, powerbanka, pláštěnka.",
+    "description": "Dostatečně teplý spacák, sportovní oblečení a obuv, čelovka či jiná svítilna (ideálně, aby vydržela aspoň pár hodin svítit), sešit a psací potřeby – to je nejnutnější základ! Hodit se ti dále můžou plavky, powerbanka, pláštěnka.",
     "icon": "i-material-symbols-travel-luggage-and-bags-outline"
   },
 
@@ -116,15 +120,34 @@
         "content": "Ačkoli se v posledních letech pokrytí mobilní sítí výrazně zlepšilo, stále se nedá říct, že by bylo stabilní (záleží však na operátorovi). Na odeslání SMS či zavolání obvykle stačí, ale pro doom-scrolling na Instagramu a TikToku spíš ne. :)"
       },
       {
+        "label": "Mám stravovací omezení, budu mít co jíst?",
+        "icon": "i-mdi-food-ramen",
+        "content": "Není problém zařídit vegetariánskou, bezlepkovou nebo bezlaktózovou stravu."
+      },
+      {
         "label": "Můžu si někde dokoupit zásoby (např. sušenek nebo kafe)?",
-        "icon": "i-lucide-box",
+        "icon": "i-lucide-shopping-basket",
         "content": "Nejbližší obchůdek se nachází v obci Běstvina (cca 2 km daleko), kde se dají dokoupit zj. trvanlivé potraviny a pochutiny. O něco dál, v Třemošnici, se je supermarket Penny, kde je výběr podstatně větší – můžeš se tam vypravit pěšky třeba po večeři, nebo taky lze požádat nějakého z organizátorů, který má auto."
       },
       {
         "label": "Je možné se zúčastnit pouze části soustředění?",
         "icon": "i-lucide-calendar-days",
-        "content": "Ano, možné to je. Připrav se však na to, že tvůj zážitek nebude kompletní, protože některé aktivity nelze z organizačních důvodů přesunout."
+        "content": "Ano, můžeš se zúčastnit i části soustředění. Přijdeš však o některé části soustředění, které z organizačních důvodů nelze přesunout."
       }
     ]
+  },
+
+  "chemistry": {
+    "title": "Chemie",
+    "description": "...",
+    "icon": "i-lucide-flask-conical",
+    "image": "/imgs/cat1.jpg"
+  },
+
+  "biology": {
+    "title": "Biologie",
+    "description": "...",
+    "icon": "i-mdi-bacteria-outline",
+    "image": "/imgs/cat2.jpg"
   }
 }

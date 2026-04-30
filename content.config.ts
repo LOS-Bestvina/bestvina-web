@@ -1,35 +1,41 @@
 import { defineCollection, defineContentConfig, z } from "@nuxt/content";
 import { PEOPLE_PAGES_ID_VALUES, PERSON_ROLES_ID_VALUES } from "./shared/constants";
 
+const LinkSchema = z.object({
+	label: z.string(),
+	to: z.string(),
+	color: z.string().optional(),
+	variant: z.string().optional(),
+	trailingIcon: z.string().optional(),
+	leadingIcon: z.string().optional(),
+});
+
+const FeatureSchema = z.object({
+	title: z.string(),
+	description: z.string(),
+	icon: z.string().optional(),
+	image: z.string().optional(),
+});
+
+const AboutSectionSchema = z.object({
+	title: z.string(),
+	description: z.string().optional(),
+	icon: z.string().optional(),
+	image: z.string().optional(),
+	images: z.array(z.string()).optional(),
+	links: z.array(LinkSchema).optional(),
+	mapUrl: z.string().optional(),
+});
+
 const AboutCampDataSchema = z.object({
 	title: z.string(),
 	description: z.string(),
-
-	targetPeople: z.object({
-		title: z.string(),
-		text: z.string(),
-		icon: z.string().optional(),
-		image: z.string().optional(),
-	}).optional(),
-
-	bestvinka: z.object({
-		title: z.string(),
-		text: z.string(),
-		icon: z.string().optional(),
-		link: z.string().optional(),
-		linkLabel: z.string().optional(),
-	}),
-
-	activities: z.object({
-		title: z.string(),
-		text: z.string(),
-		icon: z.string().optional(),
-		images: z.array(z.string()),
-	}),
-
+	targetPeople: AboutSectionSchema.optional(),
+	bestvinka: AboutSectionSchema,
+	activities: AboutSectionSchema,
 	schedule: z.object({
 		title: z.string(),
-		text: z.string(), // This is empty string in your JSON, which is fine
+		description: z.string().optional(),
 		icon: z.string(),
 		events: z.array(z.object({
 			time: z.string(),
@@ -37,28 +43,9 @@ const AboutCampDataSchema = z.object({
 			description: z.string().optional(),
 		})),
 	}),
-
-	location: z.object({
-		title: z.string(),
-		text: z.string(),
-		icon: z.string(),
-		mapUrl: z.string().optional(),
-		staticMapImage: z.string().optional(), // This will now work correctly
-	}),
-
-	camp: z.object({
-		title: z.string(),
-		text: z.string(),
-		icon: z.string(),
-		images: z.array(z.string()),
-	}),
-
-	stuff: z.object({
-		title: z.string(),
-		text: z.string(),
-		icon: z.string(),
-	}),
-
+	location: AboutSectionSchema,
+	camp: AboutSectionSchema,
+	stuff: AboutSectionSchema,
 	accordion: z.object({
 		title: z.string(),
 		items: z.array(
@@ -72,35 +59,30 @@ const AboutCampDataSchema = z.object({
 			}),
 		),
 	}).optional(),
+	chemistry: AboutSectionSchema,
+	biology: AboutSectionSchema,
+});
 
-	chemistry: z.object({
-		title: z.string(),
+const LandingPageSchema = z.object({
+	hero: z.object({
+		titlePrefix: z.string(),
+		titleMain: z.string(),
 		description: z.string(),
-		items: z.array(z.object({
-			title: z.string(),
-			description: z.string(),
-			icon: z.string(),
-			to: z.string().optional(),
-			label: z.string().optional(),
-		})),
+		links: z.array(LinkSchema),
 	}),
-	biology: z.object({
+	reasons: z.object({
 		title: z.string(),
-		description: z.string(),
-		items: z.array(z.object({
-			title: z.string(),
-			description: z.string(),
-			icon: z.string(),
-			to: z.string().optional(),
-			label: z.string().optional(),
-		})),
+		features: z.array(FeatureSchema),
 	}),
+	activities: AboutSectionSchema,
+	location: AboutSectionSchema,
+	people: AboutSectionSchema,
 });
 
 const YearsPageSchema = z.object({
 	year: z.number().int(),
-	coverImg: z.string(), // path to image
-	theme: z.string(),
+	coverImg: z.string().nullable().optional(), // path to image
+	theme: z.string().nullable().optional(),
 
 	term: z.object({
 		startDate: z.date(),
@@ -115,14 +97,38 @@ const YearsPageSchema = z.object({
 	}).optional(),
 
 	registration: z.object({
-		link: z.string().optional(),
-		deadline: z.date(),
+		links: z.array(z.object({
+			url: z.string(),
+			text: z.string(),
+			color: z.string().optional(),
+			icon: z.string().optional(),
+		})).optional(),
+		deadline: z.union([z.date(), z.string()]),
 		note: z.string().optional(),
 	}).optional(),
+
+	infoCards: z.array(z.object({
+		title: z.string(),
+		icon: z.string().optional(),
+		description: z.string().optional(),
+		color: z.string().optional(),
+		links: z.array(z.object({
+			url: z.string(),
+			text: z.string(),
+			color: z.string().optional(),
+			icon: z.string().optional(),
+		})).optional(),
+	})).optional(),
 });
 
 export default defineContentConfig({
 	collections: {
+		landing: defineCollection({
+			type: "data",
+			source: "landing.json",
+			schema: LandingPageSchema,
+		}),
+
 		years: defineCollection({
 			source: "years/**.(yml|md)",
 			type: "page",
@@ -141,6 +147,7 @@ export default defineContentConfig({
 				image: z.string().optional(),
 				isFormer: z.boolean().catch(false),
 				isHidden: z.boolean().catch(false),
+				isExternal: z.boolean().catch(false),
 				// ... other fields (to be added later) ...
 				pages: z.record(
 					z.enum(PEOPLE_PAGES_ID_VALUES),
@@ -179,6 +186,22 @@ export default defineContentConfig({
 			type: "page",
 			source: "about_camp/*",
 			schema: AboutCampDataSchema,
+		}),
+
+		contacts: defineCollection({
+			type: "data",
+			source: "contacts.json",
+			schema: z.object({
+				contacts: z.array(z.object({
+					name: z.string(),
+					role: z.string(),
+					organization: z.string().optional(),
+					img: z.string().optional(),
+					email: z.string(),
+					icon: z.string().optional(),
+					address: z.string().optional(),
+				})),
+			}),
 		}),
 	},
 });

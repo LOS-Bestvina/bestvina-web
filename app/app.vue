@@ -1,14 +1,11 @@
 <script lang="ts" setup>
-import { onMounted } from "#imports";
 import { cs } from "@nuxt/ui/locale";
 
 const nuxtApp = useNuxtApp();
-const pageContainer = useTemplateRef<HTMLElement>("page");
 
 onMounted(() => {
-	const appContainer = shallowRef(document.getElementById("app"));
+	const appContainer = shallowRef(document.getElementById("app") ?? undefined);
 	nuxtApp.provide("appContainer", readonly(appContainer));
-	nuxtApp.provide("pageContainer", readonly(pageContainer));
 });
 
 useHead({
@@ -24,19 +21,19 @@ useHead({
 	title: "Běstvina",
 });
 
-// IMAGE DETAIL GLOBAL OPENER
-const { checkGlobalUrl, isModalOpen } = useImageDetail();
 const route = useRoute();
+const { checkGlobalUrl, isModalOpen } = useImageDetail();
 
 onMounted(() => {
-	checkGlobalUrl();
+	if (!isModalOpen.value) {
+		checkGlobalUrl();
+	}
 });
 
 watch(
 	() => route.query.image,
 	(newVal, oldVal) => {
-		// Only trigger globally if the modal isn't already handling the sequence
-		if (newVal && !oldVal && !isModalOpen.value) {
+		if (newVal && newVal !== oldVal && !isModalOpen.value) {
 			checkGlobalUrl();
 		}
 	},
@@ -51,22 +48,25 @@ watch(
 			:height="2"
 			color="var(--ui-primary)"
 		/>
+		<div
+			class="fixed inset-0 z-[-999] pointer-events-none w-full h-full blur-[100px] opacity-70"
+			style="background: radial-gradient(at 0% 0%, var(--mesh-color-1) 0, transparent 80%), radial-gradient(at 100% 0%, var(--mesh-color-2) 0, transparent 80%), radial-gradient(at 50% 100%, var(--mesh-color-3) 0, transparent 80%);"
+		/>
 		<UBanner
 			id="in-development"
+			color="secondary"
+			variant="soft"
+			icon="i-heroicons-beaker"
 			:ui="{
-				root: 'py-2',
-				title: 'line-clamp-3 whitespace-normal',
+				root: 'py-2 ring-1 ring-secondary-500/20 backdrop-blur-md',
+				title: 'line-clamp-3 whitespace-normal font-medium',
 			}"
 			class="h-fit"
 			close
-			title="Web je stále v raných fázích vývoje a nemusí zatím fungovat zcela podle představ..."
+			title="Webová stránka je stále ve vývoji. Některé části zatím nejsou kompletní a nemusí fungovat podle představ. Díky za trpělivost!"
 		/>
 		<NuxtLayout>
-			<div
-				ref="page"
-			>
-				<NuxtPage />
-			</div>
+			<NuxtPage />
 		</NuxtLayout>
 	</UApp>
 </template>

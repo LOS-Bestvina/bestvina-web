@@ -1,19 +1,4 @@
 {
   "header": "vsichni",
-  "sections": [
-    {
-      "name": "Prednasejici",
-      "people": [
-        "ferencik_jakub",
-        "person1",
-        "person2"
-      ]
-    },
-    {
-      "name": "Laboranti",
-      "people": [
-
-      ]
-    }
-  ]
+  "sections": []
 }
