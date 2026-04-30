@@ -1,21 +1,22 @@
 <script lang="ts" setup>
-import { CURRENT_YEAR } from "#shared/constants";
+import type { LandingCollectionItem } from "@nuxt/content";
 
-const description = ref(
-	"Dvoutýdenní soustředění pro nejlepší středoškolské chemiky a biology z celé České republiky podporované "
-	+ "přírodovědně zaměřenými fakultami předních českých univerzit.",
-);
+const _props = defineProps<{
+	data: LandingCollectionItem["hero"];
+}>();
 </script>
 
 <template>
 	<UPageHero
-		:description="description"
+		v-if="data"
+		:description="data.description"
 		:ui="{
-			description: 'lg:max-w-[80%]',
+			description: 'lg:w-3/4',
 			container: 'py-16 pb-16 sm:py-8 sm:pb-16 lg:pb-0 lg:py-40',
 			headline: 'w-fit',
+			wrapper: 'w-fit',
 			header: 'flex flex-col items-center text-center lg:text-start lg:block',
-			footer: 'flex flex-row justify-center lg:block',
+			links: 'flex flex-row flex-wrap items-center justify-center gap-4 lg:block lg:space-x-4',
 		}"
 		orientation="horizontal"
 	>
@@ -23,25 +24,30 @@ const description = ref(
 			<LandingHeroInfoHeadline />
 		</template>
 		<template #title>
-			<span class="leading-tight">Letní odborné soustředění<br><span class="bg-gradient-to-r from-teal-500 to-teal-300  dark:from-teal-500 dark:to-teal-100 bg-clip-text text-transparent animate-gradient">BĚSTVINA</span></span>
+			<span class="leading-tight flex flex-col gap-0 text-center lg:text-start">
+				<span
+					class="text-[clamp(1rem,7vw,2.5rem)] lg:text-[clamp(2.5rem,4vw,3.25rem)] font-black uppercase tracking-widest px-4 lg:px-0 lg:pe-16 whitespace-pre-wrap"
+				>
+					{{ data.titlePrefix }}
+				</span>
+				<span
+					class="bg-linear-to-r from-teal-500 to-teal-300 dark:from-teal-500 dark:to-teal-300 bg-clip-text text-transparent animate-gradient font-black text-[clamp(2rem,15vw,5.5rem)] lg:text-[clamp(5.5rem,6vw,7rem)] py-1 pt-2"
+				>
+					{{ data.titleMain }}
+				</span>
+			</span>
 		</template>
 		<template #links>
 			<UButton
-				:to="`/rocniky/`+ CURRENT_YEAR.toString()"
-				color="primary"
-				label="Aktuální ročník"
-				prefetch-on="visibility"
-				size="xl"
-				trailing-icon="i-lucide-arrow-right"
-			/>
-			<UButton
-				color="neutral"
-				label="O soustředění"
-				prefetch-on="visibility"
-				size="xl"
-				to="/informace"
-				trailing-icon="i-lucide-arrow-right"
-				variant="subtle"
+				v-for="(link, index) in data.links"
+				:key="index"
+				:color="link.color as any"
+				:label="link.label"
+				:prefetch-on="'visibility'"
+				:size="'xl'"
+				:to="link.to"
+				:trailing-icon="link.trailingIcon"
+				:variant="link.variant as any"
 			/>
 		</template>
 
@@ -53,21 +59,23 @@ const description = ref(
 
 <style scoped>
 .animate-gradient {
-  background-size: 300%;
-  -webkit-animation: animatedgradient 8s ease-in-out infinite alternate;
-  -moz-animation: animatedgradient 8s ease-in-out infinite alternate;
-  animation: animatedgradient 8s ease-in-out infinite alternate;
+	background-size: 300%;
+	-webkit-animation: animatedgradient 8s ease-in-out infinite alternate;
+	-moz-animation: animatedgradient 8s ease-in-out infinite alternate;
+	animation: animatedgradient 8s ease-in-out infinite alternate;
 }
 
 @keyframes animatedgradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+	0% {
+		background-position: 0% 50%;
+	}
+
+	50% {
+		background-position: 100% 50%;
+	}
+
+	100% {
+		background-position: 0% 50%;
+	}
 }
 </style>

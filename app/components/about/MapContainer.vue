@@ -38,7 +38,7 @@ onMounted(() => {
 
 			<USkeleton
 				v-else
-				:ui="{ rounded: 'rounded-none' }"
+				:ui="{ base: 'rounded-none' }"
 				class="absolute inset-0 w-full h-full"
 			/>
 		</template>

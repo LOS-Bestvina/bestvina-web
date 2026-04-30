@@ -17,6 +17,8 @@ const placeholder = img(src, {}, { preset: "thumbnailXXSm" });
 			class="h-96 lg:h-full w-full object-cover object-[75%_25%] rounded-xl p-1"
 			fetch-priority="high"
 			preset="thumbnailXXLg"
+			width="100%"
+			height="auto"
 		/>
 	</div>
 </template>

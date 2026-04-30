@@ -6,8 +6,6 @@ definePageMeta({
 	layout: "page",
 });
 
-const route = useRoute();
-const router = useRouter();
 const { getPageData } = usePeopleData();
 
 /**
@@ -36,46 +34,10 @@ const tabs: TabsItem[] = [
 	},
 ];
 
-const currentTab = ref(tabs[0]!.value as string);
-
-// sync currentTab ref with route query
-watch(() => route.query.t, (newTab) => {
-	if (newTab && tabs.some(tab => tab.value === newTab)) {
-		currentTab.value = newTab as string;
-	}
-}, { immediate: true });
-
-// update URL when tab changes
-watch(currentTab, (newTab) => {
-	if (newTab !== route.query.t) {
-		router.push({
-			path: "/lide",
-			query: { t: newTab },
-		});
-	}
-});
-
-const checkInitialRouteQueryParameter = () => {
-	const validTabValues = [...tabs.map(value => value.value), ""];
-	const selectedTabFromQuery = route.query.t as string;
-
-	if (!validTabValues.includes(selectedTabFromQuery)) {
-		// if non-existent tab requested, redirect to 'vsichni' tab
-		router.push({
-			path: "/lide",
-		});
-		currentTab.value = tabs[0]!.value as string;
-	}
-	else {
-		currentTab.value = selectedTabFromQuery;
-	}
-};
-// onMounted(() => {
-// 	checkInitialRouteQueryParameter();
-// });
+const { currentTab, validateInitialTab } = useTabUrlSync(tabs as { label: string; value: string }[], "/lide");
 
 if (import.meta.client) {
-	checkInitialRouteQueryParameter();
+	validateInitialTab();
 }
 
 /**
@@ -102,18 +64,23 @@ const pageId = computed(() => `${rootPageId}/${currentTab.value}`);
 		/>
 
 		<UPageBody>
+			<UAlert
+				class="mb-8"
+				color="warning"
+				icon="i-lucide-construction"
+				title="Tato stránka je teprve rozpracovaná. Seznam lidí není zdaleka kompletní (zj. v biologické sekci). Mnoho popisků je převzato ze starého webu a nemusí být aktuální."
+				variant="subtle"
+			/>
 			<ClientOnly>
 				<UTabs
 					v-model="currentTab"
 					:content="false"
 					:items="tabs"
-					:ui="{
-						root: 'mb-4',
-						leadingIcon: 'block 2xs:hidden md:block',
-						label: 'hidden 2xs:block',
-					}"
 					color="secondary"
 					variant="pill"
+					:ui="{
+						list: 'w-full! lg:w-3/4! mx-auto',
+					}"
 				/>
 				<PeopleScrollableGrid
 					:key="pageId"
@@ -123,7 +90,7 @@ const pageId = computed(() => `${rootPageId}/${currentTab.value}`);
 					<div class="w-full h-full flex flex-row justify-center items-center my-16">
 						<UIcon
 							class="text-muted"
-							name="i-svg-spinners-bars-scale-middle"
+							name="i-svg-spinners-blocks-shuffle-3"
 							size="48"
 						/>
 					</div>

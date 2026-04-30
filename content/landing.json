@@ -1,0 +1,84 @@
+{
+  "hero": {
+    "titlePrefix": "Letní odborné\nsoustředění",
+    "titleMain": "BĚSTVINA",
+    "description": "Dvoutýdenní soustředění pro nejlepší středoškolské chemiky a biology z celé České republiky podporované přírodovědně zaměřenými fakultami předních českých univerzit.",
+    "links": [
+      {
+        "label": "Aktuální ročník",
+        "to": "/rocniky/2026",
+        "color": "primary",
+        "trailingIcon": "i-lucide-arrow-right"
+      },
+      {
+        "label": "O soustředění",
+        "to": "/informace",
+        "color": "neutral",
+        "variant": "subtle",
+        "trailingIcon": "i-lucide-arrow-right"
+      }
+    ]
+  },
+  "reasons": {
+    "title": "Tři důvody proč jet na Běstvinu...",
+    "features": [
+      {
+        "title": "Rozšíření obzorů",
+        "description": "Během 14 dnů načerpáš vědomosti a dovednosti, které ti škola běžně nedá. Získáš obrovskou výhodu nejen do dalších ročníků olympiád, ale i pro budoucí studium na vysoké škole. Naučíš se dívat na svět kolem sebe v jazyce přírodních věd.",
+        "icon": "i-lucide-rocket"
+      },
+      {
+        "title": "Nadšenci jako ty",
+        "description": "Cítíš, že tvá vášeň pro vědu ve škole naráží na nepochopení? Na Běstvině se každé léto sejde kolem 120 studentů a studentek jako ty! Získáš tu přátele na celý život, poznáš své budoucí spolužáky a kolegy, a třeba i najdeš někoho, s kým jednou budeš objevovat taje biochemie hormonů...",
+        "icon": "i-lucide-hand-heart"
+      },
+      {
+        "title": "Síť kontaktů",
+        "description": "Přednášející a organizátoři tvoří rozmanitou skupinu s širokým spektrem zájmů a zaměření. Právě z těchto setkání často vznikají pěkné spolupráce – ať už formou kvalitní studentské práce (např. SOČ), odborné stáže, nebo budoucím zapojením do výzkumné skupiny.",
+        "icon": "i-carbon-network-4"
+      }
+    ]
+  },
+  "activities": {
+    "title": "Nudit se rozhodně nebudeš!",
+    "description": "Běstvina není jako škola – nebudeš sedět v lavici a biflovat se zbytečnosti. Tady získáš znalosti, se kterými ohromíš rodiče, spolužáky, ale i sám sebe. Mimo to si vyzkoušíš práci v laboratořích se špičkovým vybavením a naučíš se poznávat přírodu kolem sebe. Těš se také na táboráky, sportovní vyžití a další neodborný program.",
+    "image": "/imgs/promo/fireball.jpg",
+    "links": [
+      {
+        "label": "Prohlédni si, co tě čeká",
+        "to": "/informace",
+        "color": "secondary",
+        "variant": "outline",
+        "trailingIcon": "i-lucide-arrow-right"
+      }
+    ]
+  },
+  "location": {
+    "title": "Ve středu České republiky",
+    "description": "Soustředění se každoročně koná v areálu táborové základny Vysoké školy chemicko-technologické v obci Běstvina v Železných horách. Bydlet budeš v útulné chatce sdílené s dalšími účastníky (a různorodým kousavým hmyzem).",
+    "image": "/imgs/promo/camp.jpg",
+    "links": [
+      {
+        "label": "Podívej se, kam pojedeš",
+        "to": "/informace/#lokace",
+        "color": "secondary",
+        "variant": "outline",
+        "trailingIcon": "i-lucide-arrow-right"
+      }
+    ]
+  },
+  "people": {
+    "title": "Lidé, se kterými si budeš rozumět!",
+    "description": "O tvůj odborný i neodborný program na Běstvině se budou starat jak studenti vysokých škol jen o pár let starší než ty, tak i současní vědci a učitelé, kteří Běstvinu zažili z tvojí pozice také. Kromě nich se samozřejmě setkáš i s významnými osobnostmi, které každý rok Běstvinu navštěvují.",
+    "image": "/imgs/promo/people.jpg",
+    "links": [
+      {
+        "label": "Poznej nás všechny",
+        "to": "/lide",
+        "color": "secondary",
+        "variant": "outline",
+        "trailingIcon": "i-lucide-arrow-right"
+      }
+    ]
+  }
+}

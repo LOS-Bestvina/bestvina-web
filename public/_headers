@@ -2,7 +2,7 @@
   Content-Type: application/json
 /api/v1/images/groups/*
   Content-Type: application/json
-/api/v1/images/photograhers
+/api/v1/images/photographers
   Content-Type: application/json
 /api/v1/images/years
   Content-Type: application/json

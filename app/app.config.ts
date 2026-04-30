@@ -14,11 +14,11 @@ export default defineAppConfig({
 		},
 		pageHeader: {
 			slots: {
-				root: "relative w-screen ml-[-50vw] left-[50%] px-4 sm:px-6 lg:px-8 py-12 sm:py-16 text-center bg-primary/5",
+				root: "relative w-screen ml-[-50vw] left-[50%] px-4 sm:px-6 lg:px-8 py-12 sm:py-20 text-center border-none",
 				container: "flex flex-col items-center w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8",
 				wrapper: "flex flex-col items-center max-w-2xl mx-auto",
-				title: "text-3xl sm:text-4xl font-bold text-[var(--ui-text-highlighted)]",
-				description: "mt-4 text-base sm:text-lg italic text-[var(--ui-text-muted)]",
+				title: "text-4xl sm:text-5xl font-extrabold tracking-tight text-[var(--ui-text-highlighted)]",
+				description: "mt-4 text-lg sm:text-xl text-[var(--ui-text-muted)] max-w-2xl",
 				links: "justify-center mt-6",
 				headline: "justify-center",
 			},
@@ -35,6 +35,26 @@ export default defineAppConfig({
 						childLink: "py-2",
 					},
 				},
+			},
+		},
+		card: {
+			slots: {
+				root: "bg-white/70 dark:bg-neutral-900/50 backdrop-blur-md ring-1 ring-neutral-200 dark:ring-white/5 shadow-sm transition-all duration-300",
+			},
+		},
+		tabs: {
+			slots: {
+				root: "flex flex-col gap-2",
+				list: "bg-neutral-100/50 dark:bg-neutral-800/50 backdrop-blur-md ring-1 ring-neutral-200/10 dark:ring-white/5 p-1",
+				indicator: "hidden md:block bg-secondary-500 rounded-lg shadow-sm",
+				trigger: "transition-all duration-200 font-medium px-4 py-1.5 text-sm cursor-pointer data-[state=active]:bg-secondary-500 md:data-[state=active]:bg-transparent data-[state=active]:text-white text-muted hover:text-highlighted z-10",
+			},
+		},
+		accordion: {
+			slots: {
+				item: "bg-neutral-100/50 dark:bg-neutral-800/50 ring-1 ring-neutral-200 dark:ring-white/5 shadow-sm rounded-lg transition-all duration-300",
+				trigger: "bg-white/70 dark:bg-neutral-900/50 flex items-center rounded-lg gap-3 px-4 py-4 font-semibold text-base text-highlighted",
+				body: "px-4 py-2 text-base",
 			},
 		},
 	},

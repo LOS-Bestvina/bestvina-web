@@ -1,4 +1,3 @@
-import { computed, markRaw, type Ref } from "vue";
 import type { BestvinaImage } from "#shared/utils/imageMapper";
 
 export interface LayoutImage {

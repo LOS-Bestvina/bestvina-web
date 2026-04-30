@@ -26,6 +26,8 @@ defineSlots<{
 	image(props: { image: BestvinaImage; width: number; item: LayoutImage }): unknown;
 }>();
 
+const emit = defineEmits<{ imageClick: [src: string, allImages: string[]] }>();
+
 const justifiedContainerRef = useTemplateRef("justifiedContainerRef");
 const { width: containerWidth } = useElementSize(justifiedContainerRef,
 	{ width: 0, height: 0 },
@@ -85,7 +87,6 @@ const isEmpty = computed(() => {
 	return layoutData.value.layoutItems.length === 0 || false;
 });
 
-const { openImage } = useImageDetail();
 const openImageDetail = (src: string) => {
 	const images = Object.entries(props.groupedImages)
 	// sort by year in descending order
@@ -95,7 +96,7 @@ const openImageDetail = (src: string) => {
 			return yearArray.map(img => img.path);
 		});
 
-	openImage(src, images);
+	emit("imageClick", src, images);
 };
 </script>
 
