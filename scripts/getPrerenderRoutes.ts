@@ -1,6 +1,10 @@
 import { existsSync, readFileSync } from "fs";
-import { resolve } from "path";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 import { CURRENT_YEAR, OLDEST_YEAR } from "../shared/constants";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export const getApiRoutesToPrerender = (): string[] => {
 	const apiRoutes: string[] = [];
@@ -18,9 +22,10 @@ export const getApiRoutesToPrerender = (): string[] => {
 };
 
 export const getImgRoutes = (): string[] => {
-	const imgsRoutesPath = resolve(".prerender/imgs-routes.json");
+	const imgsRoutesPath = join(__dirname, "../.prerender/imgs-routes.json");
 	if (!existsSync(imgsRoutesPath)) {
-		throw new Error("File ./prerender/imgs-routes.json not found. You need to run `npm run prerender` first.");
+		console.error("File ./.prerender/imgs-routes.json does not exist.");
+		return [];
 	}
 	try {
 		return JSON.parse(readFileSync(imgsRoutesPath, "utf-8"));
