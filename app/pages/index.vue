@@ -12,7 +12,7 @@ if (!landingData.value) {
 }
 
 useSeoMeta({
-	title: "LOS Běstvina",
+	title: "",
 	description: landingData.value.hero.description,
 });
 </script>
