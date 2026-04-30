@@ -51,7 +51,7 @@ watch(
 			color="var(--ui-primary)"
 		/>
 		<div
-			class="fixed inset-0 z-[-999] pointer-events-none w-full h-full blur-[100px] opacity-70 transform-gpu"
+			class="fixed inset-0 z-[-999] pointer-events-none w-full h-full blur-[100px] opacity-70"
 			style="background: radial-gradient(at 0% 0%, var(--mesh-color-1) 0, transparent 80%), radial-gradient(at 100% 0%, var(--mesh-color-2) 0, transparent 80%), radial-gradient(at 50% 100%, var(--mesh-color-3) 0, transparent 80%);"
 		/>
 		<UBanner
