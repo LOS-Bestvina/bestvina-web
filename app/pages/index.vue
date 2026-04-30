@@ -16,15 +16,26 @@ if (!landingData.value) {
 	<div v-if="landingData">
 		<LandingSectionHero :data="landingData.hero" />
 		<LandingSectionReasons
+			v-motion-slide-visible-once-bottom
 			:data="landingData.reasons"
 			solid-background
 		/>
-		<LandingSectionActivities :data="landingData.activities" />
+		<LandingSectionActivities
+			v-motion-slide-visible-once-bottom
+			:data="landingData.activities"
+		/>
 		<LandingSectionPeople
+			v-motion-slide-visible-once-bottom
 			:data="landingData.people"
 			solid-background
 		/>
-		<LandingSectionLocation :data="landingData.location" />
-		<LandingLogos class="bg-neutral-50 dark:bg-neutral-900/50" />
+		<LandingSectionLocation
+			v-motion-slide-visible-once-bottom
+			:data="landingData.location"
+		/>
+		<LandingLogos
+			v-motion-slide-visible-once-bottom
+			class="bg-neutral-50 dark:bg-neutral-900/50"
+		/>
 	</div>
 </template>
