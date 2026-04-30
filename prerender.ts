@@ -58,9 +58,7 @@ async function getAllImages(dir: string, recursively: boolean = true) {
 	const images: string[] = [];
 
 	entries.forEach((entry) => {
-		const posixParentPath = entry.parentPath.replace(/\\/g, "/");
-		const imgsIndex = posixParentPath.indexOf("imgs");
-		const posixPathWithoutPublic = posixParentPath.substring(imgsIndex);
+		const posixPathWithoutPublic = relative(resolve("public"), entry.parentPath).replace(/\\/g, "/");
 		const extension = entry.name.substring(entry.name.lastIndexOf(".") + 1).toLowerCase();
 		if (entry.isFile() && IMAGE_EXTENSIONS.includes(extension)) {
 			images.push(join(posixPathWithoutPublic, entry.name));
