@@ -147,6 +147,7 @@ export default defineContentConfig({
 				image: z.string().optional(),
 				isFormer: z.boolean().catch(false),
 				isHidden: z.boolean().catch(false),
+				isExternal: z.boolean().catch(false),
 				// ... other fields (to be added later) ...
 				pages: z.record(
 					z.enum(PEOPLE_PAGES_ID_VALUES),

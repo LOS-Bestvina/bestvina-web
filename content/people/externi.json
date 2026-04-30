@@ -11,13 +11,6 @@
         "external/drabova_dana",
         "external/mason_phil"
       ]
-    },
-    {
-      "name": "some other section",
-      "people": [
-        "external3",
-        "external4"
-      ]
     }
   ]
 }
