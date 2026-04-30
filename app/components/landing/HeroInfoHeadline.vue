@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import { CURRENT_YEAR } from "#shared/constants";
 
-// TODO: make headlines reactive to some API call
+const { isRegistrationOpen } = useRegistrationState();
 
-const itemsToShow = ref({
-	prihlasky: true,
+const itemsToShow = computed(() => ({
+	prihlasky: isRegistrationOpen.value,
 	galerie: false,
-});
+}));
+
 const allHeadlinesHidden = computed(() => {
 	const values = Object.values(itemsToShow.value);
 	return values.every(value => value === false);
@@ -21,11 +22,11 @@ const allHeadlinesHidden = computed(() => {
 		<!-- prihlasky -->
 		<NuxtLink
 			v-if="itemsToShow['prihlasky']"
-			to="/"
+			:to="`/rocniky/${CURRENT_YEAR}`"
 		>
 			<UBadge
 				color="success"
-				size="md"
+				size="lg"
 				trailing-icon="i-lucide-arrow-right"
 				variant="solid"
 			>
@@ -40,25 +41,13 @@ const allHeadlinesHidden = computed(() => {
 		>
 			<UBadge
 				color="secondary"
-				size="md"
+				size="lg"
 				trailing-icon="i-lucide-arrow-right"
 				variant="solid"
 			>
 				Fotogalerie byla aktualizována!
 			</UBadge>
 		</NuxtLink>
-		<!--		<NuxtLink
-			to="/"
-		>
-			<UBadge
-				color="tertiary"
-				size="md"
-				trailing-icon="i-lucide-arrow-right"
-				variant="outline"
-			>
-				Něco se po💩!
-			</UBadge>
-		</NuxtLink> -->
 	</div>
 </template>
 

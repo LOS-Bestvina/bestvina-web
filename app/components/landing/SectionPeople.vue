@@ -1,7 +1,10 @@
 <script lang="ts" setup>
-const { data: page } = await useAsyncData("landing-people", () => {
-	return queryCollection("landing").first();
-});
+import type { LandingCollectionItem } from "@nuxt/content";
+
+const _props = defineProps<{
+	data: LandingCollectionItem["people"];
+	solidBackground?: boolean;
+}>();
 
 const img = useImage();
 const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
@@ -9,17 +12,18 @@ const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
 
 <template>
 	<UPageSection
-		v-if="page"
-		:description="page.people.description"
+		v-if="data"
+		:class="{ 'bg-neutral-50/50 dark:bg-neutral-900/50': solidBackground }"
+		:description="data.description"
 		icon="i-carbon-friendship"
 		orientation="horizontal"
 		reverse
-		:title="page.people.title"
+		:title="data.title"
 	>
 		<template #default>
 			<NuxtImg
-				:placeholder="placeholder(page.people.image!)"
-				:src="page.people.image"
+				:placeholder="placeholder(data.image!)"
+				:src="data.image"
 				class="h-full object-cover object-[75%_25%] lg:w-full lg:hover:scale-105 transition-transform rounded-xl"
 				loading="lazy"
 				preset="thumbnailXXLg"
@@ -28,7 +32,7 @@ const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
 
 		<template #links>
 			<UButton
-				v-for="(link, index) in page.people.links"
+				v-for="(link, index) in data.links"
 				:key="index"
 				:color="link.color as any"
 				:label="link.label"

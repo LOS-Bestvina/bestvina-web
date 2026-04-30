@@ -174,6 +174,7 @@ const checksCompleted = ref(0);
 										:label="link.text"
 										:to="link.url"
 										:leading-icon="link.icon || 'i-lucide-link'"
+										target="_blank"
 										variant="subtle"
 									/>
 								</div>

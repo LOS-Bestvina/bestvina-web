@@ -81,8 +81,8 @@ const LandingPageSchema = z.object({
 
 const YearsPageSchema = z.object({
 	year: z.number().int(),
-	coverImg: z.string().optional(), // path to image
-	theme: z.string().optional(),
+	coverImg: z.string().nullable().optional(), // path to image
+	theme: z.string().nullable().optional(),
 
 	term: z.object({
 		startDate: z.date(),

@@ -1,7 +1,10 @@
 export function useTabUrlSync(tabs: { label: string; value: string }[], defaultPath: string) {
 	const route = useRoute();
 	const router = useRouter();
-	const currentTab = ref(tabs[0]!.value as string);
+	const initialTab = (route.query.t && tabs.some(t => t.value === route.query.t))
+		? route.query.t as string
+		: tabs[0]!.value as string;
+	const currentTab = ref(initialTab);
 
 	if (import.meta.client) {
 		watch(() => route.query.t, (newTab) => {

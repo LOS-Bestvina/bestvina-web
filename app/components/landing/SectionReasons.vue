@@ -1,17 +1,21 @@
 <script lang="ts" setup>
-const { data: page } = await useAsyncData("landing-reasons", () => {
-	return queryCollection("landing").first();
-});
+import type { LandingCollectionItem } from "@nuxt/content";
+
+const _props = defineProps<{
+	data: LandingCollectionItem["reasons"];
+	solidBackground?: boolean;
+}>();
 </script>
 
 <template>
 	<UPageSection
-		v-if="page"
-		:features="page.reasons.features"
+		v-if="data"
+		:class="{ 'bg-neutral-50/50 dark:bg-neutral-900/50': solidBackground }"
+		:features="data.features"
 		:ui="{
 			features: 'sm:grid-cols-1 md:px-16',
 		}"
-		:title="page.reasons.title"
+		:title="data.title"
 	/>
 </template>
 

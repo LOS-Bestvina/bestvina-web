@@ -1,13 +1,15 @@
 <script lang="ts" setup>
-const { data: page } = await useAsyncData("landing-hero", () => {
-	return queryCollection("landing").first();
-});
+import type { LandingCollectionItem } from "@nuxt/content";
+
+const _props = defineProps<{
+	data: LandingCollectionItem["hero"];
+}>();
 </script>
 
 <template>
 	<UPageHero
-		v-if="page"
-		:description="page.hero.description"
+		v-if="data"
+		:description="data.description"
 		:ui="{
 			description: 'lg:w-3/4',
 			container: 'py-16 pb-16 sm:py-8 sm:pb-16 lg:pb-0 lg:py-40',
@@ -19,25 +21,25 @@ const { data: page } = await useAsyncData("landing-hero", () => {
 		orientation="horizontal"
 	>
 		<template #headline>
-			<!-- <LandingHeroInfoHeadline /> -->
+			<LandingHeroInfoHeadline />
 		</template>
 		<template #title>
 			<span class="leading-tight flex flex-col gap-0 text-center lg:text-start">
 				<span
-					class="text-[clamp(1.25rem,5vw,3rem)] font-black uppercase tracking-widest mb-2 px-4 lg:px-0 lg:pe-16 whitespace-pre-wrap"
+					class="text-[clamp(1rem,7vw,2.5rem)] lg:text-[clamp(2.5rem,4vw,3.25rem)] font-black uppercase tracking-widest px-4 lg:px-0 lg:pe-16 whitespace-pre-wrap"
 				>
-					{{ page.hero.titlePrefix }}
+					{{ data.titlePrefix }}
 				</span>
 				<span
-					class="bg-linear-to-r from-teal-500 to-teal-300 dark:from-teal-500 dark:to-teal-300 bg-clip-text text-transparent animate-gradient font-black text-[clamp(2.5rem,12vw,6rem)] py-1 pt-2"
+					class="bg-linear-to-r from-teal-500 to-teal-300 dark:from-teal-500 dark:to-teal-300 bg-clip-text text-transparent animate-gradient font-black text-[clamp(2rem,15vw,5.5rem)] lg:text-[clamp(5.5rem,6vw,7rem)] py-1 pt-2"
 				>
-					{{ page.hero.titleMain }}
+					{{ data.titleMain }}
 				</span>
 			</span>
 		</template>
 		<template #links>
 			<UButton
-				v-for="(link, index) in page.hero.links"
+				v-for="(link, index) in data.links"
 				:key="index"
 				:color="link.color as any"
 				:label="link.label"

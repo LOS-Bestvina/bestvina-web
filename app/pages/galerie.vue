@@ -12,7 +12,26 @@ const {
 	selectedAuthors,
 	availableAuthors,
 	availableYears,
+	groupedImages,
 } = useBestvinaImages("gallery", targetYears, { enableUrlSync: true });
+
+const {
+	topYears,
+	olderYears,
+	oldestTopYear,
+	isOlderYearsSelected,
+	toggleOlderYears,
+	topAuthorsInfo,
+	otherAuthors,
+	isOtherAuthorsSelected,
+	toggleOtherAuthors,
+} = useGalleryTopFilters(
+	availableYears,
+	availableAuthors,
+	selectedYears,
+	selectedAuthors,
+	groupedImages,
+);
 
 const { openImage } = useImageDetail();
 
@@ -85,12 +104,19 @@ const isAuthorSelected = (author: any) => {
 									</p>
 									<div class="flex flex-wrap gap-2">
 										<UButton
-											v-for="year in availableYears"
+											v-for="year in topYears"
 											:key="year"
 											:label="year"
 											:color="selectedYears.includes(year) ? 'primary' : 'neutral'"
 											:variant="selectedYears.includes(year) ? 'solid' : 'soft'"
 											@click="toggleYear(year)"
+										/>
+										<UButton
+											v-if="olderYears.length > 0"
+											:label="`starší než ${oldestTopYear}`"
+											:color="isOlderYearsSelected ? 'primary' : 'neutral'"
+											:variant="isOlderYearsSelected ? 'solid' : 'soft'"
+											@click="toggleOlderYears()"
 										/>
 									</div>
 								</div>
@@ -101,12 +127,19 @@ const isAuthorSelected = (author: any) => {
 									</p>
 									<div class="flex flex-wrap gap-2">
 										<UButton
-											v-for="author in availableAuthors"
+											v-for="author in topAuthorsInfo"
 											:key="author.shortcut || author"
 											:label="author.name || author"
 											:color="isAuthorSelected(author) ? 'secondary' : 'neutral'"
 											:variant="isAuthorSelected(author) ? 'solid' : 'soft'"
 											@click="toggleAuthor(author)"
+										/>
+										<UButton
+											v-if="otherAuthors.length > 0"
+											label="ostatní"
+											:color="isOtherAuthorsSelected ? 'secondary' : 'neutral'"
+											:variant="isOtherAuthorsSelected ? 'solid' : 'soft'"
+											@click="toggleOtherAuthors()"
 										/>
 									</div>
 								</div>
@@ -138,7 +171,7 @@ const isAuthorSelected = (author: any) => {
 						</p>
 						<div class="flex flex-wrap gap-2">
 							<UButton
-								v-for="year in availableYears"
+								v-for="year in topYears"
 								:key="year"
 								:label="year"
 								:color="selectedYears.includes(year) ? 'primary' : 'neutral'"
@@ -146,6 +179,15 @@ const isAuthorSelected = (author: any) => {
 								size="sm"
 								class="transition-all"
 								@click="toggleYear(year)"
+							/>
+							<UButton
+								v-if="olderYears.length > 0"
+								:label="`starší než ${oldestTopYear}`"
+								:color="isOlderYearsSelected ? 'primary' : 'neutral'"
+								:variant="isOlderYearsSelected ? 'solid' : 'soft'"
+								size="sm"
+								class="transition-all"
+								@click="toggleOlderYears()"
 							/>
 						</div>
 					</div>
@@ -156,7 +198,7 @@ const isAuthorSelected = (author: any) => {
 						</p>
 						<div class="flex flex-wrap gap-2">
 							<UButton
-								v-for="author in availableAuthors"
+								v-for="author in topAuthorsInfo"
 								:key="author.shortcut || author"
 								:label="author.name || author"
 								:color="isAuthorSelected(author) ? 'secondary' : 'neutral'"
@@ -164,6 +206,15 @@ const isAuthorSelected = (author: any) => {
 								size="sm"
 								class="transition-all"
 								@click="toggleAuthor(author)"
+							/>
+							<UButton
+								v-if="otherAuthors.length > 0"
+								label="ostatní"
+								:color="isOtherAuthorsSelected ? 'secondary' : 'neutral'"
+								:variant="isOtherAuthorsSelected ? 'solid' : 'soft'"
+								size="sm"
+								class="transition-all"
+								@click="toggleOtherAuthors()"
 							/>
 						</div>
 					</div>

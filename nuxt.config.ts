@@ -25,9 +25,6 @@ export default defineNuxtConfig({
 		},
 	},
 	app: {
-		rootAttrs: {
-			id: "app",
-		},
 		pageTransition: {
 			name: "page",
 			mode: "out-in",
@@ -56,8 +53,8 @@ export default defineNuxtConfig({
 		colorMode: true,
 	},
 	routeRules: {
-		"/**": { app: { layout: "page" } },
-		"/": { app: { layout: "landing" }, prerender: true },
+		"/**": { },
+		"/": { prerender: true },
 		"/kronika": { prerender: true },
 		"/rocniky/**": { prerender: true },
 		"/lide": { prerender: true },
@@ -83,6 +80,12 @@ export default defineNuxtConfig({
 				"@vue/devtools-core",
 				"@vue/devtools-kit",
 			],
+		},
+	},
+	hooks: {
+		"prerender:routes"({ routes }) {
+			getApiRoutesToPrerender().forEach(route => routes.add(route));
+			getImgRoutes().forEach(route => routes.add(route));
 		},
 	},
 	eslint: {

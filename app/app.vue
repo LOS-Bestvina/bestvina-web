@@ -2,12 +2,10 @@
 import { cs } from "@nuxt/ui/locale";
 
 const nuxtApp = useNuxtApp();
-const pageContainer = useTemplateRef<HTMLElement>("page");
 
 onMounted(() => {
-	const appContainer = shallowRef(document.getElementById("app"));
+	const appContainer = shallowRef(document.getElementById("app") ?? undefined);
 	nuxtApp.provide("appContainer", readonly(appContainer));
-	nuxtApp.provide("pageContainer", readonly(pageContainer));
 });
 
 useHead({
@@ -65,14 +63,10 @@ watch(
 			}"
 			class="h-fit"
 			close
-			title="Na webu se stále usilovně pracuje. Omluv případné chyby nebo chybějící části."
+			title="Webová stránka je stále ve vývoji. Některé části zatím nejsou kompletní a nemusí fungovat podle představ. Díky za trpělivost!"
 		/>
 		<NuxtLayout>
-			<div
-				ref="page"
-			>
-				<NuxtPage />
-			</div>
+			<NuxtPage />
 		</NuxtLayout>
 	</UApp>
 </template>

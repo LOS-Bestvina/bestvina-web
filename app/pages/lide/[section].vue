@@ -40,6 +40,13 @@ if (!page.value) {
 			:title="page?.header"
 		/>
 		<UPageBody class="mt-0">
+			<UAlert
+				class="mb-8"
+				color="warning"
+				icon="i-lucide-construction"
+				title="Tato stránka je teprve rozpracovaná. Seznam lidí není zdaleka kompletní (zj. v biologické sekci). Mnoho popisků je převzato ze starého webu a nemusí být aktuální."
+				variant="subtle"
+			/>
 			<PeopleScrollableGrid
 				:key="pageId"
 				:page-id="pageId"

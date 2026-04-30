@@ -120,14 +120,19 @@
         "content": "Ačkoli se v posledních letech pokrytí mobilní sítí výrazně zlepšilo, stále se nedá říct, že by bylo stabilní (záleží však na operátorovi). Na odeslání SMS či zavolání obvykle stačí, ale pro doom-scrolling na Instagramu a TikToku spíš ne. :)"
       },
       {
+        "label": "Mám stravovací omezení, budu mít co jíst?",
+        "icon": "i-mdi-food-ramen",
+        "content": "Není problém zařídit vegetariánskou, bezlepkovou nebo bezlaktózovou stravu."
+      },
+      {
         "label": "Můžu si někde dokoupit zásoby (např. sušenek nebo kafe)?",
-        "icon": "i-lucide-box",
+        "icon": "i-lucide-shopping-basket",
         "content": "Nejbližší obchůdek se nachází v obci Běstvina (cca 2 km daleko), kde se dají dokoupit zj. trvanlivé potraviny a pochutiny. O něco dál, v Třemošnici, se je supermarket Penny, kde je výběr podstatně větší – můžeš se tam vypravit pěšky třeba po večeři, nebo taky lze požádat nějakého z organizátorů, který má auto."
       },
       {
         "label": "Je možné se zúčastnit pouze části soustředění?",
         "icon": "i-lucide-calendar-days",
-        "content": "Ano, možné to je. Připrav se však na to, že tvůj zážitek nebude kompletní, protože některé aktivity nelze z organizačních důvodů přesunout."
+        "content": "Ano, můžeš se zúčastnit i části soustředění. Přijdeš však o některé části soustředění, které z organizačních důvodů nelze přesunout."
       }
     ]
   },
