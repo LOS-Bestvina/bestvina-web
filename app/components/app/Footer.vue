@@ -25,6 +25,7 @@
 						nebo založ
 						<NuxtLink
 							target="_blank"
+							rel="noopener noreferrer"
 							to="https://github.com/FelyCZ/bestvina-web/issues"
 							class="text-white hover:text-secondary underline underline-offset-4"
 						>
@@ -34,6 +35,7 @@
 					<NuxtLink
 						class="my-2 text-xs text-muted hover:text-muted transition-colors"
 						target="_blank"
+						rel="noopener noreferrer"
 						to="https://github.com/FelyCZ/bestvina-web"
 					>
 						Zdrojový kód je dostupný na <span class="text-white hover:text-secondary">GitHubu</span>
@@ -54,6 +56,7 @@
 					label="Chemická olympiáda"
 					size="sm"
 					target="_blank"
+					rel="noopener noreferrer"
 					to="https://olympiada.vscht.cz/"
 					variant="link"
 				/>
@@ -66,6 +69,7 @@
 					label="Biologická olympiáda"
 					size="sm"
 					target="_blank"
+					rel="noopener noreferrer"
 					to="https://olympiada.natur.cuni.cz/cs/"
 					variant="ghost"
 				/>
