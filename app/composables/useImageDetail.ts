@@ -8,20 +8,16 @@ export interface ImagePayload {
 
 const PATH_PREFIX = "/imgs/";
 
-// 1. Map long keys to single characters to save space
 const KeyMap: Record<string, string> = {
 	src: "s",
 };
-// Automatically create the reverse map for decoding
 const ReverseKeyMap = Object.fromEntries(Object.entries(KeyMap).map(([k, v]) => [v, k]));
 
-// 2. Optimized Encoder
 const encodePayload = (data: ImagePayload): string => {
 	const params = new URLSearchParams();
 
 	for (const [key, value] of Object.entries(data)) {
 		let valStr = String(value);
-		// Strip prefix if it's the src
 		if (key === "src" && valStr.startsWith(PATH_PREFIX)) {
 			valStr = valStr.slice(PATH_PREFIX.length);
 		}
@@ -38,7 +34,6 @@ const encodePayload = (data: ImagePayload): string => {
 		.replace(/=+$/, "");
 };
 
-// 3. Optimized Decoder
 export const decodePayload = (str: string): ImagePayload | null => {
 	try {
 		// Restore standard Base64 characters and padding
@@ -78,18 +73,23 @@ export function useImageDetail(options: MaybeRefOrGetter<ImageDetailOptions> = {
 	const router = useRouter();
 	const overlay = useOverlay();
 
-	const modal = overlay.create(LazyImageDetailModal);
+	const modal = import.meta.client ? overlay.create(LazyImageDetailModal) : { open: () => Promise.resolve(), close: () => {} };
 
 	const openImage = async (src: string, images: string[] = [src], meta: Omit<ImagePayload, "src"> = {}) => {
-		// 2. Lock the state so app.vue doesn't hijack the click
-		isModalOpen.value = true;
-		const optionsValue = toValue(options);
+		if (import.meta.server) return;
 
+		// set state immediately to prevent other watchers from re-triggering this
+		isModalOpen.value = true;
+
+		const optionsValue = toValue(options);
 		const payload: ImagePayload = { src, ...meta };
 		const encodedState = encodePayload(payload);
 
 		if (route.query.image !== encodedState) {
-			await router.push({ query: { ...route.query, image: encodedState } });
+			await router.replace({
+				query: { ...route.query, image: encodedState },
+				hash: route.hash,
+			});
 		}
 
 		await modal.open({
@@ -100,32 +100,37 @@ export function useImageDetail(options: MaybeRefOrGetter<ImageDetailOptions> = {
 				const newPayload: ImagePayload = { ...meta, src: newSrc };
 				router.replace({
 					query: { ...route.query, image: encodePayload(newPayload) },
+					hash: route.hash,
 				});
 			},
 		});
 
-		if (route.query.image) {
+		if (isModalOpen.value && route.query.image) {
 			const newQuery = { ...route.query };
 			delete newQuery.image;
-			await router.replace({ query: newQuery });
+			await router.replace({ query: newQuery, hash: route.hash });
 		}
 	};
 
 	const closeImage = () => {
-		isModalOpen.value = false; // Unlock state
+		if (import.meta.server) return;
+		isModalOpen.value = false;
 		modal.close();
 	};
 
-	watch(
-		() => route.query.image,
-		(newQueryString) => {
-			if (!newQueryString) {
-				closeImage();
-			}
-		},
-	);
+	onMounted(() => {
+		watch(
+			() => route.query.image,
+			(newQueryString) => {
+				if (!newQueryString && isModalOpen.value) {
+					closeImage();
+				}
+			},
+		);
+	});
 
 	const checkGlobalUrl = () => {
+		if (import.meta.server) return;
 		const encodedState = route.query.image as string;
 		if (encodedState) {
 			const decoded = decodePayload(encodedState);
@@ -136,7 +141,6 @@ export function useImageDetail(options: MaybeRefOrGetter<ImageDetailOptions> = {
 		}
 	};
 
-	// 3. Export the state so app.vue can read it
 	return {
 		openImage,
 		closeImage,

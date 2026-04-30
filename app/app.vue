@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { onMounted } from "#imports";
 import { cs } from "@nuxt/ui/locale";
 
 const nuxtApp = useNuxtApp();
@@ -24,19 +23,19 @@ useHead({
 	title: "Běstvina",
 });
 
-// IMAGE DETAIL GLOBAL OPENER
-const { checkGlobalUrl, isModalOpen } = useImageDetail();
 const route = useRoute();
+const { checkGlobalUrl, isModalOpen } = useImageDetail();
 
 onMounted(() => {
-	checkGlobalUrl();
+	if (!isModalOpen.value) {
+		checkGlobalUrl();
+	}
 });
 
 watch(
 	() => route.query.image,
 	(newVal, oldVal) => {
-		// Only trigger globally if the modal isn't already handling the sequence
-		if (newVal && !oldVal && !isModalOpen.value) {
+		if (newVal && newVal !== oldVal && !isModalOpen.value) {
 			checkGlobalUrl();
 		}
 	},

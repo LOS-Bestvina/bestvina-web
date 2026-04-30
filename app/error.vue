@@ -12,22 +12,32 @@ const props = defineProps<{
 	error: NuxtError;
 }>();
 
-const errorProcessed = ref(props.error);
+const errorProcessed = computed(() => {
+	const status = props.error?.status || 500;
+	const statusText = props.error?.statusText || "Error";
+	const message = props.error?.message || "";
 
-switch (props.error.statusCode) {
-	case 404:
-		errorProcessed.value.statusMessage = "Nenalezeno!";
-		errorProcessed.value.message = "Stránka byla pravděpoodobně použita k zapálení táboráku. 🔥";
-		break;
+	let finalStatusText = statusText;
+	let finalMessage = message;
 
-	case 500:
-		errorProcessed.value.statusMessage = "Interní chyba serveru. 🤷";
-		break;
+	if (status === 404) {
+		finalStatusText = "Nenalezeno!";
+		finalMessage = "Stránka byla pravděpodobně použita k zapálení táboráku. 🔥";
+	}
+	else if (status === 500) {
+		finalStatusText = "Interní chyba serveru. 🤷";
+	}
+	else if (status === 403) {
+		finalStatusText = "Odepřeno!";
+		finalMessage = "Tato část webu není pro tebe. 🦄";
+	}
 
-	case 403:
-		errorProcessed.value.statusMessage = "Odepřeno!";
-		errorProcessed.value.message = "Tato část webu není pro tebe. 🦄";
-}
+	return {
+		status,
+		statusText: finalStatusText,
+		message: finalMessage,
+	};
+});
 </script>
 
 <template>
@@ -48,7 +58,7 @@ switch (props.error.statusCode) {
 					variant: 'solid',
 					to: '/',
 				}"
-				:error="error"
+				:error="errorProcessed"
 			/>
 		</UApp>
 	</div>

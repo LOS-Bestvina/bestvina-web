@@ -108,8 +108,7 @@ const items = computed<NavigationMenuItem[]>(() => [
 				class="-mx-2.5"
 				orientation="vertical"
 			/>
-
-			<USeparator class="my-6" />
+			<LazyUSeparator class="my-6" />
 		</template>
 	</UHeader>
 </template>

@@ -3,26 +3,42 @@ export function useTabUrlSync(tabs: { label: string; value: string }[], defaultP
 	const router = useRouter();
 	const currentTab = ref(tabs[0]!.value as string);
 
-	watch(() => route.query.t, (newTab) => {
-		if (newTab && tabs.some(t => t.value === newTab)) {
-			currentTab.value = newTab as string;
-		}
-	}, { immediate: true });
+	if (import.meta.client) {
+		watch(() => route.query.t, (newTab) => {
+			if (newTab && tabs.some(t => t.value === newTab)) {
+				if (currentTab.value !== newTab) {
+					currentTab.value = newTab as string;
+				}
+			}
+		}, { immediate: true });
 
-	watch(currentTab, (newTab) => {
-		if (newTab !== route.query.t) {
-			router.push({ path: defaultPath, query: { t: newTab }, hash: route.hash });
-		}
-	});
+		watch(currentTab, (newTab) => {
+			if (newTab !== route.query.t) {
+				router.replace({
+					path: defaultPath,
+					query: { ...route.query, t: newTab },
+					hash: route.hash,
+				});
+			}
+		});
+	}
 
 	const validateInitialTab = () => {
+		if (import.meta.server) return;
 		const validValues = [...tabs.map(t => t.value), ""];
-		if (!validValues.includes(route.query.t as string)) {
-			router.push({ path: defaultPath });
-			currentTab.value = tabs[0]!.value as string;
+		const currentT = route.query.t as string;
+
+		if (!validValues.includes(currentT)) {
+			const defaultTab = tabs[0]!.value as string;
+			router.replace({
+				path: defaultPath,
+				query: { ...route.query, t: defaultTab },
+				hash: route.hash,
+			});
+			currentTab.value = defaultTab;
 		}
-		else {
-			currentTab.value = route.query.t as string;
+		else if (currentT && currentTab.value !== currentT) {
+			currentTab.value = currentT;
 		}
 	};
 

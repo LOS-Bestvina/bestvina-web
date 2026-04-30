@@ -48,9 +48,8 @@ export default function () {
 	 * */
 
 	const getPageData = (pageId: MaybeRefOrGetter<string>) => {
-		const key = computed(() => `page-data-${toValue(pageId)}`);
 		return useAsyncData(
-			key.value,
+			`page-data-${toValue(pageId)}`,
 			() => {
 				return queryCollection("peoplePages")
 					.where("stem", "=", `people/${toValue(pageId)}`)
@@ -63,9 +62,8 @@ export default function () {
 	};
 
 	const getPerson = (personId: MaybeRefOrGetter<string>) => {
-		const key = computed(() => `person-${getCleanId(personId)}`);
 		return useAsyncData(
-			key.value,
+			`person-${getCleanId(personId)}`,
 			() => {
 				return queryCollection("people")
 					.where("stem", "=", `people/individuals/${getCleanId(personId)}`)
@@ -78,7 +76,7 @@ export default function () {
 	};
 
 	const getAllPeople = () => {
-		return useAsyncData(`people-data`, async () => {
+		return useAsyncData("people-data", async () => {
 			return await getAllPeopleRaw();
 		});
 	};
@@ -94,7 +92,7 @@ export default function () {
 	};
 
 	const getAllFormerPeopleSorted = (formerPageId: MaybeRefOrGetter<PeoplePageId>) => {
-		return useAsyncData(`all-former-people-data-sorted`, async () => {
+		return useAsyncData("all-former-people-data-sorted", async () => {
 			const peopleRaw = await queryCollection("people")
 				.where("isFormer", "=", true)
 				.where("isHidden", "=", false)
@@ -112,7 +110,7 @@ export default function () {
 	};
 
 	const getAllPages = () => {
-		return useAsyncData(`people-pages`, async () => {
+		return useAsyncData("people-pages", async () => {
 			const pages = await queryCollection("peoplePages").all();
 			// add `id` calculated property
 			return pages.map(page => ({
@@ -124,9 +122,8 @@ export default function () {
 
 	// return only active people
 	const getPopulatedPageData = (pageId: MaybeRefOrGetter<string>) => {
-		const key = computed(() => `populated-page-data-${toValue(pageId)}`);
 		return useAsyncData(
-			key.value,
+			`populated-page-data-${toValue(pageId)}`,
 			async () => {
 				const page = await queryCollection("peoplePages")
 					.where("stem", "=", `people/${toValue(pageId)}`)

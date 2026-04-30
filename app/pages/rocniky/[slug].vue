@@ -16,7 +16,7 @@ if (!page.value || !page.value.year) {
 	throw createError({ statusCode: 404, statusMessage: "Ročník nenalezen!", fatal: true });
 }
 
-const isCurrentYear = computed(() => Number(page.value?.year) === CURRENT_YEAR);
+const isCurrentYear = computed(() => page.value?.year == CURRENT_YEAR);
 
 // get surroundings for navigation
 async function getSurroundings() {
@@ -88,87 +88,142 @@ const checksCompleted = ref(0);
 		<UPageBody>
 			<section
 				v-show="isCurrentYear"
-				class="grid grid-cols-1 md:grid-cols-3 gap-6"
+				class="flex flex-col gap-10"
 			>
-				<InfoCard
-					v-if="page.term"
-					icon="i-lucide-calendar-days"
-					title="Termín konání"
-				>
-					<template #default>
-						<div class="flex flex-col gap-2">
-							<p class="text-2xl font-bold text-secondary">
-								{{ formatDateRange(page.term.startDate, page.term.endDate, "bude upřesněn") }}
-							</p>
-							<p class="text-muted text-sm whitespace-pre-wrap">
-								{{ page.term.note }}
-							</p>
-						</div>
-					</template>
-				</InfoCard>
-
-				<InfoCard
-					v-if="page.pricing"
-					icon="i-lucide-coins"
-					title="Cena soustředění"
-				>
-					<template #default>
-						<div class="flex flex-col gap-2">
-							<div class="flex gap-2 items-center justify-between">
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+					<InfoCard
+						v-if="page.term"
+						card-class="bg-primary-50/50 dark:bg-primary-950/20"
+						icon="i-lucide-calendar-days"
+						title="Termín konání"
+					>
+						<template #default>
+							<div class="flex flex-col gap-2">
 								<p class="text-2xl font-bold text-secondary">
-									{{ formatPrice(page.pricing.price, "bude upřesněna") }}
+									{{ formatDateRange(page.term.startDate, page.term.endDate, "bude upřesněn") }}
 								</p>
-								<UPopover
-									v-if="page.pricing.price && page.pricing.additionalInfo"
-									mode="click"
+								<p class="text-muted text-sm whitespace-pre-wrap">
+									{{ page.term.note }}
+								</p>
+							</div>
+						</template>
+					</InfoCard>
+
+					<InfoCard
+						v-if="page.pricing"
+						card-class="bg-secondary-50/50 dark:bg-secondary-950/20"
+						icon="i-lucide-coins"
+						title="Cena soustředění"
+					>
+						<template #default>
+							<div class="flex flex-col gap-2">
+								<div class="flex gap-2 items-center justify-between">
+									<p class="text-2xl font-bold text-secondary">
+										{{ formatPrice(page.pricing.price, "bude upřesněna") }}
+									</p>
+									<UPopover
+										v-if="page.pricing.price && page.pricing.additionalInfo"
+										mode="click"
+									>
+										<UButton
+											color="neutral"
+											label="Informace"
+											leading-icon="i-lucide-info"
+											variant="subtle"
+										/>
+										<template #content>
+											<div class="p-2 max-w-72 text-sm">
+												{{ page.pricing.additionalInfo }}
+											</div>
+										</template>
+									</UPopover>
+								</div>
+								<p class="text-muted text-sm whitespace-pre-wrap">
+									{{ page.pricing.note }}
+								</p>
+							</div>
+						</template>
+					</InfoCard>
+
+					<InfoCard
+						v-if="page.registration"
+						card-class="bg-tertiary-50/50 dark:bg-tertiary-950/20"
+						icon="i-mdi-document-sign"
+						title="Přihláška"
+					>
+						<template #default>
+							<div class="flex flex-col gap-3">
+								<div class="flex gap-2 items-center justify-between">
+									<p class="text-2xl font-bold text-secondary">
+										{{ formatDate(page.registration.deadline, "do ") }}
+									</p>
+								</div>
+
+								<p class="text-muted text-sm whitespace-pre-wrap">
+									{{ page.registration.note }}
+								</p>
+
+								<div
+									v-if="page.registration.links"
+									class="flex flex-col gap-2"
 								>
 									<UButton
-										color="neutral"
-										label="Informace"
-										leading-icon="i-lucide-info"
+										v-for="link in page.registration.links"
+										:key="link.url"
+										:color="link.color as any || 'secondary'"
+										:label="link.text"
+										:to="link.url"
+										:leading-icon="link.icon || 'i-lucide-link'"
 										variant="subtle"
 									/>
-									<template #content>
-										<div class="p-2 max-w-72 text-sm">
-											{{ page.pricing.additionalInfo }}
-										</div>
-									</template>
-								</UPopover>
+								</div>
 							</div>
-							<p class="text-muted text-sm whitespace-pre-wrap">
-								{{ page.pricing.note }}
-							</p>
-						</div>
-					</template>
-				</InfoCard>
+						</template>
+					</InfoCard>
+				</div>
 
-				<InfoCard
-					v-if="page.registration"
-					icon="i-mdi-document-sign"
-					title="Přihláška"
+				<div
+					v-if="page.infoCards?.length"
+					class="flex flex-col gap-10"
 				>
-					<template #default>
-						<div class="flex flex-col gap-2">
-							<div class="flex gap-2 items-center justify-between">
-								<p class="text-2xl font-bold text-secondary">
-									{{ formatDate(page.registration.deadline, "do ") }}
-								</p>
-								<UButton
-									v-if="page.registration.link"
-									:color="!page.registration.link ? 'neutral' : 'success'"
-									:disabled="!page.registration.link"
-									:to="page.registration.link"
-									label="Přihláška"
-									leading-icon="i-lucide-info"
-									variant="subtle"
-								/>
-							</div>
-							<p class="text-muted text-sm whitespace-pre-wrap">
-								{{ page.registration.note }}
-							</p>
-						</div>
-					</template>
-				</InfoCard>
+					<USeparator />
+
+					<div class="flex flex-wrap justify-center gap-6">
+						<InfoCard
+							v-for="(card, index) in page.infoCards"
+							:key="index"
+							:card-class="card.color"
+							:icon="card.icon || 'i-lucide-info'"
+							:title="card.title"
+							class="w-full md:w-[calc(33.333%-1rem)]"
+						>
+							<template #default>
+								<div class="flex flex-col gap-3">
+									<p
+										v-if="card.description"
+										class="text-muted text-sm whitespace-pre-wrap"
+									>
+										{{ card.description }}
+									</p>
+									<div
+										v-if="card.links"
+										class="flex flex-col gap-2"
+									>
+										<UButton
+											v-for="link in card.links"
+											:key="link.url"
+											:color="link.color as any || 'secondary'"
+											:label="link.text"
+											:leading-icon="link.icon || 'i-lucide-link'"
+											:to="link.url"
+											variant="subtle"
+										/>
+									</div>
+								</div>
+							</template>
+						</InfoCard>
+					</div>
+				</div>
 
 				<ContentRenderer :value="page.body" />
 			</section>

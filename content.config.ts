@@ -97,10 +97,28 @@ const YearsPageSchema = z.object({
 	}).optional(),
 
 	registration: z.object({
-		link: z.string().optional(),
-		deadline: z.date(),
+		links: z.array(z.object({
+			url: z.string(),
+			text: z.string(),
+			color: z.string().optional(),
+			icon: z.string().optional(),
+		})).optional(),
+		deadline: z.union([z.date(), z.string()]),
 		note: z.string().optional(),
 	}).optional(),
+
+	infoCards: z.array(z.object({
+		title: z.string(),
+		icon: z.string().optional(),
+		description: z.string().optional(),
+		color: z.string().optional(),
+		links: z.array(z.object({
+			url: z.string(),
+			text: z.string(),
+			color: z.string().optional(),
+			icon: z.string().optional(),
+		})).optional(),
+	})).optional(),
 });
 
 export default defineContentConfig({

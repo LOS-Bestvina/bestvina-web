@@ -74,7 +74,10 @@ const { data: contacts } = await useAsyncData("contacts", () => {
 							</div>
 						</div>
 
-						<div class="flex flex-col items-center justify-center text-center grow py-4 my-2">
+						<div
+							v-if="person.organization || person.address"
+							class="flex flex-col items-center justify-center text-center grow py-2 my-4"
+						>
 							<CardAddressBlock
 								:name="person.organization"
 								:street="person.address"
@@ -113,8 +116,6 @@ const { data: contacts } = await useAsyncData("contacts", () => {
 					</template>
 				</UCard>
 			</div>
-
-
 		</UPageBody>
 	</UPage>
 </template>

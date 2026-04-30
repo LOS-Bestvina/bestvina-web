@@ -8,7 +8,7 @@ export default defineNuxtConfig({
 		"@nuxt/image",
 		"@nuxt/ui",
 		"@nuxt/scripts",
-		"nuxt-studio",
+		// "nuxt-studio",
 		"@vueuse/motion/nuxt",
 	],
 	ssr: true,
@@ -18,7 +18,7 @@ export default defineNuxtConfig({
 		],
 	},
 	devtools: {
-		enabled: true,
+		enabled: false,
 		timeline: {
 			enabled: true,
 		},
@@ -33,9 +33,6 @@ export default defineNuxtConfig({
 		},
 	},
 	css: ["~/assets/css/main.css"],
-	content: {
-		experimental: { nativeSqlite: true },
-	},
 	ui: {
 		theme: {
 			transitions: true,
@@ -65,7 +62,6 @@ export default defineNuxtConfig({
 		"/informace": { prerender: true },
 		"/_studio": { ssr: true },
 		"/api/**": { cors: true, prerender: true },
-		"/api/v1/images/galerie/**": { redirect: "/api/v1/images/gallery/**" },
 	},
 	compatibilityDate: "2025-11-30",
 	nitro: {
@@ -76,6 +72,14 @@ export default defineNuxtConfig({
 				"/",
 				...getApiRoutesToPrerender(),
 				...getImgRoutes(),
+			],
+		},
+	},
+	vite: {
+		optimizeDeps: {
+			include: [
+				"@vue/devtools-core",
+				"@vue/devtools-kit",
 			],
 		},
 	},
@@ -143,14 +147,6 @@ export default defineNuxtConfig({
 					quality: 50,
 				},
 			},
-		},
-	},
-	studio: {
-		repository: {
-			provider: "github",
-			owner: "FelyCZ",
-			repo: "bestvina-web",
-			branch: "master",
 		},
 	},
 });
