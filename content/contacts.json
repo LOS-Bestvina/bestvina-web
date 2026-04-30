@@ -4,6 +4,7 @@
 			"name": "Jan Kotek",
 			"role": "hlavní vedoucí",
 			"organization": "Katedra anorganické chemie,\nPřírodovědecká fakulta Univerzita Karlova",
+			"address": "Hlavova 2030/8, 128 00 Praha 2",
 			"img": "imgs/people/contacts/kotek_jan.jpg",
 			"email": "modrej@natur.cuni.cz"
 		},
@@ -16,12 +17,30 @@
 			"address": "Technická 5, 166 28 Praha 6"
 		},
 		{
-			"name": "Petr Šíma",
-			"role": "místopředseda Biologické olympiády",
-			"organization": "Gymnázium Botičská, Praha",
+			"name": "Marie Smyčková",
+			"role": "tajemnice Biologické olympiády",
+			"organization": "Katedra učitelství a didaktiky biologie,\nPřírodovědecká fakulta Univerzita Karlova",
 			"icon": "i-material-symbols-microbiology-outline",
-			"email": "sima@gybot.cz",
-			"address": "Botičská 1, 128 00 Praha 2"
+			"email": "marie.smyckova@natur.cuni.cz",
+			"address": "Technická 5, 166 28 Praha 6"
+		},
+		{
+			"name": "Ivana Gergelitsová",
+			"role": "programový vedoucí chemické sekce",
+			"icon": "i-lucide-flask-conical",
+			"email": "Ivana.Gergelitsova@vscht.cz"
+		},
+		{
+			"name": "Petr Šíma",
+			"role": "programový vedoucí biologické sekce",
+			"icon": "i-material-symbols-microbiology-outline",
+			"email": "sima@gybot.cz"
+		},
+		{
+			"name": "Jakub Ferenčík",
+			"role": "správce webové stránky",
+			"icon": "i-lucide-code",
+			"email": "ferencij@vscht.cz"
 		}
 	]
 }
