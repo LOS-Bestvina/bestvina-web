@@ -1,5 +1,5 @@
 import { mkdir, readdir, writeFile } from "fs/promises";
-import { resolve } from "path";
+import { relative, resolve } from "path";
 import { join } from "path/posix";
 import { IMAGE_EXTENSIONS } from "./shared/constants";
 
