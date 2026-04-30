@@ -60,6 +60,11 @@ const toggleAuthor = (author: any) => {
 const isAuthorSelected = (author: any) => {
 	return selectedAuthors.value.includes(author.shortcut || author);
 };
+
+useSeoMeta({
+	title: "Galerie",
+	description: "Galerie fotografií z Běstviny.",
+});
 </script>
 
 <template>

@@ -10,6 +10,11 @@ const { data: landingData } = await useAsyncData("landing-data", async () => {
 if (!landingData.value) {
 	throw createError({ statusCode: 404, statusMessage: "Stránka nenalezena!", fatal: true });
 }
+
+useSeoMeta({
+	title: "LOS Běstvina",
+	description: landingData.value.hero.description,
+});
 </script>
 
 <template>

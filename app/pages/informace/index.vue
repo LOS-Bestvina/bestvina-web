@@ -42,6 +42,11 @@ const { data: page } = await pageData("root");
 if (!page.value) {
 	throw createError({ statusCode: 404, statusMessage: "Stránka nenalezena!", fatal: true });
 }
+
+useSeoMeta({
+	title: "O soustředění",
+	description: page.value.description || "Obecné informace o soustředění.",
+});
 </script>
 
 <template>

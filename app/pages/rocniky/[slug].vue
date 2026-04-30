@@ -73,6 +73,21 @@ const formatPrice = (price: number | undefined, thisYearEmptyValue: string = "bu
 const hasGroupImages = ref(false);
 const hasGalleryPreview = ref(false);
 const checksCompleted = ref(0);
+
+if (isCurrentYear.value) {
+	useSeoMeta({
+		title: "Aktuální ročník",
+		description: `Informace k aktuálnímu ročníku Běstviny.`,
+		ogImage: page.value.coverImg,
+	});
+}
+else {
+	useSeoMeta({
+		title: `Ročník ${page.value.year}`,
+		description: `Historie ročníku ${page.value.year} Běstviny.`,
+		ogImage: page.value.coverImg,
+	});
+}
 </script>
 
 <template>

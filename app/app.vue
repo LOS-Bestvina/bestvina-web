@@ -9,6 +9,10 @@ onMounted(() => {
 });
 
 useHead({
+	titleTemplate: (titleChunk) => {
+		return titleChunk?.trim().length === 0 ? "LOS Běstvina" : `${titleChunk} | LOS Běstvina`;
+	},
+	title: "LOS Běstvina",
 	meta: [
 		{ name: "viewport", content: "width=device-width, initial-scale=1" },
 	],
@@ -18,7 +22,14 @@ useHead({
 	htmlAttrs: {
 		lang: "cs",
 	},
-	title: "Běstvina",
+});
+
+useSeoMeta({
+	description: "Letní odborné soustředění pro mladé chemiky a biology Běstvina.",
+	ogTitle: "Běstvina",
+	ogDescription: "Letní odborné soustředění pro mladé chemiky a biology Běstvina.",
+	ogImage: "/imgs/promo/lecture.jpg",
+	twitterCard: "summary_large_image",
 });
 
 const route = useRoute();

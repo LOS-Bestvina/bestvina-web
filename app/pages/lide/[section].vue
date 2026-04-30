@@ -31,6 +31,11 @@ const { data: page } = await getPageData(pageId);
 if (!page.value) {
 	throw createError({ statusCode: 404, statusMessage: "Stránka nenalezena!", fatal: true });
 }
+
+useSeoMeta({
+	title: `Lidé - ${page.value.header}`,
+	description: page.value.headerText || "Seznam lidí, kteří se podílí na organizaci Běstviny.",
+});
 </script>
 
 <template>

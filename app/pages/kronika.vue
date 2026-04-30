@@ -12,6 +12,11 @@ const { data: years } = await useAsyncData("years-list", () => {
 		.order("year", "DESC")
 		.all();
 });
+
+useSeoMeta({
+	title: "Kronika",
+	description: "Historie a minulé ročníky Běstviny.",
+});
 </script>
 
 <template>

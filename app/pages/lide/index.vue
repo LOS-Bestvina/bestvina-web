@@ -51,6 +51,11 @@ if (!rootPage.value) {
 }
 
 const pageId = computed(() => `${rootPageId}/${currentTab.value}`);
+
+useSeoMeta({
+	title: "Lidé",
+	description: rootPage.value.description || "Seznam lidí, kteří se podílí na organizaci Běstviny.",
+});
 </script>
 
 <template>

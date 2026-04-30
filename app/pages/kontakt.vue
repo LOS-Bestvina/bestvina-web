@@ -19,6 +19,11 @@ const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
 const { data: contacts } = await useAsyncData("contacts", () => {
 	return queryCollection("contacts").first();
 });
+
+useSeoMeta({
+	title: "Kontakt",
+	description: "Kontakt na vybrané organizátory Běstviny.",
+});
 </script>
 
 <template>
