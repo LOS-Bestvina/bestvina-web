@@ -29,10 +29,13 @@ export default defineEventHandler(async () => {
 
 		return { years: response };
 	}
+	}
 	catch (error: any) {
+		console.error("Failed to read images directory", error);
 		throw createError({
 			statusCode: 500,
-			statusMessage: `Failed to read images directory: ${error.message}`,
+			statusMessage: "Failed to read images directory.",
 		});
+	}
 	}
 });
