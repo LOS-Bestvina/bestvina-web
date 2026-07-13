@@ -103,6 +103,7 @@ else {
 		<UPageBody>
 			<section
 				v-show="isCurrentYear"
+				v-if="!(hasGroupImages || hasGalleryPreview)"
 				class="flex flex-col gap-10"
 			>
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -244,7 +245,7 @@ else {
 				<ContentRenderer :value="page.body" />
 			</section>
 
-			<div v-show="!isCurrentYear && (hasGroupImages || hasGalleryPreview)">
+			<div v-show="hasGroupImages || hasGalleryPreview">
 				<USeparator icon="i-mdi-history" />
 
 				<!-- Group Photos -->
