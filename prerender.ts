@@ -40,6 +40,7 @@ const PRESET_MAP: Record<string, string> = {
 	thumbnailLg: "w_720&q_50",
 	thumbnailXLg: "w_1080&q_50",
 	thumbnailXXLg: "w_1920&q_50",
+	thumbnailXXXLg: "w_2048&q_70",
 };
 
 /**
