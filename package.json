@@ -14,7 +14,9 @@
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
     "deploy-test": "wrangler pages deploy .output/public --project-name bestvina-test",
-    "publish-test": "bun run generate && bun run deploy-test"
+    "publish-test": "bun run generate && bun run deploy-test",
+    "deploy": "wrangler pages deploy .output/public --project-name bestvina",
+    "publish": "bun run generate && bun run deploy"
   },
   "dependencies": {
     "@nuxt/content": "^3.13.0",
