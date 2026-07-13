@@ -15,11 +15,11 @@ interface PrerenderRule {
 const PRESET_RULES: PrerenderRule[] = [
 	{
 		patterns: ["**/gallery/**"],
-		presets: ["thumbnailXXSm", "thumbnailSm", "thumbnailMd", "thumbnailXLg", "thumbnailXXLg"],
+		presets: ["thumbnailXXSm", "thumbnailSm", "thumbnailMd", "thumbnailXLg", "thumbnailXXLg", "thumbnailXXXLg"],
 	},
 	{
 		patterns: ["**/groups/**"],
-		presets: ["thumbnailXXSm", "thumbnailSm", "thumbnailLg", "thumbnailXXLg"],
+		presets: ["thumbnailXXSm", "thumbnailSm", "thumbnailLg", "thumbnailXXLg", "thumbnailXXXLg"],
 	},
 	{
 		patterns: ["**/people/**"],
