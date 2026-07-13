@@ -1,4 +1,4 @@
-![Logo](https://github.com/FelyCZ/bestvina-web/blob/ba0e74697893461b7fb1fffd61283d9a7f2add47/public/imgs/bestvina_logo.png?raw=true)
+![Logo](https://github.com/LOS-Bestvina/bestvina-web/blob/ba0e74697893461b7fb1fffd61283d9a7f2add47/public/imgs/bestvina_logo.png?raw=true)
 
 # Běstvina Website
 
@@ -14,7 +14,7 @@ The official website for the summer camp [Běstvina](https://bestvina.cz). Built
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/FelyCZ/bestvina-web.git
+   git clone https://github.com/LOS-Bestvina/bestvina-web.git
    cd bestvina-web
    ```
 

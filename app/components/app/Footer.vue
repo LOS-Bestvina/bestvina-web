@@ -6,37 +6,37 @@
 		<template #left>
 			<div class="flex flex-col items-start gap-4">
 				<NuxtLink
-					to="/"
 					class="flex items-center"
+					to="/"
 				>
 					<NuxtImg
+						alt="Běstvina Logo"
 						class="h-16 object-contain"
 						src="/imgs/b-logo.svg"
-						alt="Běstvina Logo"
 					/>
 				</NuxtLink>
 				<div class="flex flex-col items-start gap-1">
 					<p class="text-sm text-muted">
 						Našli jste na webu nějakou chybu?
 						<NuxtLink
-							to="/kontakt#spravce-webove-stranky"
 							class="text-white hover:text-secondary underline underline-offset-4"
+							to="/kontakt#spravce-webove-stranky"
 						>Napiš správci</NuxtLink>
 						nebo založ
 						<NuxtLink
-							target="_blank"
-							rel="noopener noreferrer"
-							to="https://github.com/FelyCZ/bestvina-web/issues"
 							class="text-white hover:text-secondary underline underline-offset-4"
+							rel="noopener noreferrer"
+							target="_blank"
+							to="https://github.com/LOS-Bestvina/bestvina-web/issues"
 						>
 							Issue na GitHubu
 						</NuxtLink>.
 					</p>
 					<NuxtLink
 						class="my-2 text-xs text-muted hover:text-muted transition-colors"
-						target="_blank"
 						rel="noopener noreferrer"
-						to="https://github.com/FelyCZ/bestvina-web"
+						target="_blank"
+						to="https://github.com/LOS-Bestvina/bestvina-web"
 					>
 						Zdrojový kód je dostupný na <span class="text-white hover:text-secondary">GitHubu</span>
 					</NuxtLink>
@@ -54,9 +54,9 @@
 					color="neutral"
 					icon="i-carbon-chemistry"
 					label="Chemická olympiáda"
+					rel="noopener noreferrer"
 					size="sm"
 					target="_blank"
-					rel="noopener noreferrer"
 					to="https://olympiada.vscht.cz/"
 					variant="link"
 				/>
@@ -67,9 +67,9 @@
 					color="neutral"
 					icon="i-material-symbols-microbiology-outline"
 					label="Biologická olympiáda"
+					rel="noopener noreferrer"
 					size="sm"
 					target="_blank"
-					rel="noopener noreferrer"
 					to="https://olympiada.natur.cuni.cz/cs/"
 					variant="ghost"
 				/>
