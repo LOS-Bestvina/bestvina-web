@@ -1,8 +1,8 @@
 import { join, resolve } from "path";
 import sizeOf from "image-size";
 import type { BestvinaImage, MinifiedBestvinaImage } from "#shared/utils/imageMapper";
-import { PATHS, IMAGE_EXTENSIONS } from "#shared/constants";
-import { readFile, readdir } from "node:fs/promises";
+import { IMAGE_EXTENSIONS, PATHS } from "#shared/constants";
+import { readdir, readFile } from "node:fs/promises";
 
 const VALID_EXTENSIONS_REGEX = new RegExp(`\\.(${IMAGE_EXTENSIONS.join("|")})$`, "i");
 
@@ -43,7 +43,7 @@ const authorExtractors: Array<{ fromYear: number; toYear: number; extract: Autho
 	},
 	{
 		fromYear: 2024,
-		toYear: 2024,
+		toYear: 2025,
 		extract: filename => filename.split("__")?.at(2)?.split("_")?.at(0)?.split(".")[0]?.toLowerCase(),
 	},
 ];
