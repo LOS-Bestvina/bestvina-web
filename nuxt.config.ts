@@ -152,6 +152,12 @@ export default defineNuxtConfig({
 					quality: 50,
 				},
 			},
+			thumbnailXXXLg: {
+				modifiers: {
+					width: 2048,
+					quality: 70,
+				},
+			},
 		},
 	},
 });

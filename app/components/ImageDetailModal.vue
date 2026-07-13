@@ -170,7 +170,7 @@ defineShortcuts({
 									draggable="false"
 									fetch-priority="high"
 									loading="eager"
-									preset="thumbnailXXLg"
+									preset="thumbnailXXXLg"
 									tabindex="-1"
 									@load="onMainLoad(currentSrc)"
 								/>
