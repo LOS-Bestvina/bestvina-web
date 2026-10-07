@@ -123,3 +123,17 @@ export const getImagesForYear = async (year: string, type: string): Promise<Mini
 		});
 	}
 };
+
+/**
+ * Reads an entire directory for a given year and type and returns the count of valid image files.
+ */
+export const getImageCountForYear = async (year: string, type: string): Promise<number> => {
+	const dir = resolve(process.cwd(), "public", "imgs", "years", year, type);
+	try {
+		const files = await readdir(dir);
+		return files.filter(f => VALID_EXTENSIONS_REGEX.test(f)).length;
+	}
+	catch {
+		return 0;
+	}
+};
