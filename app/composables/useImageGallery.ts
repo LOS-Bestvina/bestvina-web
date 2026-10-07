@@ -1,6 +1,6 @@
 import { useThrottleFn } from "@vueuse/core";
 
-export default function useImageGallery(images: string[], initialSrc: string, options: { loop?: boolean, onNavigate?: (src: string) => void } = {}) {
+export default function useImageGallery(images: string[], initialSrc: string, options: { loop?: boolean; onNavigate?: (src: string) => void } = {}) {
 	const currentSrc = ref(initialSrc);
 	const transitionName = ref("slide-left");
 	const currentIndex = computed(() => images.indexOf(currentSrc.value));
