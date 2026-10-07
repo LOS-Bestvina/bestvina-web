@@ -1,11 +1,7 @@
 ---
 name: "Ivana Gergelitsová"
-pages:
+roleTitle: "Přednášející organické chemie"
+overrides:
   vedeni:
-    role: ""
     roleTitle: "Programový vedoucí chemické sekce"
-
-  aktivni_chemie:
-    role: ""
-    roleTitle: "Přednášející organické chemie"
 ---

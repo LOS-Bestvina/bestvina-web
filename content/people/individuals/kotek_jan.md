@@ -7,16 +7,8 @@ description: |
 
   Honza pracuje na Katedře anorganické chemie PřF UK v Praze, kde se věnuje bádání na poli koordinačních sloučenin a jejich významu pro medicinální aplikace. Na Běstvině cíleně omezuje germanismy zaváděné Cigim, Tomem a Houserem. Spolu s hospodářkou Zuzkou pak (v rámci finančních možností daných rozpočtem) gurmanizuje jídelníček.
 
-degreesBeforeName: ""
-degreesAfterName: ""
-
-pages:
-  aktivni_chemie:
-    role: ""
-    description: ""
-    name: ""
+roleTitle: "Přednášející anorganické chemie"
+overrides:
   vedeni:
-    role: ""
     roleTitle: "Hlavní vedoucí (HV)"
-    description: ""
 ---

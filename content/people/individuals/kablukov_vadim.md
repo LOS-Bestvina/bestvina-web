@@ -8,13 +8,5 @@ description: |
   Ač původně spíš chemik, vystudoval 3. lékařskou fakultu Karlovy univerzity, volnočasově se věnuje elektrotechnice, programování a obecně realizaci všech možných i nemožných nápadů a projektů. V posledních letech na Běstvině zajišťuje zejména modernizovanou formu seznamování účastnictva, hudební doprovod večerních programů, 3D tisk a nekončící fontánu lehce bizarního humoru.
 
 
-degreesBeforeName: "MUDr."
-degreesAfterName: ""
-
-pages:
-  aktivni_chemie:
-    role: ""
-    roleTitle: "Programátor & grill master"
-    description: ""
-    name: ""
+roleTitle: "Programátor & grill master"
 ---
