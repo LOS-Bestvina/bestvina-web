@@ -112,14 +112,17 @@ export const getImagesForYear = async (year: string, type: string): Promise<Mini
 
 		return results;
 	}
-	catch (error: any) {
+	catch (error: unknown) {
+		const nodeError = error as NodeJS.ErrnoException;
 		// If directory doesn't exist, return empty array (safe fallback for empty years)
-		if (error.code === "ENOENT") {
+		if (nodeError?.code === "ENOENT") {
 			return [];
 		}
+		const message = error instanceof Error ? error.message : String(error);
 		throw createError({
 			statusCode: 500,
-			statusMessage: `Failed to read images for year ${year}: ${error.message}`,
+			statusMessage: `Failed to read images for year ${year}: ${message}`,
+			cause: error,
 		});
 	}
 };
