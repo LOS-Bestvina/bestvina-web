@@ -156,16 +156,18 @@ useSeoMeta({
 									</div>
 								</div>
 
-								<UButton
-									v-if="hasActiveFilters"
-									class="w-full justify-center mt-4"
-									color="neutral"
-									label="Zrušit filtry"
-									leading-icon="i-heroicons-x-mark-20-solid"
-									variant="subtle"
-									size="xl"
-									@click="selectedAuthors = []; selectedYears = []"
-								/>
+								<Transition name="fade">
+									<UButton
+										v-if="hasActiveFilters"
+										class="w-full justify-center mt-4"
+										color="neutral"
+										label="Zrušit filtry"
+										leading-icon="i-heroicons-x-mark-20-solid"
+										variant="subtle"
+										size="xl"
+										@click="selectedAuthors = []; selectedYears = []"
+									/>
+								</Transition>
 							</div>
 						</div>
 					</template>
@@ -232,15 +234,17 @@ useSeoMeta({
 						</div>
 					</div>
 
-					<UButton
-						v-if="hasActiveFilters"
-						class="w-fit mt-2"
-						color="neutral"
-						label="Zrušit filtry"
-						leading-icon="i-heroicons-x-mark-20-solid"
-						variant="ghost"
-						@click="selectedAuthors = []; selectedYears = []"
-					/>
+					<Transition name="fade">
+						<UButton
+							v-if="hasActiveFilters"
+							class="w-fit mt-2"
+							color="neutral"
+							label="Zrušit filtry"
+							leading-icon="i-heroicons-x-mark-20-solid"
+							variant="ghost"
+							@click="selectedAuthors = []; selectedYears = []"
+						/>
+					</Transition>
 				</div>
 
 				<ClientOnly>
@@ -278,4 +282,15 @@ useSeoMeta({
 	</UPage>
 </template>
 
-<style scoped />
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
+	transform: translateY(-8px);
+}
+</style>
