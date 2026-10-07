@@ -1,7 +1,9 @@
 {
+  "id": "biologie",
   "header": "biologie",
   "sections": [
     {
+      "id": "biologie_hlavni",
       "name": "",
       "people": [
         "sima_petr",

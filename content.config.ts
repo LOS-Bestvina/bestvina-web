@@ -1,5 +1,4 @@
 import { defineCollection, defineContentConfig, z } from "@nuxt/content";
-import { PEOPLE_PAGES_ID_VALUES, PERSON_ROLES_ID_VALUES } from "./shared/constants";
 
 const LinkSchema = z.object({
 	label: z.string(),
@@ -121,6 +120,57 @@ const YearsPageSchema = z.object({
 	})).optional(),
 });
 
+const PeopleSchema = z.object({
+	name: z.string(),
+	roleTitle: z.string().optional(),
+	description: z.string().optional(),
+	nickname: z.string().optional(),
+	image: z.string().optional(),
+	isFormer: z.boolean().catch(false),
+	isHidden: z.boolean().catch(false),
+	isExternal: z.boolean().catch(false),
+	overrides: z.record(
+		z.string(),
+		z.object({
+			role: z.string().optional(),
+			roleTitle: z.string().optional(),
+			description: z.string().optional(),
+			name: z.string().optional(),
+			image: z.string().optional(),
+			nickname: z.string().optional(),
+		}),
+	).optional(),
+});
+
+const PeopleStructureSchema = z.object({
+	id: z.string().optional(),
+	title: z.string().optional(),
+	description: z.string().optional(),
+	header: z.string().optional(),
+	headerText: z.string().optional(),
+	sections: z.array(
+		z.object({
+			id: z.string().optional(),
+			name: z.string().optional(),
+			description: z.string().optional(),
+			people: z.array(z.string()),
+			showImages: z.boolean().catch(true),
+		}),
+	).default([]),
+});
+
+const ContactsSchema = z.object({
+	contacts: z.array(z.object({
+		name: z.string(),
+		role: z.string(),
+		organization: z.string().optional(),
+		img: z.string().optional(),
+		email: z.string(),
+		icon: z.string().optional(),
+		address: z.string().optional(),
+	})),
+});
+
 export default defineContentConfig({
 	collections: {
 		landing: defineCollection({
@@ -137,49 +187,14 @@ export default defineContentConfig({
 
 		people: defineCollection({
 			type: "data",
-			source: "people/individuals/**/*.md",
-			schema: z.object({
-				name: z.string(),
-				nickname: z.string().optional(),
-				degreesBeforeName: z.string().optional(),
-				degreesAfterName: z.string().optional(),
-				description: z.string().optional(),
-				image: z.string().optional(),
-				isFormer: z.boolean().catch(false),
-				isHidden: z.boolean().catch(false),
-				isExternal: z.boolean().catch(false),
-				// ... other fields (to be added later) ...
-				pages: z.record(
-					z.enum(PEOPLE_PAGES_ID_VALUES),
-					z.object({
-						role: z.enum(PERSON_ROLES_ID_VALUES).optional(),
-						roleTitle: z.string().optional(),
-						description: z.string().optional(),
-						name: z.string().optional(),
-						image: z.string().optional(),
-						nickname: z.string().optional(),
-					}),
-				),
-			}),
+			source: "people/individuals/**/!(_*).md",
+			schema: PeopleSchema,
 		}),
 
-		peoplePages: defineCollection({
+		peopleStructure: defineCollection({
 			type: "data",
-			source: `people/**/*.json`,
-			schema: z.object({
-				title: z.string().optional(),
-				description: z.string().optional(),
-				header: z.string().optional(),
-				headerText: z.string().optional(),
-				sections: z.array(
-					z.object({
-						name: z.string().optional(),
-						description: z.string().optional(),
-						people: z.array(z.string()),
-						showImages: z.boolean().catch(true),
-					}),
-				),
-			}),
+			source: "people_structure/**/*.json",
+			schema: PeopleStructureSchema,
 		}),
 
 		aboutCampPage: defineCollection({
@@ -191,17 +206,7 @@ export default defineContentConfig({
 		contacts: defineCollection({
 			type: "data",
 			source: "contacts.json",
-			schema: z.object({
-				contacts: z.array(z.object({
-					name: z.string(),
-					role: z.string(),
-					organization: z.string().optional(),
-					img: z.string().optional(),
-					email: z.string(),
-					icon: z.string().optional(),
-					address: z.string().optional(),
-				})),
-			}),
+			schema: ContactsSchema,
 		}),
 	},
 });
