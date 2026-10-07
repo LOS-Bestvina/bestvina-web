@@ -5,58 +5,54 @@ import { availableParallelism } from "node:os";
 import { dirname, extname, join, relative, resolve } from "node:path";
 import sharp from "sharp";
 import { IMAGE_EXTENSIONS } from "../shared/constants";
-
-interface PresetModifier {
-	width: number;
-	height?: number;
-	quality?: number;
-}
+import {
+	IMAGE_PRESET_DEFINITIONS,
+	type ImagePreset,
+	type ImagePresetModifier,
+} from "../shared/constants/imagePresets";
 
 interface PresetRule {
 	patterns: string[];
-	presets: string[];
+	presets: ImagePreset[];
 }
 
 const PRESET_RULES: PresetRule[] = [
 	{
 		patterns: ["**/gallery/**"],
-		presets: ["thumbnailXXSm", "thumbnailSm", "thumbnailMd", "thumbnailXLg", "thumbnailXXLg", "thumbnailXXXLg"],
+		presets: ["placeholder", "thumbnail", "card", "editorial", "hero", "fullscreen"],
 	},
 	{
 		patterns: ["**/groups/**"],
-		presets: ["thumbnailXXSm", "thumbnailSm", "thumbnailLg", "thumbnailXXLg", "thumbnailXXXLg"],
+		presets: ["placeholder", "thumbnail", "portrait", "hero", "fullscreen"],
 	},
 	{
 		patterns: ["**/people/**"],
-		presets: ["thumbnailXXSm", "thumbnailMd", "thumbnailLg", "thumbnailXXLg"],
+		presets: ["placeholder", "avatar", "card", "portrait", "hero"],
 	},
 	{
 		patterns: ["**/promo/**"],
-		presets: ["thumbnailXXSm", "thumbnailMd", "thumbnailXLg", "thumbnailXXLg"],
+		presets: ["placeholder", "card", "editorial", "hero"],
 	},
 ];
 
-const DEFAULT_PRESETS: string[] = ["thumbnailXXSm", "thumbnailMd"];
+const DEFAULT_PRESETS: ImagePreset[] = ["placeholder", "card"];
 
-const PRESET_MAP: Record<string, string> = {
-	thumbnailXXSm: "w_20",
-	thumbnailSm: "w_240&q_50",
-	thumbnailMd: "w_480&q_50",
-	thumbnailLg: "w_720&q_50",
-	thumbnailXLg: "w_1080&q_50",
-	thumbnailXXLg: "w_1920&q_50",
-	thumbnailXXXLg: "w_2048&q_70",
-};
+function toIpxSegment(modifier: ImagePresetModifier): string {
+	const parts: string[] = [];
+	if (modifier.width) parts.push(`w_${modifier.width}`);
+	if (modifier.height) parts.push(`h_${modifier.height}`);
+	if (modifier.quality) parts.push(`q_${modifier.quality}`);
+	if (modifier.format) parts.push(`f_${modifier.format}`);
+	return parts.join("&");
+}
 
-const PRESET_MODIFIERS: Record<string, PresetModifier> = {
-	thumbnailXXSm: { width: 20 },
-	thumbnailSm: { width: 240, quality: 50 },
-	thumbnailMd: { width: 480, quality: 50 },
-	thumbnailLg: { width: 720, quality: 50 },
-	thumbnailXLg: { width: 1080, quality: 50 },
-	thumbnailXXLg: { width: 1920, quality: 50 },
-	thumbnailXXXLg: { width: 2048, quality: 70 },
-};
+const PRESET_MODIFIERS: Record<string, ImagePresetModifier> = Object.fromEntries(
+	Object.entries(IMAGE_PRESET_DEFINITIONS).map(([key, def]) => [key, def.modifiers]),
+);
+
+const PRESET_MAP: Record<string, string> = Object.fromEntries(
+	Object.entries(IMAGE_PRESET_DEFINITIONS).map(([key, def]) => [key, toIpxSegment(def.modifiers)]),
+);
 
 function patternToRegex(pattern: string): RegExp {
 	const escaped = pattern.replace(/[.+^${}()|[\]\\]/g, "\\$&");
@@ -72,7 +68,7 @@ interface ImageTask {
 	sourceMtime: number;
 	preset: string;
 	ipxSegment: string;
-	modifier: PresetModifier;
+	modifier: ImagePresetModifier;
 	cacheFilePath: string;
 	targetOutputPath: string;
 }
@@ -96,7 +92,7 @@ async function getAllImages(dir: string): Promise<string[]> {
 function computeCacheHash(
 	relPath: string,
 	sourceModificationTime: number,
-	modifier: PresetModifier,
+	modifier: ImagePresetModifier,
 	format: string,
 ): string {
 	const hashPayload = `${relPath}:${sourceModificationTime}:${modifier.width}:${modifier.height ?? ""}:${modifier.quality ?? ""}:${format}`;
@@ -159,14 +155,16 @@ export async function generateThumbnails(options: {
 
 		const presets = matchingRule ? matchingRule.presets : DEFAULT_PRESETS;
 
+		const seenSegments = new Set<string>();
 		for (const preset of presets) {
 			const ipxSegment = PRESET_MAP[preset];
 			const modifier = PRESET_MODIFIERS[preset];
-			if (!ipxSegment || !modifier) {
+			if (!ipxSegment || !modifier || seenSegments.has(ipxSegment)) {
 				continue;
 			}
+			seenSegments.add(ipxSegment);
 
-			const hash = computeCacheHash(imageRelPath, sourceMtime, modifier, rawExt);
+			const hash = computeCacheHash(imageRelPath, sourceMtime, modifier, modifier.format ?? rawExt);
 			const cacheFilePath = join(cacheDir, `${hash}${ext}`);
 			const targetOutputPath = join(outputDir, ipxSegment, imageRelPath);
 
@@ -211,14 +209,14 @@ export async function generateThumbnails(options: {
 						withoutEnlargement: true,
 					});
 
-				const ext = extname(task.sourcePath).toLowerCase();
-				if (ext === ".jpg" || ext === ".jpeg") {
+				const targetFormat = task.modifier.format ?? extname(task.sourcePath).toLowerCase().replace(/^\./, "");
+				if (targetFormat === "jpg" || targetFormat === "jpeg") {
 					pipeline = pipeline.jpeg({ quality: task.modifier.quality ?? 80, progressive: true });
 				}
-				else if (ext === ".png") {
+				else if (targetFormat === "png") {
 					pipeline = pipeline.png({ quality: task.modifier.quality ?? 80, progressive: true });
 				}
-				else if (ext === ".webp") {
+				else if (targetFormat === "webp") {
 					pipeline = pipeline.webp({ quality: task.modifier.quality ?? 80 });
 				}
 

@@ -2,6 +2,7 @@ import { defineNuxtConfig } from "nuxt/config";
 import { getApiRoutesToPrerender } from "./scripts/getPrerenderRoutes";
 import { generateThumbnails } from "./scripts/generateThumbnails";
 import { ACTIVE_ORGANIZER_ROUTES } from "./shared/constants";
+import { IMAGE_PRESET_DEFINITIONS } from "./shared/constants/imagePresets";
 
 export default defineNuxtConfig({
 	modules: [
@@ -137,48 +138,6 @@ export default defineNuxtConfig({
 		}],
 	},
 	image: {
-		presets: {
-			thumbnailXXSm: {
-				modifiers: {
-					width: 20,
-				},
-			},
-			thumbnailSm: {
-				modifiers: {
-					width: 240,
-					quality: 50,
-				},
-			},
-			thumbnailMd: {
-				modifiers: {
-					width: 480,
-					quality: 50,
-				},
-			},
-			thumbnailLg: {
-				modifiers: {
-					width: 720,
-					quality: 50,
-				},
-			},
-			thumbnailXLg: {
-				modifiers: {
-					width: 1080,
-					quality: 50,
-				},
-			},
-			thumbnailXXLg: {
-				modifiers: {
-					width: 1920,
-					quality: 50,
-				},
-			},
-			thumbnailXXXLg: {
-				modifiers: {
-					width: 2048,
-					quality: 70,
-				},
-			},
-		},
+		presets: IMAGE_PRESET_DEFINITIONS,
 	},
 });
