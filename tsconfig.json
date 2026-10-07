@@ -18,6 +18,10 @@
     },
     {
       "path": "./.nuxt/tsconfig.node.json"
+    },
+    {
+      "path": "./tests/tsconfig.json"
     }
   ]
 }
+

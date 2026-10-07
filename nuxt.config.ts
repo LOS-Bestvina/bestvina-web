@@ -106,6 +106,7 @@ export default defineNuxtConfig({
 		},
 		"prepare:types"({ sharedReferences }) {
 			sharedReferences.push({ path: "./content/types.d.ts" });
+			sharedReferences.push({ types: "bun-types" });
 		},
 	},
 	eslint: {
