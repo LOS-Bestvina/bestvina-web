@@ -1,8 +1,18 @@
-/api/v1/images/gallery/*
-  Content-Type: application/json
-/api/v1/images/groups/*
-  Content-Type: application/json
-/api/v1/images/photographers
-  Content-Type: application/json
-/api/v1/images/years
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+/_nuxt/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/_ipx/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/imgs/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/api/v1/*
+  Cache-Control: no-store
   Content-Type: application/json
