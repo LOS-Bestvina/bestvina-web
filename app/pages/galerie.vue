@@ -140,8 +140,8 @@ useSeoMeta({
 									<div class="flex flex-wrap gap-2">
 										<UButton
 											v-for="author in topAuthorsInfo"
-											:key="author.shortcut || author"
-											:label="author.name || author"
+											:key="author.shortcut || author.name"
+											:label="author.name || author.name"
 											:color="isAuthorSelected(author) ? 'secondary' : 'neutral'"
 											:variant="isAuthorSelected(author) ? 'solid' : 'soft'"
 											@click="toggleAuthor(author)"
@@ -212,8 +212,8 @@ useSeoMeta({
 						<div class="flex flex-wrap gap-2">
 							<UButton
 								v-for="author in topAuthorsInfo"
-								:key="author.shortcut || author"
-								:label="author.name || author"
+								:key="author.shortcut || author.name"
+								:label="author.name || author.name"
 								:color="isAuthorSelected(author) ? 'secondary' : 'neutral'"
 								:variant="isAuthorSelected(author) ? 'solid' : 'soft'"
 								size="sm"
