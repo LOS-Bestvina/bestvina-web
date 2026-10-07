@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from "@nuxt/ui";
-import { CURRENT_YEAR } from "#shared/constants";
+import { ACTIVE_ORGANIZER_ROUTES, CURRENT_YEAR } from "#shared/constants";
+
+const route = useRoute();
 
 const items = computed<NavigationMenuItem[]>(() => [
 	{
@@ -46,6 +48,7 @@ const items = computed<NavigationMenuItem[]>(() => [
 			{
 				label: "Aktivní organizátoři",
 				to: "/lide",
+				active: (ACTIVE_ORGANIZER_ROUTES as readonly string[]).includes(route.path.replace(/\/$/, "") || "/lide"),
 				description: "Poznej všechny, kdo se starají o náplň denního programu",
 				icon: "i-material-symbols-person-play-outline",
 			},

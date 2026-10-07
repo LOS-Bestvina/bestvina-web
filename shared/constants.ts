@@ -60,3 +60,12 @@ export const PEOPLE_PAGES = {
 };
 export type PeoplePageId = typeof PEOPLE_PAGES[keyof typeof PEOPLE_PAGES];
 export const PEOPLE_PAGES_ID_VALUES = Object.values(PEOPLE_PAGES) as [string, ...string[]];
+
+export const ACTIVE_ORGANIZER_ROUTES = [
+	"/lide",
+	"/lide/vsichni",
+	"/lide/chemie",
+	"/lide/biologie",
+	"/lide/ostatni",
+] as const;
+
