@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ACTIVE_ORGANIZER_ROUTES, PEOPLE_PAGES } from "#shared/constants";
+import { ACTIVE_ORGANIZER_ROUTES } from "#shared/constants";
 import type { TabsItem } from "@nuxt/ui";
 
 definePageMeta({
@@ -9,7 +9,7 @@ definePageMeta({
 const route = useRoute();
 
 const { getPageData } = usePeopleData();
-const rootPageId = PEOPLE_PAGES.ACTIVE;
+const rootPageId = "aktivni";
 const { data: rootPage } = await getPageData(rootPageId);
 
 if (!rootPage.value) {

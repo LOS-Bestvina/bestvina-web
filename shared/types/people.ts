@@ -10,3 +10,12 @@ export type PeopleCollectionItemExtended = PeopleCollectionItem & {
 export type SectionManifest = PeopleStructureCollectionItem;
 export type SectionManifestSection = NonNullable<PeopleStructureCollectionItem["sections"]>[number];
 
+export type PeoplePageId =
+	| "aktivni"
+	| "vsichni"
+	| "chemie"
+	| "biologie"
+	| "ostatni"
+	| "vedeni"
+	| "externi"
+	| "byvali";

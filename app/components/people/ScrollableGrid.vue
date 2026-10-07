@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import PersonCard from "~/components/people/PersonCard.vue";
 import type { PeopleCollectionItemExtended } from "#shared/types/people";
-import { PEOPLE_PAGES } from "#shared/constants";
 import { formatPersonCount } from "#shared/utils/i18n";
 
 const props = defineProps<{
@@ -11,8 +10,8 @@ const props = defineProps<{
 const { getPopulatedPageData, getAllActivePeopleSortedForPage, getAllFormerPeopleSorted } = usePeopleData();
 const pageId = toRef(props, "pageId");
 
-const isAllPeople = computed(() => pageId.value === "vsichni" || pageId.value === `${PEOPLE_PAGES.ACTIVE}/vsichni`);
-const isFormerPeople = computed(() => pageId.value === PEOPLE_PAGES.FORMER);
+const isAllPeople = computed(() => pageId.value === "vsichni");
+const isFormerPeople = computed(() => pageId.value === "byvali");
 
 /**
  * FETCH DATA

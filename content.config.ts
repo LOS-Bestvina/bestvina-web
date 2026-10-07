@@ -193,7 +193,7 @@ export default defineContentConfig({
 
 		peopleStructure: defineCollection({
 			type: "data",
-			source: "people_structure/**/*.json",
+			source: "people/structure/**/*.json",
 			schema: PeopleStructureSchema,
 		}),
 

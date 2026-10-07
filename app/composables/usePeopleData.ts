@@ -1,6 +1,5 @@
 import { toValue } from "vue";
-import type { PeoplePageId } from "#shared/constants";
-import type { PeopleCollectionItemExtended } from "#shared/types/people";
+import type { PeopleCollectionItemExtended, PeoplePageId } from "#shared/types/people";
 import { resolvePersonForContext } from "#shared/utils/peopleResolver";
 
 export default function () {
@@ -27,7 +26,7 @@ export default function () {
 			`page-data-${cleanId}`,
 			() => {
 				return queryCollection("peopleStructure")
-					.where("stem", "=", `people_structure/${cleanId}`)
+					.where("stem", "=", `people/structure/${cleanId}`)
 					.first();
 			},
 			{
@@ -45,7 +44,7 @@ export default function () {
 			`populated-page-data-${cleanId}`,
 			async () => {
 				const manifest = await queryCollection("peopleStructure")
-					.where("stem", "=", `people_structure/${cleanId}`)
+					.where("stem", "=", `people/structure/${cleanId}`)
 					.first();
 
 				const people = await getAllPeopleRaw();
