@@ -81,10 +81,11 @@ const items = computed<NavigationMenuItem[]>(() => [
 				class="flex flex-row items-center gap-1.5 h-full"
 				to="/"
 			>
-				<NuxtImg
+				<img
+					alt="Běstvina Logo"
 					class="h-[70%] object-contain"
 					src="/imgs/b-logo.svg"
-				/>
+				>
 			</NuxtLink>
 		</template>
 
