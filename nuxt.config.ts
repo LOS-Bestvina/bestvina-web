@@ -66,6 +66,12 @@ export default defineNuxtConfig({
 	},
 	compatibilityDate: "2025-11-30",
 	nitro: {
+		// workaround for: https://github.com/nuxt/nuxt/issues/36467
+		externals: {
+			inline: [
+				/[\\/]nuxt[\\/]dist/,
+			],
+		},
 		prerender: {
 			autoSubfolderIndex: false,
 			crawlLinks: true,
