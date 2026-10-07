@@ -7,7 +7,7 @@ definePageMeta({
 
 const img = useImage();
 
-const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
+const placeholder = (src: string) => img(src, {}, { preset: "placeholder" });
 
 /**
  * TABS INITIALIZATION
@@ -66,13 +66,13 @@ useSeoMeta({
 					layout="columns"
 				>
 					<template #secondary>
-						<NuxtImg
+						<AppImage
 							v-if="page.targetPeople.image"
+							:alt="page.targetPeople.title"
 							:placeholder="placeholder(page.targetPeople.image)"
 							:src="page.targetPeople.image"
 							class="w-full h-full object-cover md:object-[30%_0%] lg:object-center"
-							loading="lazy"
-							preset="thumbnailXLg"
+							preset="editorial"
 						/>
 					</template>
 				</InfoCard>
@@ -143,12 +143,12 @@ useSeoMeta({
 							class="w-full"
 							loop
 						>
-							<NuxtImg
+							<AppImage
+								:alt="page.environment?.title || 'Prostředí tábora'"
 								:placeholder="placeholder(item)"
 								:src="item"
 								class="w-full h-full object-cover"
-								loading="lazy"
-								preset="thumbnailXLg"
+								preset="editorial"
 							/>
 						</UCarousel>
 					</template>
@@ -175,12 +175,12 @@ useSeoMeta({
 							class="w-full"
 							loop
 						>
-							<NuxtImg
+							<AppImage
+								:alt="page.activities?.title || 'Aktivity na táboře'"
 								:placeholder="placeholder(item)"
 								:src="item"
 								class="w-full h-full object-cover"
-								loading="lazy"
-								preset="thumbnailXLg"
+								preset="editorial"
 							/>
 						</UCarousel>
 					</template>

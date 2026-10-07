@@ -14,7 +14,7 @@ const _contactAction: ButtonProps = {
 };
 
 const img = useImage();
-const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
+const placeholder = (src: string) => img(src, {}, { preset: "placeholder" });
 
 const { data: contacts } = await useAsyncData("contacts", () => {
 	return queryCollection("contacts").first();
@@ -52,12 +52,13 @@ useSeoMeta({
 					<template #default>
 						<div class="flex flex-col items-center text-center gap-6">
 							<div class="relative">
-								<NuxtImg
+								<AppImage
 									v-if="person.img"
+									:alt="person.name"
 									:placeholder="placeholder(person.img)"
 									:src="person.img"
 									class="w-64 h-64 sm:w-64 sm:h-64 object-cover rounded-full ring-4 ring-neutral-100 dark:ring-neutral-800 transition-all duration-500 group-hover:ring-secondary-500/50 shadow-md"
-									preset="thumbnailMd"
+									preset="card"
 								/>
 								<div
 									v-else

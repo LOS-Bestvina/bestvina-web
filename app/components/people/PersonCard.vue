@@ -2,7 +2,7 @@
 import type { PeopleCollectionItemExtended } from "#shared/types/people";
 
 const img = useImage();
-const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
+const placeholder = (src: string) => img(src, {}, { preset: "placeholder" });
 
 defineProps<{
 	person: PeopleCollectionItemExtended;
@@ -27,12 +27,13 @@ defineProps<{
 				v-if="showImage"
 				class="w-full aspect-3/2 bg-zinc-100 dark:bg-zinc-800 flex justify-center items-center overflow-hidden shrink-0 relative"
 			>
-				<NuxtImg
+				<AppImage
 					v-if="person.image"
+					:alt="person.name"
 					:placeholder="placeholder(person.image)"
 					:src="person.image"
 					class="w-full h-full object-cover grayscale-15 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
-					preset="thumbnailLg"
+					preset="portrait"
 				/>
 				<div
 					v-if="person.image"

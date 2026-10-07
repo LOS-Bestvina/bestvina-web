@@ -52,10 +52,10 @@ useSeoMeta({
 									}"
 									variant="soft"
 								>
-									<NuxtImg
+									<AppImage
+										:alt="`Ročník ${yearObj.year} – ${yearObj.theme}`"
 										:src="`${yearObj.coverImg}`"
-										loading="lazy"
-										preset="thumbnailLg"
+										preset="portrait"
 										class="w-full h-48 md:h-64 object-cover group-hover:scale-105 transition-transform duration-700"
 									/>
 									<div class="p-6 md:p-8 flex flex-col flex-grow">

@@ -26,8 +26,9 @@ defineSlots<{
 				:class="[
 					reverse ? 'md:order-2' : 'md:order-1',
 					reverse ? 'md:text-end' : 'text-start',
+					image ? 'md:col-span-2' : 'md:col-span-3',
 				]"
-				class="flex flex-col gap-4 md:col-span-2"
+				class="flex flex-col gap-4"
 			>
 				<div
 					:class="[reverse ? 'md:text-end' : 'text-start', 'm-4', 'flex flex-col gap-4']"
@@ -42,14 +43,15 @@ defineSlots<{
 				</div>
 			</div>
 			<div
+				v-if="image"
 				:class="[reverse ? 'md:order-1' : 'md:order-2']"
 				class="md:col-span-1 w-full md:h-full aspect-square md:aspect-1/3"
 			>
-				<NuxtImg
+				<AppImage
 					:alt="title"
 					:src="image"
 					class="w-full h-full object-cover rounded-lg"
-					preset="thumbnailMd"
+					preset="card"
 				/>
 			</div>
 		</div>

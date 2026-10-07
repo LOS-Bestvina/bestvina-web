@@ -17,7 +17,8 @@ defineProps({
 			:class="`w-fit h-20 lg:h-20 object-contain lg:hover:scale-105 transition-transform ${extraClass}`"
 			:dark="srcDark"
 			:light="src"
-			preset="thumbnailMd"
+			:alt="alt"
+			preset="card"
 		/>
 	</NuxtLink>
 </template>
