@@ -109,7 +109,7 @@ export default defineNuxtConfig({
 			{
 				name: "Poppins",
 				provider: "google",
-				weights: [300, 400, 500, 600, 700, 800],
+				weights: [400, 600, 800],
 				preload: true,
 				display: "swap",
 			},
