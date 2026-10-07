@@ -61,6 +61,13 @@ const isAuthorSelected = (author: any) => {
 	return selectedAuthors.value.includes(author.shortcut || author);
 };
 
+const hasActiveFilters = computed(() =>
+	selectedYears.value.length > 0
+	|| selectedAuthors.value.length > 0
+	|| isOlderYearsSelected.value
+	|| isOtherAuthorsSelected.value,
+);
+
 useSeoMeta({
 	title: "Galerie",
 	description: "Galerie fotografií z Běstviny.",
@@ -133,8 +140,8 @@ useSeoMeta({
 									<div class="flex flex-wrap gap-2">
 										<UButton
 											v-for="author in topAuthorsInfo"
-											:key="author.shortcut || author"
-											:label="author.name || author"
+											:key="author.shortcut || author.name"
+											:label="author.name || author.name"
 											:color="isAuthorSelected(author) ? 'secondary' : 'neutral'"
 											:variant="isAuthorSelected(author) ? 'solid' : 'soft'"
 											@click="toggleAuthor(author)"
@@ -149,15 +156,18 @@ useSeoMeta({
 									</div>
 								</div>
 
-								<UButton
-									class="w-full justify-center mt-4"
-									color="neutral"
-									label="Zrušit filtry"
-									leading-icon="i-heroicons-x-mark-20-solid"
-									variant="subtle"
-									size="xl"
-									@click="selectedAuthors = []; selectedYears = []"
-								/>
+								<Transition name="fade">
+									<UButton
+										v-if="hasActiveFilters"
+										class="w-full justify-center mt-4"
+										color="neutral"
+										label="Zrušit filtry"
+										leading-icon="i-heroicons-x-mark-20-solid"
+										variant="subtle"
+										size="xl"
+										@click="selectedAuthors = []; selectedYears = []"
+									/>
+								</Transition>
 							</div>
 						</div>
 					</template>
@@ -204,8 +214,8 @@ useSeoMeta({
 						<div class="flex flex-wrap gap-2">
 							<UButton
 								v-for="author in topAuthorsInfo"
-								:key="author.shortcut || author"
-								:label="author.name || author"
+								:key="author.shortcut || author.name"
+								:label="author.name || author.name"
 								:color="isAuthorSelected(author) ? 'secondary' : 'neutral'"
 								:variant="isAuthorSelected(author) ? 'solid' : 'soft'"
 								size="sm"
@@ -224,14 +234,17 @@ useSeoMeta({
 						</div>
 					</div>
 
-					<UButton
-						class="w-fit mt-2"
-						color="neutral"
-						label="Zrušit filtry"
-						leading-icon="i-heroicons-x-mark-20-solid"
-						variant="ghost"
-						@click="selectedAuthors = []; selectedYears = []"
-					/>
+					<Transition name="fade">
+						<UButton
+							v-if="hasActiveFilters"
+							class="w-fit mt-2"
+							color="neutral"
+							label="Zrušit filtry"
+							leading-icon="i-heroicons-x-mark-20-solid"
+							variant="ghost"
+							@click="selectedAuthors = []; selectedYears = []"
+						/>
+					</Transition>
 				</div>
 
 				<ClientOnly>
@@ -269,4 +282,15 @@ useSeoMeta({
 	</UPage>
 </template>
 
-<style scoped />
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
+	transform: translateY(-8px);
+}
+</style>
