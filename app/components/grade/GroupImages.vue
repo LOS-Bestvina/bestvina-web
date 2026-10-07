@@ -47,7 +47,7 @@ watch(pending, (isPending) => {
 					:actual-width="item.width"
 					:overlay-text="image.title ?? ''"
 					:src="image.path"
-					preset="thumbnailLg"
+					preset="portrait"
 				/>
 			</template>
 		</JustifiedImageLayout>

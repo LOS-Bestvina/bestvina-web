@@ -7,7 +7,7 @@ const _props = defineProps<{
 }>();
 
 const img = useImage();
-const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
+const placeholder = (src?: string) => src ? img(src, {}, { preset: "placeholder" }) : undefined;
 </script>
 
 <template>
@@ -20,14 +20,16 @@ const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
 		reverse
 		:title="data.title"
 	>
-		<template #default>
-			<NuxtImg
-				:alt="data.title || 'Lidé na Běstvině'"
-				:placeholder="placeholder(data.image!)"
+		<template
+			v-if="data.image"
+			#default
+		>
+			<AppImage
+				:placeholder="placeholder(data.image)"
 				:src="data.image"
+				:alt="data.title || 'Lidé na Běstvině'"
 				class="h-full object-cover object-[75%_25%] lg:w-full lg:hover:scale-105 transition-transform rounded-xl"
-				loading="lazy"
-				preset="thumbnailXXLg"
+				preset="hero"
 			/>
 		</template>
 

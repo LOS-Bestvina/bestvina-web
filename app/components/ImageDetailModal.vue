@@ -343,7 +343,7 @@ defineShortcuts({
 
 									<img
 										v-show="!isMainLoaded && !isFullResLoaded"
-										:src="img(currentSrc, {}, { preset: 'thumbnailXXSm' })"
+										:src="img(currentSrc, {}, { preset: 'placeholder' })"
 										:alt="imageTitle"
 										class="absolute inset-0 w-full h-full object-contain blur-md opacity-70 transition-opacity duration-300 z-0"
 										@load="onPlaceholderLoad(currentSrc)"
@@ -358,7 +358,7 @@ defineShortcuts({
 										draggable="false"
 										fetch-priority="high"
 										loading="eager"
-										preset="thumbnailXXXLg"
+										preset="fullscreen"
 										tabindex="-1"
 										@load="onMainLoad(currentSrc)"
 									/>
@@ -431,7 +431,7 @@ defineShortcuts({
 									decoding="async"
 									draggable="false"
 									loading="lazy"
-									preset="thumbnailSm"
+									preset="thumbnail"
 									@load="onThumbLoad(imgSrc)"
 								/>
 							</button>
@@ -447,11 +447,11 @@ defineShortcuts({
 				>
 					<NuxtImg
 						v-if="allowedMain.has(i) && i !== currentIndex"
-						alt=""
 						:src="imgSrc"
+						:alt="imageTitle"
 						decoding="async"
 						loading="lazy"
-						preset="thumbnailXXLg"
+						preset="hero"
 						@load="onMainLoad(imgSrc)"
 					/>
 				</template>

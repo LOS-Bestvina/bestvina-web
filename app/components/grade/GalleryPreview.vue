@@ -12,7 +12,7 @@ const emit = defineEmits<{
 // Utilities
 const { openImage } = useImageDetail({ loopImages: true });
 const img = useImage();
-const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
+const placeholder = (src: string) => img(src, {}, { preset: "placeholder" });
 
 // Data fetching
 const { getRandomImages, selectedYears, pending } = useBestvinaImages("gallery", props.year);
@@ -83,7 +83,8 @@ const openModal = (src: string) => {
 					:custom="true"
 					:placeholder="placeholder(item.path)"
 					:src="item.path"
-					preset="thumbnailMd"
+					:alt="`Náhodná fotografie z roku ${props.year}`"
+					preset="card"
 				>
 					<div
 						v-if="isLoaded"

@@ -4,13 +4,14 @@ import { useElementSize } from "@vueuse/core";
 const props = defineProps<{
 	src: string;
 	overlayText?: string;
+	alt?: string;
 	preset?: string;
 	actualWidth?: number;
 	alt?: string;
 }>();
 
 const img = useImage();
-const placeholderSrc = img(props.src, {}, { preset: "thumbnailXXSm" });
+const placeholderSrc = img(props.src, {}, { preset: "placeholder" });
 
 const isLoaded = ref(false);
 
@@ -46,18 +47,20 @@ const isSmall = computed(() => {
 			:alt="alt || overlayText || 'Fotografie z galerie Běstvina'"
 			:class="isLoaded ? 'opacity-100' : 'opacity-0'"
 			:src="src"
+			:alt="alt || overlayText || 'Fotografie z galerie Běstvina'"
 			class="absolute inset-0 w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-105"
 			decoding="async"
 			loading="lazy"
-			preset="thumbnailSm"
+			preset="thumbnail"
 			@load="onImageLoad"
 		/>
 		<NuxtImg
 			v-else
 			:alt="alt || overlayText || 'Fotografie z galerie Běstvina'"
 			:class="isLoaded ? 'opacity-100' : 'opacity-0'"
-			:preset="preset ?? 'thumbnailMd'"
+			:preset="preset ?? 'card'"
 			:src="src"
+			:alt="alt || overlayText || 'Fotografie z galerie Běstvina'"
 			class="absolute inset-0 w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-105"
 			decoding="async"
 			loading="lazy"
