@@ -29,3 +29,10 @@ logs
 /.wrangler/
 /bun.lock
 /qodana.yaml
+
+
+# AI, agents
+.agents/*
+.claude/*
+skills-lock.json
+.dump/*
