@@ -2,6 +2,8 @@
 import { nextTick, onBeforeUpdate, onMounted, ref, watch } from "vue";
 import { useSwipe } from "@vueuse/core";
 import type { CopyButton } from "#components";
+import { formatFileSize, formatResolution } from "#shared/utils/formatters";
+import type { BestvinaImage } from "#shared/utils/imageMapper";
 
 const props = defineProps<{
 	images: string[];
@@ -14,7 +16,6 @@ const emit = defineEmits(["close"]);
 const url = useRequestURL();
 const img = useImage();
 
-// Main Logic extracted to Composable
 const {
 	currentSrc,
 	currentIndex,
@@ -113,6 +114,68 @@ watch(currentIndex, () => centerThumbnail(false), { flush: "post" });
 
 // Actions & Shortcuts
 const imageTitle = computed(() => currentSrc.value.split("/").pop() || "fotografie");
+
+// Image Metadata
+const { groupedImages: galleryImages, fetchImages: fetchGalleryImages } = useImageCache("gallery");
+const { groupedImages: groupsImages, fetchImages: fetchGroupsImages } = useImageCache("groups");
+
+const imageType = computed(() => (currentSrc.value.includes("/groups/") ? "groups" : "gallery"));
+const imageYear = computed(() => currentSrc.value.match(/\/years\/(\d{4})\//)?.[1] || null);
+
+const activeImage = computed<BestvinaImage | null>(() => {
+	const year = imageYear.value;
+	if (!year) return null;
+	const cache = imageType.value === "groups" ? groupsImages.value : galleryImages.value;
+	return cache[year]?.find(img => img.path === currentSrc.value) || null;
+});
+
+watchEffect(() => {
+	const year = imageYear.value;
+	if (!year) return;
+	const cache = imageType.value === "groups" ? groupsImages.value : galleryImages.value;
+	if (!cache[year]) {
+		if (imageType.value === "groups") {
+			fetchGroupsImages([year]);
+		}
+		else {
+			fetchGalleryImages([year]);
+		}
+	}
+});
+
+const metadataItems = computed(() => {
+	const items = [
+		{
+			icon: "i-lucide-file-text",
+			tooltip: "Název souboru",
+			value: imageTitle.value,
+			mono: true,
+		},
+		{
+			icon: "i-lucide-camera",
+			tooltip: "Autor",
+			value: activeImage.value?.author?.name,
+		},
+		{
+			icon: "i-lucide-calendar",
+			tooltip: activeImage.value?.date ? "Datum pořízení" : "Ročník",
+			value: activeImage.value?.date || activeImage.value?.year || imageYear.value,
+		},
+		{
+			icon: "i-lucide-maximize-2",
+			tooltip: "Rozlišení",
+			value: formatResolution(activeImage.value?.width, activeImage.value?.height),
+		},
+		{
+			icon: "i-lucide-hard-drive",
+			tooltip: "Velikost souboru",
+			value: formatFileSize(activeImage.value?.filesize),
+		},
+	];
+
+	return items.filter((item): item is typeof item & { value: string } => Boolean(item.value));
+});
+
 const downloadLinkRef = ref<HTMLAnchorElement | null>(null);
 const copyButtonRef = ref<InstanceType<typeof CopyButton> | null>(null);
 
@@ -138,31 +201,7 @@ defineShortcuts({
 		<template #content>
 			<div class="flex flex-col h-screen bg-elevated dark:bg-default backdrop-blur-sm">
 				<div class="flex justify-between items-center p-4 shrink-0 z-20 border-b border-accented">
-					<div class="flex gap-2">
-						<a
-							ref="downloadLinkRef"
-							:download="imageTitle"
-							:href="currentSrc"
-						>
-							<UButton
-								aria-label="Stáhnout fotografii"
-								color="neutral"
-								icon="i-heroicons-arrow-down-tray"
-								size="xl"
-								variant="ghost"
-							/>
-						</a>
-
-						<CopyButton
-							ref="copyButtonRef"
-							:value="url.toString()"
-							icon="link"
-							size="xl"
-							variant="ghost"
-						/>
-					</div>
-
-					<div class="flex items-center gap-1 sm:gap-2">
+					<div class="flex gap-1 sm:gap-2">
 						<UButton
 							aria-label="Přiblížit"
 							color="neutral"
@@ -192,14 +231,76 @@ defineShortcuts({
 						/>
 					</div>
 
-					<UButton
-						aria-label="Zavřít"
-						color="neutral"
-						icon="i-heroicons-x-mark"
-						size="xl"
-						variant="ghost"
-						@click="emit('close')"
-					/>
+					<div class="flex gap-1 sm:gap-2">
+						<a
+							ref="downloadLinkRef"
+							:download="imageTitle"
+							:href="currentSrc"
+						>
+							<UButton
+								aria-label="Stáhnout fotografii"
+								color="neutral"
+								icon="i-heroicons-arrow-down-tray"
+								size="xl"
+								variant="ghost"
+							/>
+						</a>
+
+						<CopyButton
+							ref="copyButtonRef"
+							:value="url.toString()"
+							toast-message="Odkaz zkopírován do schránky!"
+							icon="link"
+							size="xl"
+							variant="ghost"
+						/>
+
+						<UPopover
+							mode="hover"
+							enable-touch
+							:content="{ align: 'end', side: 'bottom', sideOffset: 8 }"
+						>
+							<UButton
+								aria-label="Informace o fotografii"
+								color="neutral"
+								icon="i-heroicons-information-circle"
+								size="xl"
+								variant="ghost"
+							/>
+
+							<template #content>
+								<div class="p-3 w-64 flex flex-col gap-2 text-xs">
+									<div
+										v-for="item in metadataItems"
+										:key="item.icon"
+										class="flex items-center gap-2.5"
+									>
+										<UIcon
+											:name="item.icon"
+											class="w-4 h-4 text-muted shrink-0"
+											:title="item.tooltip"
+											:aria-label="item.tooltip"
+										/>
+										<span
+											:class="item.mono ? 'font-mono font-bold select-all break-all' : 'font-medium truncate text-highlighted'"
+											:title="item.value"
+										>
+											{{ item.value }}
+										</span>
+									</div>
+								</div>
+							</template>
+						</UPopover>
+
+						<UButton
+							aria-label="Zavřít"
+							color="neutral"
+							icon="i-heroicons-x-mark"
+							size="xl"
+							variant="ghost"
+							@click="emit('close')"
+						/>
+					</div>
 				</div>
 
 				<div
