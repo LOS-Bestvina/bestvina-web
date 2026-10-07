@@ -11,7 +11,8 @@ const props = defineProps<{
 const { getPopulatedPageData, getAllActivePeopleSortedForPage, getAllFormerPeopleSorted } = usePeopleData();
 const pageId = toRef(props, "pageId");
 
-const ALL_PEOPLE_PAGE_ID = `${PEOPLE_PAGES.ACTIVE}/vsichni`;
+const isAllPeople = computed(() => pageId.value === "vsichni" || pageId.value === `${PEOPLE_PAGES.ACTIVE}/vsichni`);
+const isFormerPeople = computed(() => pageId.value === PEOPLE_PAGES.FORMER);
 
 /**
  * FETCH DATA
@@ -20,12 +21,12 @@ const { data: page } = await getPopulatedPageData(pageId);
 
 const specialPagePeople = ref<PeopleCollectionItemExtended[]>([]);
 
-if (pageId.value === ALL_PEOPLE_PAGE_ID) {
-	const { data } = await getAllActivePeopleSortedForPage(ALL_PEOPLE_PAGE_ID);
+if (isAllPeople.value) {
+	const { data } = await getAllActivePeopleSortedForPage(pageId);
 	specialPagePeople.value = data.value ?? [];
 }
-else if (pageId.value === PEOPLE_PAGES.FORMER) {
-	const { data } = await getAllFormerPeopleSorted(PEOPLE_PAGES.FORMER);
+else if (isFormerPeople.value) {
+	const { data } = await getAllFormerPeopleSorted(pageId);
 	specialPagePeople.value = data.value ?? [];
 }
 
@@ -39,7 +40,7 @@ interface Section {
 }
 
 const sections = computed<Section[]>(() => {
-	if (pageId.value === ALL_PEOPLE_PAGE_ID || pageId.value === PEOPLE_PAGES.FORMER) {
+	if (isAllPeople.value || isFormerPeople.value) {
 		return [{
 			name: "Abecední řazení",
 			showImages: true,

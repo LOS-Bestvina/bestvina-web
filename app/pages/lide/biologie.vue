@@ -5,5 +5,5 @@ useSeoMeta({
 </script>
 
 <template>
-	<PeopleScrollableGrid page-id="aktivni/biologie" />
+	<PeopleScrollableGrid page-id="biologie" />
 </template>

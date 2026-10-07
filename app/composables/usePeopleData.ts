@@ -1,58 +1,33 @@
 import { toValue } from "vue";
 import type { PeoplePageId } from "#shared/constants";
-import type { PeopleCollectionItem } from "@nuxt/content";
 import type { PeopleCollectionItemExtended } from "#shared/types/people";
+import { resolvePersonForContext } from "#shared/utils/peopleResolver";
 
 export default function () {
-	/**
-	 * INTERNAL METHODS
-	 */
-
-	const getCleanId = (userId: MaybeRefOrGetter<string>) => {
-		const val = toValue(userId);
-		return val ? val.replace(/^\/+/, "") : "";
-	};
-
-	const getPageSpecificOrDefaultPersonData = (person: PeopleCollectionItem, pageId: string) => {
-		if (!person.pages)
-			return person as PeopleCollectionItemExtended;
-
-		const pageIdInRecord = pageId.replace("/", "_");
-		const selectedPagePersonData = person.pages?.[pageIdInRecord];
-
-		if (selectedPagePersonData) {
-			const extendedPerson = { ...person } as PeopleCollectionItemExtended;
-			extendedPerson.name = selectedPagePersonData.name || person.name;
-			extendedPerson.description = selectedPagePersonData.description || person.description;
-			extendedPerson.nickname = selectedPagePersonData.nickname || person.nickname;
-			extendedPerson.image = selectedPagePersonData.image || person.image;
-			extendedPerson.roleTitle = selectedPagePersonData.roleTitle;
-			extendedPerson.role = selectedPagePersonData.role;
-			return extendedPerson;
-		}
-		return person as PeopleCollectionItemExtended;
+	const normalizePageId = (pageId: MaybeRefOrGetter<string>) => {
+		return toValue(pageId).replace(/^aktivni\//, "");
 	};
 
 	const getAllPeopleRaw = async () => {
 		const people = await queryCollection("people").all();
-
-		// add `id` calculated property
-		return people.map(person => ({
-			...person,
-			id: person.stem.replace("people/individuals/", ""),
-		}));
+		return people
+			.filter(person => !person.stem.split("/").pop()?.startsWith("_"))
+			.map(person => ({
+				...person,
+				id: person.stem.replace("people/individuals/", ""),
+			})) as PeopleCollectionItemExtended[];
 	};
 
 	/**
-	 * EXPORTED METHODS
-	 * */
-
+	 * Fetch raw manifest data for header/SEO metadata
+	 */
 	const getPageData = (pageId: MaybeRefOrGetter<string>) => {
+		const cleanId = normalizePageId(pageId);
 		return useAsyncData(
-			`page-data-${toValue(pageId)}`,
+			`page-data-${cleanId}`,
 			() => {
-				return queryCollection("peoplePages")
-					.where("stem", "=", `people/${toValue(pageId)}`)
+				return queryCollection("peopleStructure")
+					.where("stem", "=", `people_structure/${cleanId}`)
 					.first();
 			},
 			{
@@ -61,96 +36,48 @@ export default function () {
 		);
 	};
 
-	const getPerson = (personId: MaybeRefOrGetter<string>) => {
-		return useAsyncData(
-			`person-${getCleanId(personId)}`,
-			() => {
-				return queryCollection("people")
-					.where("stem", "=", `people/individuals/${getCleanId(personId)}`)
-					.first();
-			},
-			{
-				watch: [() => toValue(personId)],
-			},
-		);
-	};
-
-	const getAllPeople = () => {
-		return useAsyncData("people-data", async () => {
-			return await getAllPeopleRaw();
-		});
-	};
-
-	const getAllActivePeopleSortedForPage = (pageId: MaybeRefOrGetter<PeoplePageId>) => {
-		return useAsyncData(`all-people-data-sorted-${toValue(pageId)}`, async () => {
-			const peopleRaw = await getAllPeopleRaw();
-			return peopleRaw
-				.filter(person => !person.isFormer && !person.isHidden && !person.isExternal)
-				.map(person => getPageSpecificOrDefaultPersonData(person, toValue(pageId)))
-				.sort((a, b) => a.name.localeCompare(b.name));
-		});
-	};
-
-	const getAllFormerPeopleSorted = (formerPageId: MaybeRefOrGetter<PeoplePageId>) => {
-		return useAsyncData("all-former-people-data-sorted", async () => {
-			const peopleRaw = await queryCollection("people")
-				.where("isFormer", "=", true)
-				.where("isHidden", "=", false)
-				.all();
-			try {
-				return peopleRaw
-					.map(person => getPageSpecificOrDefaultPersonData(person, toValue(formerPageId)))
-					.sort((a, b) => a.name.localeCompare(b.name));
-			}
-			catch (e) {
-				console.error(e);
-				return [];
-			}
-		});
-	};
-
-	const getAllPages = () => {
-		return useAsyncData("people-pages", async () => {
-			const pages = await queryCollection("peoplePages").all();
-			// add `id` calculated property
-			return pages.map(page => ({
-				...page,
-				id: page.stem.replace("people/", ""),
-			}));
-		});
-	};
-
-	// return only active people
+	/**
+	 * Fetch populated section manifest with resolved contextual instructor data
+	 */
 	const getPopulatedPageData = (pageId: MaybeRefOrGetter<string>) => {
+		const cleanId = normalizePageId(pageId);
 		return useAsyncData(
-			`populated-page-data-${toValue(pageId)}`,
+			`populated-page-data-${cleanId}`,
 			async () => {
-				const page = await queryCollection("peoplePages")
-					.where("stem", "=", `people/${toValue(pageId)}`)
+				const manifest = await queryCollection("peopleStructure")
+					.where("stem", "=", `people_structure/${cleanId}`)
 					.first();
 
-				const people = await queryCollection("people").all();
-				if (!page || !people) {
+				const people = await getAllPeopleRaw();
+				if (!manifest || !people) {
 					return null;
 				}
+
 				const peopleMap = new Map(
 					people
 						.filter(person => !person.isFormer && !person.isHidden)
-						.map((person) => {
-							const id = person.stem.replace("people/individuals/", "");
-							const newPersonData = getPageSpecificOrDefaultPersonData({ ...person, id }, toValue(pageId));
-							return [id, newPersonData];
-						}),
+						.map(person => [person.id, person]),
 				);
 
 				return {
-					...page,
-					id: page.stem.replace("people/", ""),
-					sections: page.sections?.map(section => ({
+					...manifest,
+					id: manifest.id || cleanId,
+					sections: manifest.sections?.map(section => ({
 						...section,
 						people: section.people
-							?.map(personId => peopleMap.get(personId))
-							.filter(person => !!person),
+							?.map((personId) => {
+								const cleanPersonId = personId.includes("/")
+									? personId.split("/").pop()!
+									: personId;
+								const rawPerson = peopleMap.get(cleanPersonId);
+								if (!rawPerson) return null;
+								return resolvePersonForContext(
+									rawPerson,
+									cleanId,
+									section.id,
+								);
+							})
+							.filter((p): p is PeopleCollectionItemExtended => p !== null),
 					})) || [],
 				};
 			},
@@ -158,18 +85,41 @@ export default function () {
 				watch: [() => toValue(pageId)],
 			},
 		);
+	};
 
-		// TODO: check if person's image exists
+	/**
+	 * Sorted active people for alphabetical directory (All / Všichni)
+	 */
+	const getAllActivePeopleSortedForPage = (pageId: MaybeRefOrGetter<PeoplePageId | string>) => {
+		const cleanId = normalizePageId(pageId);
+		return useAsyncData(`all-people-data-sorted-${cleanId}`, async () => {
+			const peopleRaw = await getAllPeopleRaw();
+			return peopleRaw
+				.filter(person => !person.isFormer && !person.isHidden && !person.isExternal)
+				.map(person => resolvePersonForContext(person, cleanId))
+				.sort((a, b) => a.name.localeCompare(b.name));
+		});
+	};
+
+	/**
+	 * Sorted former people
+	 */
+	const getAllFormerPeopleSorted = (formerPageId: MaybeRefOrGetter<PeoplePageId | string>) => {
+		const cleanId = normalizePageId(formerPageId);
+		return useAsyncData(`all-former-people-data-sorted-${cleanId}`, async () => {
+			const peopleRaw = await getAllPeopleRaw();
+			return peopleRaw
+				.filter(person => person.isFormer && !person.isHidden)
+				.map(person => resolvePersonForContext(person, cleanId))
+				.sort((a, b) => a.name.localeCompare(b.name));
+		});
 	};
 
 	return {
 		getPageData,
-		getAllPages,
 		getPopulatedPageData,
-
-		getPerson,
-		getAllPeople,
 		getAllActivePeopleSortedForPage,
 		getAllFormerPeopleSorted,
+		resolvePersonForContext,
 	};
 }
