@@ -154,7 +154,6 @@ defineShortcuts({
 						/>
 					</div>
 
-					<!-- Zoom controls -->
 					<div class="flex items-center gap-1 sm:gap-2">
 						<UButton
 							aria-label="Přiblížit"
