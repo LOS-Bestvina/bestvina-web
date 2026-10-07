@@ -1,17 +1,31 @@
 {
-    "prettier.enable": false,
-    "editor.formatOnSave": false,
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "explicit"
-   },
+  "prettier.enable": false,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue"
+  ],
+  "eslint.format.enable": true,
+  "tailwindCSS.classAttributes": [
+    "class",
+    "ui"
+  ],
   "files.associations": {
     "*.css": "tailwindcss"
   },
   "editor.quickSuggestions": {
     "strings": "on"
   },
-  "tailwindCSS.classAttributes": ["class", "ui"],
   "tailwindCSS.experimental.classRegex": [
-    ["ui:\\s*{([^)]*)\\s*}", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+    [
+      "ui:\\s*{([^)]*)\\s*}",
+      "(?:'|\"|`)([^']*)(?:'|\"|`)"
+    ]
   ]
 }
