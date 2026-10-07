@@ -7,6 +7,7 @@ interface CopyButtonProps {
 	variant?: "link" | "solid" | "outline" | "soft" | "subtle" | "ghost";
 	tooltip?: string;
 	icon?: "copy" | "share" | "link";
+	toastMessage?: string;
 }
 
 const props = defineProps<CopyButtonProps>();
@@ -17,7 +18,7 @@ const toast = useToast();
 
 function showToast() {
 	toast.add({
-		title: "Zkopírováno!",
+		title: props.toastMessage ?? "Zkopírováno!",
 		icon: "i-lucide-copy-check",
 		progress: false,
 		color: "success",
@@ -58,7 +59,7 @@ const getIcon = () => {
 			:icon="getIcon()"
 			:size="size ?? 'sm'"
 			:variant="variant ?? 'link'"
-			@click="copy(value);showToast()"
+			@click="triggerCopy"
 		/>
 	</UTooltip>
 </template>
