@@ -112,7 +112,10 @@ async function runWithConcurrency<T>(
 	const workers = Array.from({ length: Math.min(concurrencyLimit, items.length) }, async () => {
 		while (index < items.length) {
 			const currentIndex = index++;
-			await workerFn(items[currentIndex]);
+			const item = items[currentIndex];
+			if (item !== undefined) {
+				await workerFn(item);
+			}
 		}
 	});
 
