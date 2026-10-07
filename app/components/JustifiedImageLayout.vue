@@ -147,9 +147,14 @@ const openImageDetail = (src: string) => {
 					<div
 						v-for="imgObj in item.items"
 						:key="imgObj.image.path"
+						:aria-label="`Zvětšit fotografii: ${imgObj.image.title || 'Galerie Běstvina'}`"
 						:style="{ width: `${imgObj.width}px` }"
-						class="h-full shrink-0"
+						class="h-full shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-lg cursor-pointer transition-transform"
+						role="button"
+						tabindex="0"
 						@click="openImageDetail(imgObj.image.path)"
+						@keydown.enter="openImageDetail(imgObj.image.path)"
+						@keydown.space.prevent="openImageDetail(imgObj.image.path)"
 					>
 						<slot
 							:image="imgObj.image"

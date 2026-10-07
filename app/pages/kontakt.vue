@@ -54,6 +54,7 @@ useSeoMeta({
 							<div class="relative">
 								<NuxtImg
 									v-if="person.img"
+									:alt="person.name"
 									:placeholder="placeholder(person.img)"
 									:src="person.img"
 									class="w-64 h-64 sm:w-64 sm:h-64 object-cover rounded-full ring-4 ring-neutral-100 dark:ring-neutral-800 transition-all duration-500 group-hover:ring-secondary-500/50 shadow-md"

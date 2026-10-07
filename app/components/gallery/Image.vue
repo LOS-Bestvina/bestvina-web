@@ -6,6 +6,7 @@ const props = defineProps<{
 	overlayText?: string;
 	preset?: string;
 	actualWidth?: number;
+	alt?: string;
 }>();
 
 const img = useImage();
@@ -42,6 +43,7 @@ const isSmall = computed(() => {
 
 		<NuxtImg
 			v-if="isSmall"
+			:alt="alt || overlayText || 'Fotografie z galerie Běstvina'"
 			:class="isLoaded ? 'opacity-100' : 'opacity-0'"
 			:src="src"
 			class="absolute inset-0 w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-105"
@@ -52,6 +54,7 @@ const isSmall = computed(() => {
 		/>
 		<NuxtImg
 			v-else
+			:alt="alt || overlayText || 'Fotografie z galerie Běstvina'"
 			:class="isLoaded ? 'opacity-100' : 'opacity-0'"
 			:preset="preset ?? 'thumbnailMd'"
 			:src="src"

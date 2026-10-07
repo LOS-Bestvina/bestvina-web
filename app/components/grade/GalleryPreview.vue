@@ -79,6 +79,7 @@ const openModal = (src: string) => {
 			<div class="m-2 w-full aspect-square lg:aspect-auto">
 				<NuxtImg
 					v-slot="{ src, isLoaded, imgAttrs }"
+					:alt="`Náhodná fotografie z roku ${props.year}`"
 					:custom="true"
 					:placeholder="placeholder(item.path)"
 					:src="item.path"

@@ -53,6 +53,7 @@ useSeoMeta({
 									variant="soft"
 								>
 									<NuxtImg
+										:alt="`Titulní fotografie ročníku ${yearObj.year}`"
 										:src="`${yearObj.coverImg}`"
 										loading="lazy"
 										preset="thumbnailLg"
