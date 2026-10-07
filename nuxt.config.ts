@@ -104,6 +104,9 @@ export default defineNuxtConfig({
 		"prerender:routes"({ routes }) {
 			getApiRoutesToPrerender().forEach(route => routes.add(route));
 		},
+		"prepare:types"({ sharedReferences }) {
+			sharedReferences.push({ path: "./content/types.d.ts" });
+		},
 	},
 	eslint: {
 		config: {
