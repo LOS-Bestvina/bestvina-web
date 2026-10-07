@@ -22,12 +22,12 @@ describe("accessibility compliance (WCAG & best practices)", () => {
 		return results;
 	}
 
-	it("ensures all <img> and <NuxtImg> tags in app have an alt or :alt attribute", () => {
+	it("ensures all <img>, <NuxtImg>, and <AppImage> tags in app have an alt or :alt attribute", () => {
 		const vueFiles = getAllVueFiles(appDir);
 		const missingAlts: { file: string; tag: string }[] = [];
 
-		// match <img> or <NuxtImg> elements
-		const imgTagRegex = /<(?:NuxtImg|img)\b([^>]*?)(\/?>)/gs;
+		// match <img>, <NuxtImg>, or <AppImage> elements
+		const imgTagRegex = /<(?:AppImage|NuxtImg|img)\b([^>]*?)(\/?>)/gs;
 
 		for (const file of vueFiles) {
 			const content = readFileSync(file, "utf-8");
