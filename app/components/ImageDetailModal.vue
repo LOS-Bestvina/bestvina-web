@@ -78,7 +78,15 @@ useSwipe(swipeZone, {
 	},
 });
 
-// Thumbnail scrolling (UI specific logic stays here)
+// Thumbnail scrolling & dragging
+const scrollAreaRef = ref<{ $el?: HTMLElement } | HTMLElement | null>(null);
+const {
+	isDragging: isStripDragging,
+	onWheel: onStripWheel,
+	onPointerDown: onStripPointerDown,
+	onClickCapture: onStripClickCapture,
+} = useDraggableScroll(scrollAreaRef);
+
 const thumbRefs = ref<HTMLElement[]>([]);
 
 onBeforeUpdate(() => {
@@ -283,9 +291,14 @@ defineShortcuts({
 
 				<div
 					v-if="images.length > 1"
-					class="shrink-0 z-20 w-full border-t border-accented"
+					class="shrink-0 z-20 w-full border-t border-accented select-none"
+					@wheel="onStripWheel"
+					@pointerdown="onStripPointerDown"
+					@click.capture="onStripClickCapture"
 				>
 					<UScrollArea
+						ref="scrollAreaRef"
+						:class="isStripDragging ? 'cursor-grabbing' : 'cursor-grab'"
 						class="w-full"
 						orientation="horizontal"
 					>
@@ -294,21 +307,27 @@ defineShortcuts({
 								v-for="(imgSrc, i) in images"
 								:key="i"
 								:ref="(el) => { if (el) thumbRefs[i] = el as HTMLElement }"
-								:class="currentSrc === imgSrc ? 'ring-2 ring-secondary scale-105 opacity-100' : 'opacity-50 hover:opacity-100'"
-								class="relative shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-md overflow-hidden transition-all duration-200"
+								:class="[
+									currentSrc === imgSrc ? 'ring-2 ring-secondary scale-105 opacity-100' : 'opacity-50 hover:opacity-100',
+									isStripDragging ? 'cursor-grabbing' : 'cursor-pointer',
+								]"
+								class="relative shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-md overflow-hidden transition-all duration-200 select-none"
+								draggable="false"
 								@click="goTo(i)"
+								@dragstart.prevent
 							>
 								<USkeleton
 									v-if="!loadedThumbnails.has(imgSrc)"
-									class="absolute inset-0 w-full h-full rounded-md"
+									class="absolute inset-0 w-full h-full rounded-md pointer-events-none"
 								/>
 
 								<NuxtImg
 									v-if="canLoadThumbnails"
 									:class="loadedThumbnails.has(imgSrc) ? 'opacity-100' : 'opacity-0'"
 									:src="imgSrc"
-									class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out"
+									class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out pointer-events-none select-none"
 									decoding="async"
+									draggable="false"
 									loading="lazy"
 									preset="thumbnailSm"
 									@load="onThumbLoad(imgSrc)"
