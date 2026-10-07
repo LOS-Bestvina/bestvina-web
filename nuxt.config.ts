@@ -1,5 +1,6 @@
 import { defineNuxtConfig } from "nuxt/config";
-import { getApiRoutesToPrerender, getImgRoutes } from "./scripts/getPrerenderRoutes";
+import { getApiRoutesToPrerender } from "./scripts/getPrerenderRoutes";
+import { generateThumbnails } from "./scripts/generateThumbnails";
 
 export default defineNuxtConfig({
 	modules: [
@@ -78,6 +79,11 @@ export default defineNuxtConfig({
 			routes: [
 				"/",
 			],
+		},
+		hooks: {
+			async "prerender:done"() {
+				await generateThumbnails();
+			},
 		},
 	},
 	vite: {
