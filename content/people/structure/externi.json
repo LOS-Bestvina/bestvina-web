@@ -1,0 +1,18 @@
+{
+  "id": "externi",
+  "title": "",
+  "description": "",
+  "header": "Externí hosté",
+  "headerText": "Běstvinu každoročně navštěvují některé z významných osobností z vědecké scény i mimo ní. V minulosti jsme přivítali například tyto celebrity...",
+  "sections": [
+    {
+      "id": "externi_hoste",
+      "people": [
+        "konvalinka_jan",
+        "hlouchova_klara",
+        "drabova_dana",
+        "mason_phil"
+      ]
+    }
+  ]
+}

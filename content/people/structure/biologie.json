@@ -1,0 +1,18 @@
+{
+  "id": "biologie",
+  "header": "biologie",
+  "sections": [
+    {
+      "id": "biologie_hlavni",
+      "name": "",
+      "people": [
+        "sima_petr",
+        "libusova_lenka",
+        "martinek_jan",
+        "bohutinsky_daniel",
+        "schimer_jiri",
+        "kucharova_aneta"
+      ]
+    }
+  ]
+}

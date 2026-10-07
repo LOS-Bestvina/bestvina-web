@@ -7,12 +7,4 @@ description: |
 
   Pochází ze Dvora Králové nad Labem a možná že právě mizerné vlakové spojení z/do jeho rodného města zapříčinilo, že z Dana vyrostl náruživý stopař, který dosud prostopoval sedmadvaceti státy Evropy. Dříve byl Dan aktivním uživatelem blíže neurčené mobilní workoutové aplikace, avšak od doby, co je otcem, svou energii směřuje jinam než do kliků s tlesknutím. Na Běstvině má obvykle na starosti oddíl a přednášky z histologie.
 
-degreesBeforeName: ""
-degreesAfterName: ""
-
-pages:
-  aktivni_chemie:
-    role: ""
-    description: ""
-    name: ""
 ---

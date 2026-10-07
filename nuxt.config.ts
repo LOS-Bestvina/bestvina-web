@@ -1,6 +1,7 @@
 import { defineNuxtConfig } from "nuxt/config";
 import { getApiRoutesToPrerender } from "./scripts/getPrerenderRoutes";
 import { generateThumbnails } from "./scripts/generateThumbnails";
+import { ACTIVE_ORGANIZER_ROUTES } from "./shared/constants";
 
 export default defineNuxtConfig({
 	modules: [
@@ -59,6 +60,7 @@ export default defineNuxtConfig({
 		"/kronika": { prerender: true },
 		"/rocniky/**": { prerender: true },
 		"/lide": { prerender: true },
+		"/lide/**": { prerender: true },
 		"/kontakt": { prerender: true },
 		"/galerie": { prerender: true },
 		"/informace": { prerender: true },
@@ -78,6 +80,10 @@ export default defineNuxtConfig({
 			crawlLinks: true,
 			routes: [
 				"/",
+				...ACTIVE_ORGANIZER_ROUTES,
+				"/lide/vedeni",
+				"/lide/externi",
+				"/lide/byvali",
 			],
 		},
 		hooks: {
@@ -97,6 +103,10 @@ export default defineNuxtConfig({
 	hooks: {
 		"prerender:routes"({ routes }) {
 			getApiRoutesToPrerender().forEach(route => routes.add(route));
+		},
+		"prepare:types"({ sharedReferences }) {
+			sharedReferences.push({ path: "./content/types.d.ts" });
+			sharedReferences.push({ types: "bun-types" });
 		},
 	},
 	eslint: {

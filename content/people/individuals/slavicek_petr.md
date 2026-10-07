@@ -7,11 +7,5 @@ description: |
 
   Jako známý vegetarián plně podporuje Zuzčiny snahy o omezení tučného masa a zezelenění jídelníčku. Má nepřehlédnutelný cit pro puritánsky čistou češtinu, podle všech zjištění ale není natolik starý, aby se osobně podílel na díle obrozenců 19. století, ač by jistě rád.
 
-degreesBeforeName: ""
-degreesAfterName: ""
-
-pages:
-  aktivni_chemie:
-    role: ""
-    roleTitle: "Přednášející fyzikální chemie"
+roleTitle: "Přednášející fyzikální chemie"
 ---

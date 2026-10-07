@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { PEOPLE_PAGES } from "#shared/constants";
-import type { PeoplePageId } from "#shared/constants";
+import type { PeoplePageId } from "#shared/types/people";
 
 definePageMeta({
 	layout: "page",
@@ -9,17 +8,13 @@ definePageMeta({
 const route = useRoute();
 const section = route.params.section as string;
 
-const sectionMap: Record<string, PeoplePageId> = {
-	vedeni: PEOPLE_PAGES.LEADERSHIP,
-	externi: PEOPLE_PAGES.EXTERNAL,
-	byvali: PEOPLE_PAGES.FORMER,
-};
+const ALLOWED_SECTIONS: readonly PeoplePageId[] = ["vedeni", "externi", "byvali"];
 
-const pageId = sectionMap[section];
-
-if (!pageId) {
+if (!ALLOWED_SECTIONS.includes(section as PeoplePageId)) {
 	throw createError({ statusCode: 404, statusMessage: "Stránka nenalezena!", fatal: true });
 }
+
+const pageId = section as PeoplePageId;
 
 const { getPageData } = usePeopleData();
 

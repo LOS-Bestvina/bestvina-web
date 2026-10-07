@@ -1,0 +1,33 @@
+{
+  "id": "chemie",
+  "header": "chemie",
+  "sections": [
+    {
+      "id": "chemie_laborator",
+      "name": "Chemická laboratoř",
+      "people": [
+        "mika_ludek",
+        "ledvinka_jiri",
+        "mikulastik_jakub",
+        "kablukov_vadim",
+        "ferencik_jakub",
+        "hybnerova_zuzana",
+        "slivova_andrea",
+        "gergelitsova_ivana"
+      ]
+    },
+    {
+      "id": "chemie_prednasejici",
+      "name": "Přednášející",
+      "people": [
+        "kotek_jan",
+        "slavicek_petr",
+        "nemirovich_tatiana",
+        "danek_ondrej",
+        "schimer_jiri",
+        "zaykov_alexandr",
+        "verner_vaclav"
+      ]
+    }
+  ]
+}

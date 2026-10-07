@@ -1,0 +1,20 @@
+{
+  "id": "vedeni",
+  "title": "",
+  "description": "",
+  "header": "Vedení tábora",
+  "headerText": "Úspěšná organizace soustředění vyžaduje mnoho úsilí v pozadí – zajistit finance, vyřešit administrativu a komunikaci s rodiči, zajistit odborný program, a mnoho dalšího. Na startost to mají tito lidé...",
+  "sections": [
+    {
+      "id": "vedeni_hlavni",
+      "name": "",
+      "people": [
+        "kotek_jan",
+        "kotkova_zuzana",
+        "schimerova_tereza",
+        "gergelitsova_ivana",
+        "sima_petr"
+      ]
+    }
+  ]
+}
