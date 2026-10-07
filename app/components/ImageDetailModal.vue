@@ -26,20 +26,53 @@ const {
 	loadedMainImages,
 	loadedPlaceholders,
 	loadedThumbnails,
+	loadedFullResImages,
 	allowedMain,
 	canLoadThumbnails,
 	onMainLoad,
 	onPlaceholderLoad,
 	onThumbLoad,
+	onFullResLoad,
 } = useImageGallery(props.images, props.initialSrc, {
 	loop: props.loop,
 	onNavigate: props.onNavigate,
 });
 
-// Swipe gestures
+// Zoom & Pan gestures
 const swipeZone = ref<HTMLElement | null>(null);
+const {
+	scale,
+	isZoomed,
+	zoomIn,
+	zoomOut,
+	resetZoom,
+	transformStyle,
+	cursorStyle,
+	onWheel,
+	onPointerDown,
+	onTouchStart,
+	onTouchMove,
+	onTouchEnd,
+	onDblClick,
+} = useImageZoom(swipeZone, { resetOn: currentSrc });
+
+// Full-res on-demand loading
+const isMainLoaded = computed(() => loadedMainImages.has(currentSrc.value));
+const isFullResLoaded = computed(() => loadedFullResImages.has(currentSrc.value));
+
+const hasZoomed = ref(false);
+watch(isZoomed, (zoomed) => {
+	if (zoomed) hasZoomed.value = true;
+});
+watch(currentSrc, () => {
+	hasZoomed.value = false;
+});
+const shouldLoadFullRes = computed(() => hasZoomed.value || isZoomed.value || isFullResLoaded.value);
+
+// Swipe gestures
 useSwipe(swipeZone, {
 	onSwipeEnd(e, direction) {
+		if (isZoomed.value) return;
 		if (direction === "left") next();
 		else if (direction === "right") prev();
 	},
@@ -79,11 +112,16 @@ const triggerDownload = () => downloadLinkRef.value?.click();
 const triggerShare = () => copyButtonRef.value?.triggerCopy();
 
 defineShortcuts({
-	arrowright: next,
-	arrowleft: prev,
-	escape: () => emit("close"),
-	d: triggerDownload,
-	s: triggerShare,
+	"arrowright": next,
+	"arrowleft": prev,
+	"escape": () => emit("close"),
+	"d": triggerDownload,
+	"s": triggerShare,
+	"+": zoomIn,
+	"=": zoomIn,
+	"-": zoomOut,
+	"0": resetZoom,
+	"r": resetZoom,
 });
 </script>
 
@@ -116,6 +154,37 @@ defineShortcuts({
 						/>
 					</div>
 
+					<!-- Zoom controls -->
+					<div class="flex items-center gap-1 sm:gap-2">
+						<UButton
+							aria-label="Přiblížit"
+							color="neutral"
+							icon="i-heroicons-magnifying-glass-plus"
+							size="xl"
+							variant="ghost"
+							:disabled="scale >= 4"
+							@click="zoomIn"
+						/>
+						<UButton
+							aria-label="Oddálit"
+							color="neutral"
+							icon="i-heroicons-magnifying-glass-minus"
+							size="xl"
+							variant="ghost"
+							:disabled="!isZoomed"
+							@click="zoomOut"
+						/>
+						<UButton
+							v-if="isZoomed"
+							aria-label="Obnovit přiblížení"
+							color="neutral"
+							icon="i-heroicons-arrows-pointing-in"
+							size="xl"
+							variant="ghost"
+							@click="resetZoom"
+						/>
+					</div>
+
 					<UButton
 						aria-label="Zavřít"
 						color="neutral"
@@ -128,7 +197,14 @@ defineShortcuts({
 
 				<div
 					ref="swipeZone"
-					class="relative flex-1 flex items-center justify-center min-h-0 px-4 sm:px-16 touch-pan-y overflow-hidden"
+					:class="cursorStyle"
+					class="relative flex-1 flex items-center justify-center min-h-0 px-4 sm:px-16 touch-none overflow-hidden select-none"
+					@wheel.prevent="onWheel"
+					@pointerdown="onPointerDown"
+					@dblclick="onDblClick"
+					@touchstart="onTouchStart"
+					@touchmove="onTouchMove"
+					@touchend="onTouchEnd"
 				>
 					<UButton
 						v-if="images.length > 1 && canNavigate('left')"
@@ -137,7 +213,7 @@ defineShortcuts({
 						icon="i-heroicons-chevron-left"
 						size="xl"
 						variant="ghost"
-						@click="prev"
+						@click.stop="prev"
 					/>
 
 					<div class="relative w-full h-full flex items-center justify-center">
@@ -146,34 +222,51 @@ defineShortcuts({
 								:key="currentSrc"
 								class="absolute inset-0 flex items-center justify-center z-10"
 							>
-								<UIcon
-									v-if="!loadedPlaceholders.has(currentSrc) && !loadedMainImages.has(currentSrc)"
-									class="animate-spin text-white w-10 h-10 absolute z-10"
-									name="i-svg-spinners-ring-resize"
-									size="50"
-								/>
-
-								<img
-									v-show="!loadedMainImages.has(currentSrc)"
-									:src="img(currentSrc, {}, { preset: 'thumbnailXXSm' })"
-									:alt="imageTitle"
-									class="absolute inset-0 w-full h-full object-contain blur-md opacity-70 transition-opacity duration-300"
-									@load="onPlaceholderLoad(currentSrc)"
+								<div
+									class="relative w-full h-full flex items-center justify-center pointer-events-none"
+									:style="transformStyle"
 								>
+									<UIcon
+										v-if="!loadedPlaceholders.has(currentSrc) && !loadedMainImages.has(currentSrc)"
+										class="animate-spin text-white w-10 h-10 absolute z-10"
+										name="i-svg-spinners-ring-resize"
+										size="50"
+									/>
 
-								<NuxtImg
-									:class="loadedMainImages.has(currentSrc) ? 'opacity-100' : 'opacity-0'"
-									:src="currentSrc"
-									:alt="imageTitle"
-									class="absolute inset-0 w-full h-full object-contain drop-shadow-2xl select-none transition-opacity duration-500 ease-in-out"
-									decoding="async"
-									draggable="false"
-									fetch-priority="high"
-									loading="eager"
-									preset="thumbnailXXXLg"
-									tabindex="-1"
-									@load="onMainLoad(currentSrc)"
-								/>
+									<img
+										v-show="!isMainLoaded && !isFullResLoaded"
+										:src="img(currentSrc, {}, { preset: 'thumbnailXXSm' })"
+										:alt="imageTitle"
+										class="absolute inset-0 w-full h-full object-contain blur-md opacity-70 transition-opacity duration-300 z-0"
+										@load="onPlaceholderLoad(currentSrc)"
+									>
+
+									<NuxtImg
+										:class="isMainLoaded && !isFullResLoaded ? 'opacity-100' : 'opacity-0'"
+										:src="currentSrc"
+										:alt="imageTitle"
+										class="absolute inset-0 w-full h-full object-contain drop-shadow-2xl select-none transition-opacity duration-300 ease-in-out z-10"
+										decoding="async"
+										draggable="false"
+										fetch-priority="high"
+										loading="eager"
+										preset="thumbnailXXXLg"
+										tabindex="-1"
+										@load="onMainLoad(currentSrc)"
+									/>
+
+									<img
+										v-if="shouldLoadFullRes"
+										:src="currentSrc"
+										:alt="imageTitle"
+										class="absolute inset-0 w-full h-full object-contain drop-shadow-2xl select-none transition-opacity duration-300 ease-in-out z-20"
+										:class="isFullResLoaded ? 'opacity-100' : 'opacity-0'"
+										decoding="async"
+										draggable="false"
+										tabindex="-1"
+										@load="onFullResLoad(currentSrc)"
+									>
+								</div>
 							</div>
 						</Transition>
 					</div>
@@ -185,7 +278,7 @@ defineShortcuts({
 						icon="i-heroicons-chevron-right"
 						size="xl"
 						variant="ghost"
-						@click="next"
+						@click.stop="next"
 					/>
 				</div>
 
