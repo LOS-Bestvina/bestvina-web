@@ -9,11 +9,11 @@
 					class="flex items-center"
 					to="/"
 				>
-					<NuxtImg
+					<img
 						alt="Běstvina Logo"
 						class="h-16 object-contain"
 						src="/imgs/b-logo.svg"
-					/>
+					>
 				</NuxtLink>
 				<div class="flex flex-col items-start gap-1">
 					<p class="text-sm text-muted">

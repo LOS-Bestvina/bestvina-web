@@ -1,14 +1,12 @@
 {
   "title": "O soustředění",
   "description": "Jak už asi víš, Běstvina je soustředění pro mladé chemiky a biology. I přes to, že většina Běstviny probíhá podobně pro obě vědní zaměření, konkrétní volba sekce má vliv na to, co tě tady bude čekat. Informace v druhé části této stránky jsou proto rozdělené tak, abys našel přesně to, co tě zajímá!",
-
   "targetPeople": {
     "title": "Pro koho",
     "description": "Běstvina je primárně určena žákům 1. až 3. ročníku středních škol (a odpovídajícím ročníkům na gymnáziích), kteří si chtějí prohloubit své znalosti nad rámec školní výuky. Výběr účastníků probíhá na základě výsledků krajských kol Chemické či Biologické olympiády.",
     "icon": "i-mdi-school",
     "image": "/imgs/promo/chlab_discussion.jpg"
   },
-
   "bestvinka": {
     "title": "Pro mladší",
     "description": "Pro přírodovědně nadané školáky ve věku do 15 let, kteří se ještě nemohou účastnit Běstviny, existuje sesterské soustředění Běstvinka. Soustředění je nabito hrami, soutěžemi, sportem a odborným přírodovědně laděným programem. Jeho délka je také dva týdny a začíná posledním dnem Běstviny.",
@@ -20,7 +18,6 @@
       }
     ]
   },
-
   "activities": {
     "title": "Doplňkové aktivity",
     "description": "Běstvina není jen o učení! Máš-li v sobě sportovního ducha, můžeš se zúčastnit turnajů ve fotbale, volejbale, stolním tenise nebo i šachu. Tradičně se utkávají chemici proti biologům, kde nemůžou chybět dýmovnice a kopřivy! Večer si můžeš zazpívat u táboráku s kytarou nebo zahrát deskové hry. A chybět nebude ani bál a diskotéka!",
@@ -34,7 +31,6 @@
       "/imgs/promo/party_3.jpg"
     ]
   },
-
   "camp": {
     "title": "Tábor",
     "description": "Původní tábor v posledních letech postupně prochází rozsáhlou rekonstrukcí, může tedy nabídnout moderní sociální zařízení. Jak ve zbrusu nových srubech, tak v chatkách jsou k dispozici zásuvky. Postele jsou vybaveny matracemi, polštářem i prostěradlem, k úplnému komfortu tedy budete potřebovat opravdu jen spacák.",
@@ -47,7 +43,6 @@
       "/imgs/camp/img5.jpg"
     ]
   },
-
   "schedule": {
     "title": "Typický program dne",
     "description": "Ačkoli není každý den soustředění úplně stejný, běžný den se řídí tímto přibližným programem.",
@@ -91,7 +86,6 @@
       }
     ]
   },
-
   "location": {
     "title": "Lokace",
     "description": "Táborová základna se nachází v malebné přírodě Železných hor, nedaleko obce Seč. Ubytování je zajištěno v dřevěných chatkách a srubech. K dispozici je také menší soukromé parkoviště přímo v areálu.",
@@ -99,13 +93,11 @@
     "mapUrl": "https://www.google.com/maps/embed/v1/place?key=AIzaSyDQSQUqQqUULFyg5w2cR_eQjUksSWnvBLk&q=ChIJX41Emh1NDEcR99WsK3h3On4%0AB%C4%9Bstvina%20155%2C%20538%2045%20B%C4%9Bstvina",
     "staticMapImage": "/imgs/bestvina_static_map.png"
   },
-
   "stuff": {
     "title": "Nezapomeň si zabalit...",
     "description": "Dostatečně teplý spacák, sportovní oblečení a obuv, čelovka či jiná svítilna (ideálně, aby vydržela aspoň pár hodin svítit), sešit a psací potřeby – to je nejnutnější základ! Hodit se ti dále můžou plavky, powerbanka, pláštěnka.",
     "icon": "i-material-symbols-travel-luggage-and-bags-outline"
   },
-
   "accordion": {
     "title": "Možná tě zajímá...",
     "items": [
@@ -136,18 +128,16 @@
       }
     ]
   },
-
   "chemistry": {
     "title": "Chemie",
     "description": "...",
     "icon": "i-lucide-flask-conical",
-    "image": "/imgs/cat1.jpg"
+    "image": "/imgs/dev/cat1.jpg"
   },
-
   "biology": {
     "title": "Biologie",
     "description": "...",
     "icon": "i-mdi-bacteria-outline",
-    "image": "/imgs/cat2.jpg"
+    "image": "/imgs/dev/cat2.jpg"
   }
 }

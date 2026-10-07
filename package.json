@@ -5,10 +5,11 @@
   "type": "module",
   "packageManager": "bun",
   "scripts": {
+    "prebuild": "bun run scripts/generateThumbnails.ts",
     "build": "nuxt build",
+    "clear-cache": "bunx rimraf .cache",
     "dev": "nuxt dev",
-    "prerender": "bun prerender.ts",
-    "generate": "bun run prerender && nuxt generate",
+    "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
@@ -50,6 +51,7 @@
     "@vue/test-utils": "^2.4.9",
     "golar": "^0.1.10",
     "rollup-plugin-visualizer": "^7.0.1",
+    "sharp": "^0.35.5",
     "wrangler": "^4.148.0"
   }
 }
