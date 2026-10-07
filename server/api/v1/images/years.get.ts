@@ -1,5 +1,6 @@
 import { resolve } from "path";
 import { readdir } from "node:fs/promises";
+import { getImageCountForYear } from "~~/server/utils/imageService";
 
 export default defineEventHandler(async () => {
 	const baseDir = resolve(process.cwd(), "public", "imgs", "years");
@@ -15,15 +16,15 @@ export default defineEventHandler(async () => {
 		// Process years sequentially to avoid resource exhaustion
 		const response = [];
 		for (const year of years) {
-			const [galleryImages, groupsImages] = await Promise.all([
-				getImagesForYear(year, "gallery"),
-				getImagesForYear(year, "groups"),
+			const [galleryImageCount, groupsImageCount] = await Promise.all([
+				getImageCountForYear(year, "gallery"),
+				getImageCountForYear(year, "groups"),
 			]);
 
 			response.push({
 				year: year,
-				galleryImagesCount: galleryImages.length,
-				groupsImagesCount: groupsImages.length,
+				galleryImagesCount: galleryImageCount,
+				groupsImagesCount: groupsImageCount,
 			});
 		}
 
