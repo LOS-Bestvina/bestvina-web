@@ -4,6 +4,12 @@ import { ACTIVE_ORGANIZER_ROUTES, CURRENT_YEAR } from "#shared/constants";
 
 const route = useRoute();
 
+const isPeoplePageSelected = computed(() => {
+	// regex: strip trailing slash from path
+	const path = route.path.replace(/\/$/, "");
+	return (ACTIVE_ORGANIZER_ROUTES as readonly string[]).includes(path);
+});
+
 const items = computed<NavigationMenuItem[]>(() => [
 	{
 		label: `Aktuální`,
@@ -48,7 +54,7 @@ const items = computed<NavigationMenuItem[]>(() => [
 			{
 				label: "Aktivní organizátoři",
 				to: "/lide",
-				active: (ACTIVE_ORGANIZER_ROUTES as readonly string[]).includes(route.path.replace(/\/$/, "") || "/lide"),
+				active: isPeoplePageSelected.value,
 				description: "Poznej všechny, kdo se starají o náplň denního programu",
 				icon: "i-material-symbols-person-play-outline",
 			},
