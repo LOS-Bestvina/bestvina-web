@@ -57,7 +57,7 @@
 
     /* make the default container a bit bigger than NuxtUI normal */
     --ui-container: var(--container-9xl);
-    
+
     /* increase contrast */
     background-color: var(--color-zinc-50);
     color: var(--color-zinc-900);
@@ -66,6 +66,13 @@
     --mesh-color-1: color-mix(in oklch, var(--color-teal-500), transparent 80%);
     --mesh-color-2: color-mix(in oklch, var(--color-orange-500), transparent 80%);
     --mesh-color-3: color-mix(in oklch, var(--color-yellow-500), transparent 85%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root,
+    html {
+        scroll-behavior: auto;
+    }
 }
 
 .dark {

@@ -29,6 +29,7 @@ defineProps<{
 			>
 				<NuxtImg
 					v-if="person.image"
+					:alt="person.name"
 					:placeholder="placeholder(person.image)"
 					:src="person.image"
 					class="w-full h-full object-cover grayscale-15 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
@@ -64,7 +65,7 @@ defineProps<{
 		<template #default>
 			<div
 				v-if="person.description"
-				class="flex flex-col gap-4 whitespace-pre-wrap text-sm text-justify"
+				class="flex flex-col gap-4 whitespace-pre-wrap text-sm text-left"
 			>
 				{{ person.description }}
 			</div>
