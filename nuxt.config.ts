@@ -91,7 +91,6 @@ export default defineNuxtConfig({
 	hooks: {
 		"prerender:routes"({ routes }) {
 			getApiRoutesToPrerender().forEach(route => routes.add(route));
-			getImgRoutes().forEach(route => routes.add(route));
 		},
 	},
 	eslint: {

@@ -7,8 +7,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
-    "prerender": "bun prerender.ts",
-    "generate": "bun run prerender && nuxt generate",
+    "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
