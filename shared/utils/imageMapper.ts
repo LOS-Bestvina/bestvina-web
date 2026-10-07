@@ -1,4 +1,5 @@
 import type { Photographer } from "../types/photographer";
+import { IMAGE_AUTHORS } from "./photographers";
 
 export interface BestvinaImage {
 	path: string;
@@ -8,6 +9,8 @@ export interface BestvinaImage {
 	aspectRatio: number;
 	author: Photographer | null;
 	title?: string | null;
+	filesize?: number;
+	date?: string | null;
 }
 
 export interface MinifiedBestvinaImage {
@@ -18,6 +21,8 @@ export interface MinifiedBestvinaImage {
 	ar: number;
 	a: string;
 	t?: string | null;
+	fs?: number;
+	d?: string | null;
 }
 
 export const encodeBestvinaImage = (img: BestvinaImage): MinifiedBestvinaImage => ({
@@ -28,6 +33,8 @@ export const encodeBestvinaImage = (img: BestvinaImage): MinifiedBestvinaImage =
 	ar: img.aspectRatio,
 	a: img.author?.shortcut || "unknown",
 	t: img.title,
+	fs: img.filesize,
+	d: img.date,
 });
 
 export const decodeBestvinaImage = (img: MinifiedBestvinaImage): BestvinaImage => {
@@ -41,5 +48,7 @@ export const decodeBestvinaImage = (img: MinifiedBestvinaImage): BestvinaImage =
 		aspectRatio: img.ar,
 		author: authorObject,
 		title: img.t,
+		filesize: img.fs,
+		date: img.d,
 	};
 };
