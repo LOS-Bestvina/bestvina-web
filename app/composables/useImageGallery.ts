@@ -9,10 +9,12 @@ export default function useImageGallery(images: string[], initialSrc: string, op
 	const loadedMainImages = reactive(new Set<string>());
 	const loadedPlaceholders = reactive(new Set<string>());
 	const loadedThumbnails = reactive(new Set<string>());
+	const loadedFullResImages = reactive(new Set<string>());
 
 	const onMainLoad = (src: string) => loadedMainImages.add(src);
 	const onPlaceholderLoad = (src: string) => loadedPlaceholders.add(src);
 	const onThumbLoad = (src: string) => loadedThumbnails.add(src);
+	const onFullResLoad = (src: string) => loadedFullResImages.add(src);
 
 	// Preloading logic
 	const allowedMain = reactive(new Set<number>());
@@ -94,10 +96,12 @@ export default function useImageGallery(images: string[], initialSrc: string, op
 		loadedMainImages,
 		loadedPlaceholders,
 		loadedThumbnails,
+		loadedFullResImages,
 		allowedMain,
 		canLoadThumbnails,
 		onMainLoad,
 		onPlaceholderLoad,
 		onThumbLoad,
+		onFullResLoad,
 	};
 }
