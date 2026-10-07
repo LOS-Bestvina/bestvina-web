@@ -4,6 +4,7 @@ const props = defineProps<{
 }>();
 
 const isLoaded = ref(false);
+const isDevPreview = import.meta.dev;
 const mapContainer = ref<HTMLElement | null>(null);
 
 onMounted(() => {
@@ -25,7 +26,7 @@ onMounted(() => {
 		ref="mapContainer"
 		class="relative w-full md:h-full min-h-72 aspect-3/2 bg-accented/10"
 	>
-		<template v-if="mapUrl">
+		<template v-if="mapUrl && !isDevPreview">
 			<iframe
 				v-if="isLoaded"
 				:allowfullscreen="false"
@@ -42,6 +43,13 @@ onMounted(() => {
 				class="absolute inset-0 w-full h-full"
 			/>
 		</template>
+
+		<div
+			v-else-if="mapUrl && isDevPreview"
+			class="flex items-center justify-center w-full h-full bg-primary/10"
+		>
+			Mapa se v dev preview nezobrazuje.
+		</div>
 
 		<div
 			v-else
