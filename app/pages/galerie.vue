@@ -61,6 +61,13 @@ const isAuthorSelected = (author: any) => {
 	return selectedAuthors.value.includes(author.shortcut || author);
 };
 
+const hasActiveFilters = computed(() =>
+	selectedYears.value.length > 0
+	|| selectedAuthors.value.length > 0
+	|| isOlderYearsSelected.value
+	|| isOtherAuthorsSelected.value,
+);
+
 useSeoMeta({
 	title: "Galerie",
 	description: "Galerie fotografií z Běstviny.",
@@ -150,6 +157,7 @@ useSeoMeta({
 								</div>
 
 								<UButton
+									v-if="hasActiveFilters"
 									class="w-full justify-center mt-4"
 									color="neutral"
 									label="Zrušit filtry"
@@ -225,6 +233,7 @@ useSeoMeta({
 					</div>
 
 					<UButton
+						v-if="hasActiveFilters"
 						class="w-fit mt-2"
 						color="neutral"
 						label="Zrušit filtry"
