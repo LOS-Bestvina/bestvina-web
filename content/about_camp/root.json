@@ -141,13 +141,13 @@
     "title": "Chemie",
     "description": "...",
     "icon": "i-lucide-flask-conical",
-    "image": "/imgs/cat1.jpg"
+    "image": "/imgs/dev/cat1.jpg"
   },
 
   "biology": {
     "title": "Biologie",
     "description": "...",
     "icon": "i-mdi-bacteria-outline",
-    "image": "/imgs/cat2.jpg"
+    "image": "/imgs/dev/cat2.jpg"
   }
 }
