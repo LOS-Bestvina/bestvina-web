@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 </script>
 
+<!-- do NOT move the AppHeader inside UMain, stickiness would get lost -->
 <template>
-	<!--  do NOT move the AppHeader inside UMain, stickiness would get lost -->
 	<div>
 		<AppHeader />
 		<UMain class="overflow-x-clip">

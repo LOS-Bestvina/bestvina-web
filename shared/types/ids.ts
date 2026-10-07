@@ -1,5 +1,5 @@
 /**
- * Type aliases for IDs to provide better semantic meaning and 
+ * Type aliases for IDs to provide better semantic meaning and
  * avoid "stringly-typed" logic throughout the application.
  */
 

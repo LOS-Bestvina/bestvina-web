@@ -31,6 +31,6 @@ export const getImgRoutes = (): string[] => {
 		return JSON.parse(readFileSync(imgsRoutesPath, "utf-8"));
 	}
 	catch (error) {
-		throw new Error(`Getting imgs routes failed: ${error}`);
+		throw new Error("Getting imgs routes failed", { cause: error });
 	}
 };
