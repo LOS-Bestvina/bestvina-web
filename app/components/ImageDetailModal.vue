@@ -427,6 +427,7 @@ defineShortcuts({
 									:alt="`Náhled fotografie ${i + 1}`"
 									:class="loadedThumbnails.has(imgSrc) ? 'opacity-100' : 'opacity-0'"
 									:src="imgSrc"
+									:alt="imageTitle"
 									class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out pointer-events-none select-none"
 									decoding="async"
 									draggable="false"
