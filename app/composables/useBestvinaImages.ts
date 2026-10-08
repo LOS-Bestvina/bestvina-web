@@ -14,12 +14,12 @@ export const useBestvinaImages = (
 	const selectedYears = ref<string[]>(enableUrlSync ? initialYears : []);
 	const selectedAuthors = ref<string[]>(enableUrlSync ? initialAuthors : []);
 
-	const { allAvailableYears, yearsLoaded, fetchYearsError, fetchYears } = useImageYears();
+	const { data: imageYearsOverview, pending: isYearsImagesOverviewPending, error: imageYearsOverviewError, refresh: refreshImageYears } = useImageYears();
 	const { groupedImages, pending, fetchImagesError, fetchImages } = useImageCache(type);
 
 	const { filteredImages, filteredGroupedImages, availableAuthors, availableYears, getRandomImages } = useImageFilters(
 		groupedImages,
-		allAvailableYears,
+		imageYearsOverview,
 		selectedYears,
 		selectedAuthors,
 	);
@@ -31,15 +31,15 @@ export const useBestvinaImages = (
 		return Array.isArray(val) ? val : [val];
 	});
 
-	const error = computed(() => fetchYearsError.value || fetchImagesError.value);
+	const error = computed(() => imageYearsOverviewError.value || fetchImagesError.value);
 
-	fetchYears();
+	refreshImageYears();
 
 	watchEffect(() => {
-		if (yearsLoaded.value && (targetYearsArray.value.length > 0 || allAvailableYears.value.length > 0)) {
+		if (!isYearsImagesOverviewPending.value) {
 			const yearsToFetch = targetYearsArray.value.length > 0
 				? targetYearsArray.value
-				: allAvailableYears.value.map(item => item.year);
+				: (imageYearsOverview.value?.map(item => item.year) ?? []);
 			fetchImages(yearsToFetch);
 		}
 	});
@@ -56,7 +56,7 @@ export const useBestvinaImages = (
 
 	return {
 		groupedImages,
-		allAvailableYears,
+		allAvailableYears: imageYearsOverview,
 		pending,
 		error,
 		selectedYears,

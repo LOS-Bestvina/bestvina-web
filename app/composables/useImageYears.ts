@@ -1,35 +1,19 @@
-interface YearsApiResponse {
-	years: YearApiResponse[];
-}
-
-export interface YearApiResponse {
-	year: string;
-	galleryImagesCount: number;
-	groupImagesCount: number;
-}
-
+/**
+ * Fetches an overview of all available camp years and their image counts.
+ *
+ * Calls `/api/v1/images/years` and caches the result under the key `images-years-overview`.
+ *
+ * @returns An `AsyncData` wrapper containing an array of year summaries.
+ *
+ * @example
+ * ```ts
+ * const { data: imageYearsOverview } = await useImageYears();
+ * const hasPhotos = imageYearsOverview.value.find(y => y.year === '2024')?.galleryImagesCount > 0;
+ * ```
+ */
 export function useImageYears() {
-	const allAvailableYears = ref<YearApiResponse[]>([]);
-	const yearsLoaded = ref(false);
-	const fetchYearsError = ref<Error | null>(null);
-
-	const fetchYears = async () => {
-		if (yearsLoaded.value)
-			return;
-
-		try {
-			const data = await $fetch<YearsApiResponse>("/api/v1/images/years");
-			allAvailableYears.value = data?.years || [];
-		}
-		catch (err) {
-			console.error("Failed to fetch years:", err);
-			fetchYearsError.value = err instanceof Error ? err : new Error("Failed to fetch years");
-			allAvailableYears.value = [];
-		}
-		finally {
-			yearsLoaded.value = true;
-		}
-	};
-
-	return { allAvailableYears, yearsLoaded, fetchYearsError, fetchYears };
+	return useAsyncData("images-years-overview", async () => {
+		const data = await $fetch("/api/v1/images/years")
+		return data?.years ?? [];
+	});
 }

@@ -1,10 +1,9 @@
 import type { BestvinaImage } from "#shared/utils/imageMapper";
-import type { YearApiResponse } from "./useImageYears";
 import type { Photographer } from "#shared/types/photographer";
 
 export function useImageFilters(
 	groupedImages: Ref<Record<string, BestvinaImage[]>>,
-	allAvailableYears: Ref<YearApiResponse[]>,
+	allAvailableYears: ReturnType<typeof useImageYears>["data"],
 	selectedYears: Ref<string[]>,
 	selectedAuthors: Ref<string[]>,
 ) {
@@ -49,9 +48,9 @@ export function useImageFilters(
 	});
 
 	const availableYears = computed(() => {
-		return allAvailableYears.value
-			.filter(item => item.galleryImagesCount !== 0)
-			.map(item => item.year);
+		return allAvailableYears?.value
+			?.filter(item => item.galleryImagesCount !== 0)
+			?.map(item => item.year) ?? [];
 	});
 
 	const getRandomImages = (n: number) => {
