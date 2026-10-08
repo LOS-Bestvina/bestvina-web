@@ -194,8 +194,8 @@ export default defineContentConfig({
 		}),
 
 		years: defineCollection({
-			source: "years/**.(yml|md)",
 			type: "page",
+			source: "years/**.(yml|md)",
 			schema: YearsPageSchema,
 		}),
 
