@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { TabsItem } from "@nuxt/ui";
+import { usePreferredReducedMotion } from "@vueuse/core";
 
 definePageMeta({
 	layout: "page",
@@ -8,6 +9,21 @@ definePageMeta({
 const img = useImage();
 
 const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
+
+const preferredReducedMotion = usePreferredReducedMotion();
+const getCarouselAutoplay = (delay: number) => {
+	if (preferredReducedMotion.value === "reduce") {
+		return false;
+	}
+	return {
+		delay,
+		stopOnInteraction: false,
+		stopOnMouseEnter: true,
+		stopOnFocusIn: true,
+	};
+};
+const campCarouselAutoplay = computed(() => getCarouselAutoplay(4500));
+const activitiesCarouselAutoplay = computed(() => getCarouselAutoplay(3500));
 
 /**
  * TABS INITIALIZATION
@@ -68,6 +84,7 @@ useSeoMeta({
 					<template #secondary>
 						<NuxtImg
 							v-if="page.targetPeople.image"
+							:alt="page.targetPeople.title || 'Cílová skupina tábora'"
 							:placeholder="placeholder(page.targetPeople.image)"
 							:src="page.targetPeople.image"
 							class="w-full h-full object-cover md:object-[30%_0%] lg:object-center"
@@ -133,7 +150,7 @@ useSeoMeta({
 					<template #secondary>
 						<UCarousel
 							v-slot="{ item }"
-							:autoplay="{ delay: 4500, stopOnInteraction: false }"
+							:autoplay="campCarouselAutoplay"
 							:items="page.camp.images"
 							:ui="{
 								viewport: 'h-full',
@@ -144,6 +161,7 @@ useSeoMeta({
 							loop
 						>
 							<NuxtImg
+								:alt="'Fotografie areálu tábora Běstvina'"
 								:placeholder="placeholder(item)"
 								:src="item"
 								class="w-full h-full object-cover"
@@ -165,7 +183,7 @@ useSeoMeta({
 					<template #secondary>
 						<UCarousel
 							v-slot="{ item }"
-							:autoplay="{ delay: 3500, stopOnInteraction: false }"
+							:autoplay="activitiesCarouselAutoplay"
 							:items="page.activities.images"
 							:ui="{
 								viewport: 'h-full',
@@ -176,6 +194,7 @@ useSeoMeta({
 							loop
 						>
 							<NuxtImg
+								:alt="'Fotografie aktivit v areálu tábora Běstvina'"
 								:placeholder="placeholder(item)"
 								:src="item"
 								class="w-full h-full object-cover"

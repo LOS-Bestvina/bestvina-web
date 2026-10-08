@@ -424,6 +424,7 @@ defineShortcuts({
 
 								<NuxtImg
 									v-if="canLoadThumbnails"
+									:alt="`Náhled fotografie ${i + 1}`"
 									:class="loadedThumbnails.has(imgSrc) ? 'opacity-100' : 'opacity-0'"
 									:src="imgSrc"
 									class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out pointer-events-none select-none"
@@ -446,6 +447,7 @@ defineShortcuts({
 				>
 					<NuxtImg
 						v-if="allowedMain.has(i) && i !== currentIndex"
+						alt=""
 						:src="imgSrc"
 						decoding="async"
 						loading="lazy"

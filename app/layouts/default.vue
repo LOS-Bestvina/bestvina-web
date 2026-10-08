@@ -1,7 +1,11 @@
 <template>
 	<div>
+		<AppSkipLink />
 		<AppHeader />
-		<UMain>
+		<UMain
+			id="main-content"
+			tabindex="-1"
+		>
 			<slot />
 		</UMain>
 		<AppFooter />

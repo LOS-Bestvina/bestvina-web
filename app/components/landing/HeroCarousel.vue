@@ -12,6 +12,7 @@ const placeholder = img(src, {}, { preset: "thumbnailXXSm" });
 		dark:bg-linear-to-br dark:from-primary-400/70 dark:via-tertiary-500/40 dark:to-secondary-500/60"
 	>
 		<NuxtImg
+			alt="Přednáška na letním soustředění Běstvina"
 			:placeholder="placeholder"
 			:src="src"
 			class="h-96 lg:h-full w-full object-cover object-[75%_25%] rounded-xl p-1"

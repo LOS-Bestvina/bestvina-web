@@ -22,6 +22,7 @@ const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
 	>
 		<template #default>
 			<NuxtImg
+				:alt="data.title || 'Lidé na Běstvině'"
 				:placeholder="placeholder(data.image!)"
 				:src="data.image"
 				class="h-full object-cover object-[75%_25%] lg:w-full lg:hover:scale-105 transition-transform rounded-xl"
