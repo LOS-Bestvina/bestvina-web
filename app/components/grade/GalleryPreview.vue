@@ -83,7 +83,6 @@ const openModal = (src: string) => {
 					:custom="true"
 					:placeholder="placeholder(item.path)"
 					:src="item.path"
-					:alt="`Náhodná fotografie z roku ${props.year}`"
 					preset="card"
 				>
 					<div
