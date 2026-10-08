@@ -54,5 +54,25 @@ export function useImageCache(type: "gallery" | "groups") {
 		}
 	};
 
-	return { groupedImages, pending, fetchImagesError, fetchImages };
+	/**
+	 * Retrieves cached images for a specific year, or fetches them from the API if not yet present.
+	 *
+	 * @param year - Year as a string (e.g. `'2024'`).
+	 * @returns Array of decoded {@link BestvinaImage} items for that year.
+	 */
+	const getYearImages = async (year: string): Promise<BestvinaImage[]> => {
+		if (!groupedImages.value[year]) {
+			await fetchImages([year]);
+		}
+
+		return groupedImages.value[year] ?? [];
+	}
+
+	return {
+		groupedImages,
+		pending,
+		fetchImagesError,
+		fetchImages,
+		getYearImages
+	};
 }
