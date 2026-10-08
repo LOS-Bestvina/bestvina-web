@@ -129,6 +129,16 @@ const activeImage = computed<BestvinaImage | null>(() => {
 	return cache[year]?.find(img => img.path === currentSrc.value) || null;
 });
 
+const imageAlt = computed(() => {
+	if (activeImage.value?.title) {
+		return activeImage.value.title;
+	}
+	if (imageYear.value) {
+		return `Fotografie z ročníku ${imageYear.value}`;
+	}
+	return "Fotografie z tábora Běstvina";
+});
+
 watchEffect(() => {
 	const year = imageYear.value;
 	if (!year) return;
@@ -344,7 +354,7 @@ defineShortcuts({
 									<img
 										v-show="!isMainLoaded && !isFullResLoaded"
 										:src="img(currentSrc, {}, { preset: 'placeholder' })"
-										:alt="imageTitle"
+										:alt="imageAlt"
 										class="absolute inset-0 w-full h-full object-contain blur-md opacity-70 transition-opacity duration-300 z-0"
 										@load="onPlaceholderLoad(currentSrc)"
 									>
@@ -352,7 +362,7 @@ defineShortcuts({
 									<NuxtImg
 										:class="isMainLoaded && !isFullResLoaded ? 'opacity-100' : 'opacity-0'"
 										:src="currentSrc"
-										:alt="imageTitle"
+										:alt="imageAlt"
 										class="absolute inset-0 w-full h-full object-contain drop-shadow-2xl select-none transition-opacity duration-300 ease-in-out z-10"
 										decoding="async"
 										draggable="false"
@@ -366,7 +376,7 @@ defineShortcuts({
 									<img
 										v-if="shouldLoadFullRes"
 										:src="currentSrc"
-										:alt="imageTitle"
+										:alt="imageAlt"
 										class="absolute inset-0 w-full h-full object-contain drop-shadow-2xl select-none transition-opacity duration-300 ease-in-out z-20"
 										:class="isFullResLoaded ? 'opacity-100' : 'opacity-0'"
 										decoding="async"
@@ -412,6 +422,7 @@ defineShortcuts({
 									currentSrc === imgSrc ? 'ring-2 ring-secondary scale-105 opacity-100' : 'opacity-50 hover:opacity-100',
 									isStripDragging ? 'cursor-grabbing' : 'cursor-pointer',
 								]"
+								:aria-label="`Zobrazit fotografii ${i + 1} z ${images.length}`"
 								class="relative shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-md overflow-hidden transition-all duration-200 select-none"
 								draggable="false"
 								@click="goTo(i)"
@@ -424,10 +435,9 @@ defineShortcuts({
 
 								<NuxtImg
 									v-if="canLoadThumbnails"
-									:alt="`Náhled fotografie ${i + 1}`"
 									:class="loadedThumbnails.has(imgSrc) ? 'opacity-100' : 'opacity-0'"
 									:src="imgSrc"
-									:alt="imageTitle"
+									:alt="`Náhled fotografie ${i + 1} z ${images.length}`"
 									class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out pointer-events-none select-none"
 									decoding="async"
 									draggable="false"
@@ -449,7 +459,7 @@ defineShortcuts({
 					<NuxtImg
 						v-if="allowedMain.has(i) && i !== currentIndex"
 						:src="imgSrc"
-						:alt="imageTitle"
+						:alt="imageAlt"
 						decoding="async"
 						loading="lazy"
 						preset="hero"
