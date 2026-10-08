@@ -1,4 +1,5 @@
 import { defineCollection, defineContentConfig, z } from "@nuxt/content";
+import { defineSitemapSchema } from "@nuxtjs/sitemap/content";
 
 const LinkSchema = z.object({
 	label: z.string(),
@@ -118,6 +119,19 @@ const YearsPageSchema = z.object({
 			icon: z.string().optional(),
 		})).optional(),
 	})).optional(),
+
+	sitemap: defineSitemapSchema({
+		z,
+		name: "years",
+		onUrl: (url, entry) => {
+			url.loc = url.loc.replace("/years/", "/rocniky/");
+
+			if (entry.coverImg) {
+				url.images = url.images || [];
+				url.images?.push({ loc: entry.coverImg })
+			}
+		},
+	}),
 });
 
 const PeopleSchema = z.object({

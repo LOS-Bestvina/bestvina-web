@@ -58,7 +58,7 @@ export default defineNuxtConfig({
 		colorMode: true,
 	},
 	routeRules: {
-		"/**": { },
+		"/**": {},
 		"/": { prerender: true },
 		"/kronika": { prerender: true },
 		"/rocniky/**": { prerender: true },
@@ -67,8 +67,12 @@ export default defineNuxtConfig({
 		"/kontakt": { prerender: true },
 		"/galerie": { prerender: true },
 		"/informace": { prerender: true },
-		"/_studio": { ssr: true },
-		"/api/**": { cors: true, prerender: true },
+
+		// internal & non-production stuff
+		"/test": { ssr: true, robots: false },
+		"/_studio": { ssr: true, robots: false },
+		"/api/**": { cors: true, prerender: true, robots: false },
+		"/_content/**": { prerender: false, robots: false },
 	},
 	compatibilityDate: "2025-11-30",
 	nitro: {
@@ -142,4 +146,24 @@ export default defineNuxtConfig({
 	image: {
 		presets: IMAGE_PRESET_DEFINITIONS,
 	},
+	site: {
+		url: process.env.NUXT_SITE_URL || 'https://bestvina.cz',
+		name: "Letní odborné soustředění Běstvina"
+	},
+	sitemap: {
+		// for SSG - prerenders sitemap
+		zeroRuntime: true,
+		exclude: [
+			"/api/**",
+			"/_studio",
+			"/test",
+		],
+	},
+	robots: {
+		disallow: [
+			"/api",
+			"/_studio",
+			"/test",
+		],
+	}
 });
