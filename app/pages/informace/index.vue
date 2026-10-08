@@ -6,10 +6,6 @@ definePageMeta({
 	layout: "page",
 });
 
-const img = useImage();
-
-const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
-
 const preferredReducedMotion = usePreferredReducedMotion();
 const getCarouselAutoplay = (delay: number) => {
 	if (preferredReducedMotion.value === "reduce") {
@@ -82,14 +78,12 @@ useSeoMeta({
 					layout="columns"
 				>
 					<template #secondary>
-						<NuxtImg
+						<AppImage
 							v-if="page.targetPeople.image"
-							:alt="page.targetPeople.title || 'Cílová skupina tábora'"
-							:placeholder="placeholder(page.targetPeople.image)"
+							:alt="page.targetPeople.title || 'Skupina lidí na Běstvině'"
 							:src="page.targetPeople.image"
 							class="w-full h-full object-cover md:object-[30%_0%] lg:object-center"
-							loading="lazy"
-							preset="thumbnailXLg"
+							preset="editorial"
 						/>
 					</template>
 				</InfoCard>
@@ -160,13 +154,11 @@ useSeoMeta({
 							class="w-full"
 							loop
 						>
-							<NuxtImg
-								:alt="'Fotografie areálu tábora Běstvina'"
-								:placeholder="placeholder(item)"
+							<AppImage
+								:alt="page.camp?.title || 'Prostředí tábora'"
 								:src="item"
 								class="w-full h-full object-cover"
-								loading="lazy"
-								preset="thumbnailXLg"
+								preset="editorial"
 							/>
 						</UCarousel>
 					</template>
@@ -193,13 +185,11 @@ useSeoMeta({
 							class="w-full"
 							loop
 						>
-							<NuxtImg
-								:alt="'Fotografie aktivit v areálu tábora Běstvina'"
-								:placeholder="placeholder(item)"
+							<AppImage
+								:alt="page.activities?.title || 'Fotografie aktivit v areálu tábora Běstvina'"
 								:src="item"
 								class="w-full h-full object-cover"
-								loading="lazy"
-								preset="thumbnailXLg"
+								preset="editorial"
 							/>
 						</UCarousel>
 					</template>
