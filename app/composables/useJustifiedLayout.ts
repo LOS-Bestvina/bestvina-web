@@ -8,19 +8,20 @@ export interface LayoutImage {
 // LayoutItems now include the absolute `top` Y-coordinate
 export type LayoutItem
 	= | { type: "header"; id: string; year: string; height: number; top: number }
-		| { type: "row"; id: string; height: number; top: number; items: LayoutImage[] };
+	| { type: "row"; id: string; height: number; top: number; items: LayoutImage[] };
 
 export interface JustifiedLayoutOptions {
 	targetHeight?: number;
 	gap?: number;
 	headerHeight?: number;
 	hideHeaders?: boolean;
+	widthEstimate?: number;
 }
 
 export default function (
 	groupedImages: Ref<Record<string, BestvinaImage[]>>,
 	containerWidth: Ref<number>,
-	options: MaybeRefOrGetter<JustifiedLayoutOptions> = { },
+	options: MaybeRefOrGetter<JustifiedLayoutOptions> = {},
 ) {
 	return computed(() => {
 		const optionsValue = toValue(options);
@@ -28,11 +29,30 @@ export default function (
 		const layout: LayoutItem[] = [];
 		const width = containerWidth.value;
 
-		if (width <= 0) return { layoutItems: [], totalHeight: 0 };
-
 		const targetHeight = optionsValue.targetHeight ?? 250;
 		const gap = optionsValue.gap ?? 8;
 		const headerHeight = optionsValue.headerHeight ?? 80;
+		const widthEstimate = optionsValue.widthEstimate ?? 1000;
+
+		if (width <= 0) {
+			// estimate height of the layout to prevent CLS
+
+			let estimatedHeight = 0;
+			for (const images of Object.values(groupedImages.value)) {
+				if (!images || images.length === 0) continue;
+
+				if (!optionsValue.hideHeaders) {
+					estimatedHeight += headerHeight + 24;
+				}
+
+				const totalAspect = images.reduce((sum, img) => sum + (img.aspectRatio || 1.5), 0);
+
+				const estimatedRows = Math.max(1, Math.ceil((totalAspect * targetHeight) / widthEstimate));
+
+				estimatedHeight += estimatedRows * (targetHeight + gap);
+			}
+			return { layoutItems: [], totalHeight: estimatedHeight };
+		};
 
 		const years = Object.keys(groupedImages.value).sort((a, b) => Number(b) - Number(a));
 
