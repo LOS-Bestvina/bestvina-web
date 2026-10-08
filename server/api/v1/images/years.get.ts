@@ -16,7 +16,7 @@ export default defineEventHandler(async () => {
 		// Process years sequentially to avoid resource exhaustion
 		const response = [];
 		for (const year of years) {
-			const [galleryImageCount, groupsImageCount] = await Promise.all([
+			const [galleryImageCount, groupImagesCount] = await Promise.all([
 				getImageCountForYear(year, "gallery"),
 				getImageCountForYear(year, "groups"),
 			]);
@@ -24,7 +24,7 @@ export default defineEventHandler(async () => {
 			response.push({
 				year: year,
 				galleryImagesCount: galleryImageCount,
-				groupsImagesCount: groupsImageCount,
+				groupImagesCount: groupImagesCount,
 			});
 		}
 
