@@ -1,43 +1,24 @@
 <script lang="ts" setup>
 const props = defineProps<{
 	year: string;
+	images: BestvinaImage[] | undefined;
 }>();
 
-const emit = defineEmits<{
-	(e: "hasContent", value: boolean): void;
-}>();
-
-const { filteredGroupedImages, selectedYears, pending } = useBestvinaImages("groups", props.year);
+const groupedImages = computed(() => {
+	return {
+		[props.year]: props.images ?? []
+	}
+})
 
 const { openImage } = useImageDetail();
-
-watch(
-	() => props.year,
-	(newYear) => {
-		selectedYears.value = [newYear];
-	},
-	{ immediate: true },
-);
-
-const imagesAvailable = computed(() => {
-	return Object.values(filteredGroupedImages.value).length !== 0;
-});
-
-watch(pending, (isPending) => {
-	if (!isPending) {
-		emit("hasContent", imagesAvailable.value);
-	}
-});
 </script>
 
 <template>
-	<section
-		v-if="imagesAvailable"
-	>
+	<div>
 		<PageSubHeader title="Fotografie oddílů" />
 
 		<JustifiedImageLayout
-			:grouped-images="filteredGroupedImages"
+			:grouped-images="groupedImages"
 			:target-height="260"
 			hide-headers
 			@image-click="openImage"
@@ -51,5 +32,5 @@ watch(pending, (isPending) => {
 				/>
 			</template>
 		</JustifiedImageLayout>
-	</section>
+	</div>
 </template>

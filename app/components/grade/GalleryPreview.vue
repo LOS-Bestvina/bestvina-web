@@ -3,42 +3,24 @@ import { computed, watch } from "vue";
 
 const props = defineProps<{
 	year: string;
+	images: BestvinaImage[] | undefined;
 }>();
 
-const emit = defineEmits<{
-	(e: "hasContent", value: boolean): void;
-}>();
+const randomImagesSelection = computed(() => {
+	return shuffle(props.images ?? []).slice(0, 10);
+})
 
-// Data fetching
-const { getRandomImages, selectedYears, pending } = useBestvinaImages("gallery", props.year);
-
-// Explicitly sync the year prop to the composable's state
-watch(
-	() => props.year,
-	(newYear) => {
-		selectedYears.value = [newYear];
-	},
-	{ immediate: true },
-);
-
-const randomGalleryImages = computed(() => getRandomImages(10));
-const imagesAvailable = computed(() => randomGalleryImages.value?.length > 0);
-
-watch(pending, (isPending) => {
-	if (!isPending) {
-		emit("hasContent", imagesAvailable.value);
-	}
-});
 
 const { openImage } = useImageDetail({ loopImages: true });
+
 const openModal = (src: string) => {
-	const images = randomGalleryImages.value.map(img => img.path);
+	const images = randomImagesSelection.value.map(img => img.path);
 	openImage(src, images);
 };
 </script>
 
 <template>
-	<section v-if="imagesAvailable">
+	<div>
 		<PageSubHeader
 			description="V karuselu se zobrazuje 10 náhodných fotografií z daného roku."
 			title="Náhled galerie"
@@ -62,7 +44,7 @@ const openModal = (src: string) => {
 				delay: 5000,
 				stopOnInteraction: false,
 			}"
-			:items="randomGalleryImages"
+			:items="randomImagesSelection"
 			:ui="{
 				container: 'gap-0 p-0 ms-0',
 				item: 'basis-1/2 md:basis-1/3 xl:basis-1/5 w-fit p-0 flex flex-row gap-0 justify-center',
@@ -90,5 +72,5 @@ const openModal = (src: string) => {
 				</div>
 			</div>
 		</UCarousel>
-	</section>
+	</div>
 </template>
