@@ -8,6 +8,7 @@ definePageMeta({
 const route = useRoute();
 const routePathEnglish = route.path.replace("rocniky", "years");
 
+// fetch page data
 const { data: page } = await useAsyncData(routePathEnglish, () => {
 	return queryCollection("years").path(routePathEnglish).first();
 });
@@ -16,7 +17,18 @@ if (!page.value || !page.value.year) {
 	throw createError({ statusCode: 404, statusMessage: "Ročník nenalezen!", fatal: true });
 }
 
+// check whether it is current year or not
 const isCurrentYear = computed(() => page.value?.year == CURRENT_YEAR);
+
+const yearStr = page?.value?.year.toString();
+
+// fetch images
+const { data: groupImageData } = await useYearGroupImages(yearStr);
+const { data: galleryImageData } = await useYearGalleryImages(yearStr);
+
+const hasGroupImages = computed(() => (groupImageData.value?.images?.length ?? 0) > 0);
+const hasGalleryImages = computed(() => (galleryImageData.value?.images?.length ?? 0) > 0);
+const hasAnyImages = computed(() => hasGroupImages.value || hasGalleryImages.value);
 
 // get surroundings for navigation
 async function getSurroundings() {
@@ -51,6 +63,7 @@ const formatDate = (dateString: string, prefix: string = "", thisYearEmptyValue:
 	});
 };
 
+// date range formatter
 const formatDateRange = (dateStringStart: string, dateStringEnd: string, thisYearEmptyValue: string = "bude upřesněno") => {
 	if (!dateStringStart && !dateStringEnd)
 		return isCurrentYear.value ? thisYearEmptyValue : "---";
@@ -70,10 +83,7 @@ const formatPrice = (price: number | undefined, thisYearEmptyValue: string = "bu
 	return `${price} Kč`;
 };
 
-const hasGroupImages = ref(false);
-const hasGalleryPreview = ref(false);
-const checksCompleted = ref(0);
-
+// seo meta tags
 if (isCurrentYear.value) {
 	useSeoMeta({
 		title: "Aktuální ročník",
@@ -102,8 +112,7 @@ else {
 		/>
 		<UPageBody>
 			<section
-				v-show="isCurrentYear"
-				v-if="!(hasGroupImages || hasGalleryPreview)"
+				v-show="isCurrentYear && !hasAnyImages"
 				class="flex flex-col gap-10"
 			>
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -245,23 +254,24 @@ else {
 				<ContentRenderer :value="page.body" />
 			</section>
 
-			<div v-show="hasGroupImages || hasGalleryPreview">
+			<section v-if="hasAnyImages">
 				<USeparator icon="i-mdi-history" />
 
-				<!-- Group Photos -->
 				<GradeGroupImages
-					:year="page.year.toString()"
-					@has-content="(val) => { hasGroupImages = val; checksCompleted++ }"
+					v-if="hasGroupImages"
+					:year="yearStr"
+					:images="groupImageData?.images"
 				/>
 
-				<!-- Gallery -->
 				<GradeGalleryPreview
-					:year="page.year.toString()"
-					@has-content="(val) => { hasGalleryPreview = val; checksCompleted++ }"
+					v-if="hasGalleryImages"
+					:year="yearStr"
+					:images="galleryImageData?.images"
 				/>
-			</div>
+			</section>
+
 			<div
-				v-if="!isCurrentYear && checksCompleted >= 2 && !hasGroupImages && !hasGalleryPreview"
+				v-else-if="!isCurrentYear"
 			>
 				<USeparator
 					class="mb-8"
@@ -273,6 +283,7 @@ else {
 					title="Příliš brzy na pohled do minulosti!"
 				/>
 			</div>
+
 			<div v-if="!isCurrentYear">
 				<UContentSurround
 					:surround="surround"
