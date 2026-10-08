@@ -10,3 +10,7 @@ export interface ImageMetadata {
 }
 
 export type GroupedImages = Record<string, ImageMetadata[]>;
+
+export const IMAGE_TYPES = ["gallery", "groups"] as const;
+
+export type ImageType = (typeof IMAGE_TYPES)[number];
