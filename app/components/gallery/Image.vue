@@ -20,10 +20,11 @@ const onImageLoad = () => {
 
 const el = useTemplateRef("imgContainerRef");
 
+const { width: elWidth } = useElementSize(el);
+
 const isSmall = computed(() => {
 	let width = props.actualWidth;
 	if (!width) {
-		const { width: elWidth } = useElementSize(el);
 		width = elWidth.value;
 	}
 	return width < 240;
@@ -43,7 +44,7 @@ const isSmall = computed(() => {
 
 		<NuxtImg
 			v-if="isSmall"
-			:alt="alt || overlayText || 'Fotografie z galerie Běstvina'"
+			:alt="alt || overlayText || 'Fotografie z galerie Běstviny'"
 			:class="isLoaded ? 'opacity-100' : 'opacity-0'"
 			:src="src"
 			class="absolute inset-0 w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-105"
@@ -54,7 +55,7 @@ const isSmall = computed(() => {
 		/>
 		<NuxtImg
 			v-else
-			:alt="alt || overlayText || 'Fotografie z galerie Běstvina'"
+			:alt="alt || overlayText || 'Fotografie z galerie Běstviny'"
 			:class="isLoaded ? 'opacity-100' : 'opacity-0'"
 			:preset="preset ?? 'card'"
 			:src="src"
