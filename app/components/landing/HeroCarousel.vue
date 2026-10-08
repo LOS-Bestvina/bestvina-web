@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-const img = useImage();
 const src = "/imgs/promo/lecture.jpg";
-const placeholder = img(src, {}, { preset: "placeholder" });
 </script>
 
 <!--  TODO: make this a carousel -->
@@ -12,7 +10,6 @@ const placeholder = img(src, {}, { preset: "placeholder" });
 		dark:bg-linear-to-br dark:from-primary-400/70 dark:via-tertiary-500/40 dark:to-secondary-500/60"
 	>
 		<AppImage
-			:placeholder="placeholder"
 			:src="src"
 			alt="Přednáška na Běstvině"
 			class="h-96 lg:h-full w-full object-cover object-[75%_25%] rounded-xl p-1"

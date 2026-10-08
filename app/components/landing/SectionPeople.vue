@@ -5,9 +5,6 @@ const _props = defineProps<{
 	data: LandingCollectionItem["people"];
 	solidBackground?: boolean;
 }>();
-
-const img = useImage();
-const placeholder = (src?: string) => src ? img(src, {}, { preset: "placeholder" }) : undefined;
 </script>
 
 <template>
@@ -25,7 +22,6 @@ const placeholder = (src?: string) => src ? img(src, {}, { preset: "placeholder"
 			#default
 		>
 			<AppImage
-				:placeholder="placeholder(data.image)"
 				:src="data.image"
 				:alt="data.title || 'Lidé na Běstvině'"
 				class="h-full object-cover object-[75%_25%] lg:w-full lg:hover:scale-105 transition-transform rounded-xl"

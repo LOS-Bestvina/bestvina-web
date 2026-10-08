@@ -6,10 +6,6 @@ definePageMeta({
 	layout: "page",
 });
 
-const img = useImage();
-
-const placeholder = (src: string) => img(src, {}, { preset: "placeholder" });
-
 const preferredReducedMotion = usePreferredReducedMotion();
 const getCarouselAutoplay = (delay: number) => {
 	if (preferredReducedMotion.value === "reduce") {
@@ -85,7 +81,6 @@ useSeoMeta({
 						<AppImage
 							v-if="page.targetPeople.image"
 							:alt="page.targetPeople.title || 'Skupina lidí na Běstvině'"
-							:placeholder="placeholder(page.targetPeople.image)"
 							:src="page.targetPeople.image"
 							class="w-full h-full object-cover md:object-[30%_0%] lg:object-center"
 							preset="editorial"
@@ -161,7 +156,6 @@ useSeoMeta({
 						>
 							<AppImage
 								:alt="page.camp?.title || 'Prostředí tábora'"
-								:placeholder="placeholder(item)"
 								:src="item"
 								class="w-full h-full object-cover"
 								preset="editorial"
@@ -193,7 +187,6 @@ useSeoMeta({
 						>
 							<AppImage
 								:alt="page.activities?.title || 'Fotografie aktivit v areálu tábora Běstvina'"
-								:placeholder="placeholder(item)"
 								:src="item"
 								class="w-full h-full object-cover"
 								preset="editorial"
