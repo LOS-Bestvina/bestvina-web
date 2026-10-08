@@ -1,5 +1,5 @@
 import { decodeBestvinaImage } from "#shared/utils/imageMapper";
-import type { BestvinaImage, MinifiedBestvinaImage } from "#shared/utils/imageMapper";
+import type { BestvinaImage } from "#shared/utils/imageMapper";
 
 /**
  * Global reactive cache and fetcher for years images.
@@ -31,8 +31,8 @@ export function useImageCache(type: ImageType) {
 	const pending = ref(true);
 	const fetchImagesError = ref<Error | null>(null);
 	const groupedImages = useState<Record<string, BestvinaImage[]>>(
-		`images-${type}-cache`,
-		() => shallowRef({}),
+		`images-cache-${type}`,
+		() => ({}),
 	);
 
 	/**
@@ -58,7 +58,7 @@ export function useImageCache(type: ImageType) {
 			}
 
 			const requests = missingYears.map(year =>
-				$fetch<ImagesApiResponse>(`/api/v1/images/${type}/${year}`),
+				$fetch(`/api/v1/images/${type}/${year}`),
 			);
 
 			const responses = await Promise.all(requests);
