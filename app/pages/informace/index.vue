@@ -11,17 +11,19 @@ const img = useImage();
 const placeholder = (src: string) => img(src, {}, { preset: "thumbnailXXSm" });
 
 const preferredReducedMotion = usePreferredReducedMotion();
-const carouselAutoplay = computed(() => {
+const getCarouselAutoplay = (delay: number) => {
 	if (preferredReducedMotion.value === "reduce") {
 		return false;
 	}
 	return {
-		delay: 5000,
+		delay,
 		stopOnInteraction: false,
 		stopOnMouseEnter: true,
 		stopOnFocusIn: true,
 	};
-});
+};
+const campCarouselAutoplay = computed(() => getCarouselAutoplay(4500));
+const activitiesCarouselAutoplay = computed(() => getCarouselAutoplay(3500));
 
 /**
  * TABS INITIALIZATION
@@ -148,7 +150,7 @@ useSeoMeta({
 					<template #secondary>
 						<UCarousel
 							v-slot="{ item }"
-							:autoplay="carouselAutoplay"
+							:autoplay="campCarouselAutoplay"
 							:items="page.camp.images"
 							:ui="{
 								viewport: 'h-full',
@@ -181,7 +183,7 @@ useSeoMeta({
 					<template #secondary>
 						<UCarousel
 							v-slot="{ item }"
-							:autoplay="carouselAutoplay"
+							:autoplay="activitiesCarouselAutoplay"
 							:items="page.activities.images"
 							:ui="{
 								viewport: 'h-full',
