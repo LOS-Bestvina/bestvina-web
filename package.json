@@ -47,6 +47,8 @@
     "@iconify-json/proicons": "^1.2.19",
     "@iconify-json/simple-icons": "^1.2.99",
     "@iconify-json/svg-spinners": "^1.2.4",
+    "@nuxtjs/robots": "^6.2.4",
+    "@nuxtjs/sitemap": "^8.6.1",
     "@playwright/test": "^1.59.1",
     "@types/bun": "^1.4.2",
     "@vue/test-utils": "^2.4.9",

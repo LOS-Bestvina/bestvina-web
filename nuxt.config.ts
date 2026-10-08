@@ -6,6 +6,8 @@ import { IMAGE_PRESET_DEFINITIONS } from "./shared/constants/imagePresets";
 
 export default defineNuxtConfig({
 	modules: [
+		"@nuxtjs/sitemap", // must appear before @nuxt/content
+		"@nuxtjs/robots",
 		"@nuxt/content",
 		"@nuxt/eslint",
 		"@nuxt/hints",
