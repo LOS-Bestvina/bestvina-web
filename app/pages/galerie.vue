@@ -68,6 +68,10 @@ const hasActiveFilters = computed(() =>
 	|| isOtherAuthorsSelected.value,
 );
 
+const isEmpty = computed(() =>
+	!Object.values(filteredGroupedImages.value).some(images => (images?.length ?? 0) > 0) || false,
+);
+
 useSeoMeta({
 	title: "Galerie",
 	description: "Galerie fotografií z Běstviny.",
@@ -262,8 +266,18 @@ useSeoMeta({
 					<div
 						v-else
 						class="px-4 lg:col-span-5"
-					>
+					>	
+						<UEmpty
+							v-if="isEmpty"
+							description="Těmto filtrům neodpovídají žádné fotky. Zkus některé filtry odebrat!"
+							icon="i-mdi-filter-variant-remove"
+							title="Kde nic, tu nic..."
+							variant="naked"
+							class="lg:mt-8"
+						/>	
+
 						<JustifiedImageLayout
+							v-else
 							:grouped-images="filteredGroupedImages"
 							@image-click="openImage"
 						>
