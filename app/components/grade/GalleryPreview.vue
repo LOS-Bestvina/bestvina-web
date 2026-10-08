@@ -9,11 +9,6 @@ const emit = defineEmits<{
 	(e: "hasContent", value: boolean): void;
 }>();
 
-// Utilities
-const { openImage } = useImageDetail({ loopImages: true });
-const img = useImage();
-const placeholder = (src: string) => img(src, {}, { preset: "placeholder" });
-
 // Data fetching
 const { getRandomImages, selectedYears, pending } = useBestvinaImages("gallery", props.year);
 
@@ -35,7 +30,7 @@ watch(pending, (isPending) => {
 	}
 });
 
-// Actions
+const { openImage } = useImageDetail({ loopImages: true });
 const openModal = (src: string) => {
 	const images = randomGalleryImages.value.map(img => img.path);
 	openImage(src, images);
@@ -77,34 +72,22 @@ const openModal = (src: string) => {
 			loop
 		>
 			<div class="m-2 w-full aspect-square lg:aspect-auto">
-				<NuxtImg
-					v-slot="{ src, isLoaded, imgAttrs }"
-					:alt="`Náhodná fotografie z roku ${props.year}`"
-					:custom="true"
-					:placeholder="placeholder(item.path)"
-					:src="item.path"
-					preset="card"
+				<div
+					class="w-full h-full cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-md"
+					role="button"
+					tabindex="0"
+					:aria-label="`Zobrazit fotografii: ${item.title || 'Náhodná fotografie z roku ' + props.year}`"
+					@click="openModal(item.path)"
+					@keydown.enter="openModal(item.path)"
+					@keydown.space.prevent="openModal(item.path)"
 				>
-					<div
-						v-if="isLoaded"
-						class="lg:p-2 cursor-pointer"
-					>
-						<img
-							:key="item.path"
-							:alt="`Náhodná fotografie z roku ${props.year}`"
-							:src="src"
-							class="w-full aspect-square object-cover rounded-md transition-transform md:hover:scale-110"
-							loading="lazy"
-							v-bind="imgAttrs"
-							@click="openModal(item.path)"
-						>
-					</div>
-
-					<USkeleton
-						v-else
-						class="w-full aspect-square rounded-md"
+					<GalleryImage
+						:src="item.path"
+						:alt="`Náhodná fotografie z roku ${props.year}`"
+						preset="card"
+						class="w-full h-full aspect-square"
 					/>
-				</NuxtImg>
+				</div>
 			</div>
 		</UCarousel>
 	</section>
