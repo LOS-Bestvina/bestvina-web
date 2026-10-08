@@ -83,10 +83,8 @@ const visibleItems = computed(() => {
 		return itemBottom > viewTop && item.top < viewBottom;
 	});
 });
-const isEmpty = computed(() => {
-	return layoutData.value.layoutItems.length === 0 || false;
-});
 
+// image detail modal
 const openImageDetail = (src: string) => {
 	const images = Object.entries(props.groupedImages)
 	// sort by year in descending order
@@ -102,12 +100,6 @@ const openImageDetail = (src: string) => {
 
 <template>
 	<div>
-		<UEmpty
-			v-if="isEmpty"
-			description="Těmto filtrům neodpovídají žádné fotky. Zkus některé filtry odebrat!"
-			icon="i-mdi-filter-variant-remove"
-			title="Kde nic, tu nic..."
-		/>
 		<div
 			ref="justifiedContainerRef"
 			:style="{ height: `${layoutData.totalHeight}px` }"
