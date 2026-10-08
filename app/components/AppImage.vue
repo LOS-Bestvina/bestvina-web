@@ -23,6 +23,7 @@ export interface AppImageProps {
 
 const props = withDefaults(defineProps<AppImageProps>(), {
 	allowModal: false,
+	placeholder: true,
 });
 
 const resolvedFormat = computed(() => {
@@ -34,6 +35,17 @@ const resolvedFormat = computed(() => {
 
 const computedLoading = computed(() => props.loading ?? (props.priority ? "eager" : "lazy"));
 const computedFetchPriority = computed(() => props.fetchpriority ?? (props.priority ? "high" : undefined));
+
+const img = useImage();
+
+const resolvedPlaceholder = computed(() => {
+	if (props.placeholder === false) return undefined;
+	if (typeof props.placeholder === "string") return props.placeholder;
+	if (props.src) {
+		return img(props.src, {}, { preset: "placeholder" });
+	}
+	return undefined;
+});
 
 const { openImage } = useImageDetail();
 
@@ -61,7 +73,7 @@ const handleOpenModal = () => {
 			:format="resolvedFormat"
 			:loading="computedLoading"
 			:fetch-priority="computedFetchPriority"
-			:placeholder="placeholder"
+			:placeholder="resolvedPlaceholder"
 			:class="imgClass"
 			v-bind="$attrs"
 		/>
@@ -74,7 +86,7 @@ const handleOpenModal = () => {
 		:format="resolvedFormat"
 		:loading="computedLoading"
 		:fetch-priority="computedFetchPriority"
-		:placeholder="placeholder"
+		:placeholder="resolvedPlaceholder"
 		:class="imgClass"
 		v-bind="$attrs"
 	/>

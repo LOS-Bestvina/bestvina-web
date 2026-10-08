@@ -42,4 +42,31 @@ describe("AppImage specification & preset resolution", () => {
 		expect(resolveLoading("lazy", true)).toBe("lazy");
 		expect(resolveFetchPriority("low", true)).toBe("low");
 	});
+
+	it("resolves placeholder automatically from src unless explicitly disabled", () => {
+		const mockImg = (src: string, _modifiers: Record<string, unknown>, opts: { preset?: string }) =>
+			`/_ipx/${opts.preset}/${src}`;
+
+		const resolvePlaceholder = (placeholder?: string | boolean, src?: string) => {
+			if (placeholder === false) return undefined;
+			if (typeof placeholder === "string") return placeholder;
+			if (src) {
+				return mockImg(src, {}, { preset: "placeholder" });
+			}
+			return undefined;
+		};
+
+		// Default: auto-derives from src using placeholder preset
+		expect(resolvePlaceholder(undefined, "/test.jpg")).toBe("/_ipx/placeholder//test.jpg");
+		expect(resolvePlaceholder(true, "/test.jpg")).toBe("/_ipx/placeholder//test.jpg");
+
+		// Disabled with false
+		expect(resolvePlaceholder(false, "/test.jpg")).toBeUndefined();
+
+		// Custom placeholder string
+		expect(resolvePlaceholder("data:image/svg+xml,...", "/test.jpg")).toBe("data:image/svg+xml,...");
+
+		// Missing src
+		expect(resolvePlaceholder(undefined, undefined)).toBeUndefined();
+	});
 });
