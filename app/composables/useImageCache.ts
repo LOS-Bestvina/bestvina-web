@@ -1,11 +1,33 @@
 import { decodeBestvinaImage } from "#shared/utils/imageMapper";
 import type { BestvinaImage, MinifiedBestvinaImage } from "#shared/utils/imageMapper";
 
-export interface ImagesApiResponse {
-	images: Record<string, MinifiedBestvinaImage[]>;
-}
-
-export function useImageCache(type: "gallery" | "groups") {
+/**
+ * Global reactive cache and fetcher for years images.
+ *
+ * Maintains a cache per image type (`"groups"` or `"gallery"`).
+ *
+ * @param type - The type of images to manage cache for.
+ * @returns Image cache state and fetch helpers:
+ * - `groupedImages`: Reactive record mapping year strings to decoded {@link BestvinaImage} arrays.
+ * - `pending`: Boolean ref indicating whether a network request is currently active.
+ * - `fetchImagesError`: Error ref containing the latest error, or `null`.
+ * - `fetchImages`: Batch-fetches missing years and merges decoded images into cache.
+ * - `getYearImages`: Ensures images for a single year are in cache and returns them.
+ *
+ * @example Fetching a single year's images on demand:
+ * ```ts
+ * const { getYearImages } = useImageCache("groups");
+ * const images = await getYearImages("2026");
+ * ```
+ *
+ * @example Batch-fetching multiple years for a gallery view:
+ * ```ts
+ * const { groupedImages, fetchImages, pending } = useImageCache("groups");
+ * await fetchImages(["2023", "2024"]);
+ * console.log(groupedImages.value["2024"]);
+ * ```
+ */
+export function useImageCache(type: ImageType) {
 	const pending = ref(true);
 	const fetchImagesError = ref<Error | null>(null);
 	const groupedImages = useState<Record<string, BestvinaImage[]>>(
@@ -13,6 +35,14 @@ export function useImageCache(type: "gallery" | "groups") {
 		() => shallowRef({}),
 	);
 
+	/**
+	 * Fetches images for an array of years in parallel.
+	 *
+	 * Filters out any years already present in `groupedImages` so no redundant
+	 * API requests are dispatched. Decodes minified images before saving to state.
+	 *
+	 * @param yearsToFetch - Array of year strings to request (e.g. `['2023', '2024']`).
+	 */
 	const fetchImages = async (yearsToFetch: string[]) => {
 		pending.value = true;
 		try {
