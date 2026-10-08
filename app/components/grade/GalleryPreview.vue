@@ -6,10 +6,19 @@ const props = defineProps<{
 	images: BestvinaImage[] | undefined;
 }>();
 
-const randomImagesSelection = computed(() => {
-	return shuffle(props.images ?? []).slice(0, 10);
-})
+const randomImagesSelection = ref<BestvinaImage[]>((props.images ?? []).slice(0, 10));
 
+function reshuffleImages(images: BestvinaImage[] | undefined = undefined) {
+	if (!images || images.length === 0) {
+		randomImagesSelection.value = shuffle(props.images ?? [], false).slice(0, 10);
+		return;
+	}
+	randomImagesSelection.value = shuffle(images, false).slice(0, 10);
+}
+
+onMounted(() => {
+	reshuffleImages(props.images);
+});
 
 const { openImage } = useImageDetail({ loopImages: true });
 
