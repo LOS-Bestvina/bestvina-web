@@ -7,7 +7,6 @@ const props = defineProps<{
 	alt?: string;
 	preset?: string;
 	actualWidth?: number;
-	alt?: string;
 }>();
 
 const img = useImage();
