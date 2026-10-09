@@ -161,7 +161,6 @@ export default defineNuxtConfig({
 	},
 	robots: {
 		disallow: [
-			"/api",
 			"/_studio",
 			"/test",
 		],
