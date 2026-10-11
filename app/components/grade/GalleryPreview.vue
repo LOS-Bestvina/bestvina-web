@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { computed, watch } from "vue";
-
 const props = defineProps<{
 	year: string;
 	images: BestvinaImage[] | undefined;
@@ -26,6 +24,8 @@ const openModal = (src: string) => {
 	const images = randomImagesSelection.value.map(img => img.path);
 	openImage(src, images);
 };
+
+const galleryPreviewAutoplayOptions = computed(() => getCarouselAutoplayOptions(5000));
 </script>
 
 <template>
@@ -49,18 +49,15 @@ const openModal = (src: string) => {
 
 		<UCarousel
 			v-slot="{ item }"
-			:autoplay="{
-				delay: 5000,
-				stopOnInteraction: false,
-			}"
+			:autoplay="galleryPreviewAutoplayOptions"
 			:items="randomImagesSelection"
 			:ui="{
+				root: 'w-full mt-8 mb-16',
 				container: 'gap-0 p-0 ms-0',
 				item: 'basis-1/2 md:basis-1/3 xl:basis-1/5 w-fit p-0 flex flex-row gap-0 justify-center',
 			}"
-			class="w-full mt-8 mb-16"
-			dots
 			loop
+			dots
 		>
 			<div class="m-2 w-full aspect-square lg:aspect-auto">
 				<div
