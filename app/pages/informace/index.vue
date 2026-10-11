@@ -1,25 +1,12 @@
 <script lang="ts" setup>
 import type { TabsItem } from "@nuxt/ui";
-import { usePreferredReducedMotion } from "@vueuse/core";
 
 definePageMeta({
 	layout: "page",
 });
 
-const preferredReducedMotion = usePreferredReducedMotion();
-const getCarouselAutoplay = (delay: number) => {
-	if (preferredReducedMotion.value === "reduce") {
-		return false;
-	}
-	return {
-		delay,
-		stopOnInteraction: false,
-		stopOnMouseEnter: true,
-		stopOnFocusIn: true,
-	};
-};
-const campCarouselAutoplay = computed(() => getCarouselAutoplay(4500));
-const activitiesCarouselAutoplay = computed(() => getCarouselAutoplay(3500));
+const campCarouselAutoplay = computed(() => getCarouselAutoplayOptions(4500));
+const activitiesCarouselAutoplay = computed(() => getCarouselAutoplayOptions(3500));
 
 /**
  * TABS INITIALIZATION
