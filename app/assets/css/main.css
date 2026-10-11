@@ -85,26 +85,16 @@
 }
 
 /* Global UTabs Multiline Support */
-[role="tablist"] {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0.25rem !important;
-    padding: 0.25rem !important;
-}
-[role="tablist"] > button, [role="tablist"] > a {
-    width: 100% !important;
-}
-
-@media (min-width: 640px) {
-    [role="tablist"] {
-        display: flex !important;
-        flex-wrap: nowrap !important;
-        grid-template-columns: none !important;
-        width: auto !important;
-        justify-content: flex-start !important;
+@media (width < 640px) {
+    [data-slot="list"][role="tablist"] {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.25rem;
+        padding: 0.25rem;
     }
-    [role="tablist"] > button, [role="tablist"] > a {
-        width: auto !important;
+
+    [data-slot="list"][role="tablist"] > [data-slot="trigger"] {
+        width: 100%;
     }
 }
 
